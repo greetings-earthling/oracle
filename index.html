@@ -50,7 +50,6 @@ header p{
   color:var(--muted);
 }
 
-/* cards */
 .card{
   background:var(--card);
   border-radius:var(--radius);
@@ -109,8 +108,17 @@ header p{
   overflow:hidden;
   border:1px solid rgba(0,0,0,.06);
   background:var(--soft);
-  transition: background 220ms ease;
 }
+
+/* stronger, more obvious colour */
+.lmWash{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:0;
+  transition: opacity 220ms ease;
+}
+.lmPanel.hasWash .lmWash{ opacity:1; }
 
 .lmStatus{
   display:flex;
@@ -118,6 +126,8 @@ header p{
   justify-content:space-between;
   gap:12px;
   margin-bottom:10px;
+  position:relative;
+  z-index:2;
 }
 .lmResult{
   font-size:18px;
@@ -133,6 +143,7 @@ header p{
 .lmTrackWrap{
   position:relative;
   padding:10px 8px 0;
+  z-index:2;
 }
 
 .lmTrack{
@@ -140,6 +151,15 @@ header p{
   border-radius:999px;
   background:rgba(0,0,0,.10);
   position:relative;
+}
+
+/* coloured bar under track for “anticlimactic” fix */
+.lmBar{
+  position:absolute;
+  inset:-10px 0 -10px 0;
+  border-radius:999px;
+  opacity:.35;
+  filter:saturate(1.2);
 }
 
 .lmBall{
@@ -190,18 +210,7 @@ header p{
 .lmLegend b{
   font-weight:600;
   color:var(--text);
-  letter-spacing:.06em;
 }
-
-/* stronger, score-driven background wash */
-.lmWash{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  opacity:0;
-  transition: opacity 220ms ease;
-}
-.lmPanel.hasWash .lmWash{ opacity:1; }
 
 @media (max-width:820px){
   .lmHead{flex-direction:column; align-items:stretch;}
@@ -232,7 +241,6 @@ header p{
   cursor:pointer;
   user-select:none;
 }
-
 .mini h3{
   margin:0;
   font-size:12px;
@@ -241,7 +249,6 @@ header p{
   color:var(--muted);
   font-weight:600;
 }
-
 .mini .value{
   font-size:34px;
   font-weight:600;
@@ -249,9 +256,7 @@ header p{
 }
 
 /* color tile: fill area */
-.mini.colorTile{
-  padding:10px;
-}
+.mini.colorTile{ padding:10px; }
 .colorSwatch{
   height:46px;
   border-radius:12px;
@@ -280,7 +285,6 @@ header p{
   justify-content:center;
   gap:6px;
 }
-
 .leftPane .kicker{
   font-size:12px;
   letter-spacing:.08em;
@@ -353,14 +357,14 @@ footer{
 <div class="card" id="luck-card">
   <div class="lmHead">
     <p class="lmCopy">
-      <strong>Your daily luck reading.</strong><br>
-      A reading of your energy.<br>
-      Let it guide you today.
+      <strong>Today’s luck reading.</strong><br>
+      A quick vibe check.<br>
+      Use it irresponsibly.
     </p>
     <button class="lmBtn" id="luckSpin" type="button">How lucky am I today?</button>
   </div>
 
-  <div class="lmPanel neutral hasWash" id="lmPanel">
+  <div class="lmPanel hasWash" id="lmPanel">
     <div class="lmWash" id="lmWash"></div>
 
     <div class="lmStatus">
@@ -370,6 +374,7 @@ footer{
 
     <div class="lmTrackWrap">
       <div class="lmTrack" id="lmTrack">
+        <div class="lmBar" id="lmBar"></div>
         <div class="lmBall" id="lmBall"></div>
       </div>
 
@@ -435,7 +440,7 @@ footer{
 </div>
 
 <script>
-/* No auto-spins. Everything reveals only on click. */
+/* No auto-spins. Everything reveals only on click. Luck meter usable once per day. */
 
 const eightAnswers = [
   "Yes.",
@@ -492,8 +497,9 @@ document.getElementById("cookie").addEventListener("click", () => {
 
 /* =========================
    LUCK METER
-   Real bounce: 0 -> 10 -> 0, slows down, lands on final
-   Starts at 5
+   Physics bounce so there is NO last-second jump.
+   Starts at 5.
+   One use per day (localStorage).
    ========================= */
 
 const luckSpinBtn = document.getElementById("luckSpin");
@@ -503,6 +509,7 @@ const lmMeta = document.getElementById("lmMeta");
 const lmTrack = document.getElementById("lmTrack");
 const lmBall = document.getElementById("lmBall");
 const lmWash = document.getElementById("lmWash");
+const lmBar = document.getElementById("lmBar");
 
 let lmSpinning = false;
 let lastScore = 5;
@@ -518,7 +525,7 @@ function randNormal(mean, sd){
   return mean + z * sd;
 }
 function rollLuckScore(){
-  const raw = randNormal(5.7, 1.8);
+  const raw = randNormal(5.8, 1.7);
   return Math.round(clamp(raw, 0, 10));
 }
 
@@ -529,11 +536,11 @@ function bandForScore(s){
 }
 
 function metaForScore(s){
-  if (s <= 1) return "Lay low. Keep liquids away from electronics.";
-  if (s <= 3) return "Some resistance today. Slow down a bit.";
+  if (s <= 1) return "Chaos energy. Keep it simple.";
+  if (s <= 3) return "Low luck. High awareness.";
   if (s <= 6) return "Balanced. You steer the day.";
-  if (s <= 8) return "Nice tailwind. Take one small swing.";
-  return "Spicy luck. Do the thing you’ve been delaying.";
+  if (s <= 8) return "Good luck. Take the easy win.";
+  return "Mega luck. Do the bold thing.";
 }
 
 function trackWidth(){
@@ -549,103 +556,128 @@ function setBallPx(x){
   lmBall.style.left = `${x}px`;
 }
 
-/* Background wash intensity */
-function setWash(score){
+function setColour(score){
   const band = bandForScore(score);
-  const t = score / 10; // 0..1
+  const t = score / 10;
 
-  let base, alpha;
   if (band === "bad"){
-    base = "185,28,28";
-    alpha = 0.18 + (0.35 * (1 - t)); // stronger when lower
+    lmBar.style.background = `linear-gradient(90deg, rgba(185,28,28,.0), rgba(185,28,28,.55), rgba(185,28,28,.0))`;
+    lmWash.style.background = `radial-gradient(circle at 50% 45%, rgba(185,28,28,.34) 0%, rgba(185,28,28,.18) 38%, rgba(185,28,28,0) 72%)`;
   } else if (band === "neutral"){
-    base = "107,114,128";
-    alpha = 0.14 + 0.10 * Math.abs(0.5 - t);
+    lmBar.style.background = `linear-gradient(90deg, rgba(107,114,128,.0), rgba(107,114,128,.45), rgba(107,114,128,.0))`;
+    lmWash.style.background = `radial-gradient(circle at 50% 45%, rgba(107,114,128,.22) 0%, rgba(107,114,128,.12) 40%, rgba(107,114,128,0) 72%)`;
   } else {
-    base = "22,163,74";
-    alpha = 0.18 + (0.28 * t); // stronger when higher
+    lmBar.style.background = `linear-gradient(90deg, rgba(22,163,74,.0), rgba(22,163,74,.55), rgba(22,163,74,.0))`;
+    lmWash.style.background = `radial-gradient(circle at 50% 45%, rgba(22,163,74,.30) 0%, rgba(22,163,74,.16) 40%, rgba(22,163,74,0) 72%)`;
   }
 
-  lmWash.style.background =
-    `radial-gradient(circle at 50% 45%,
-      rgba(${base}, ${alpha}) 0%,
-      rgba(${base}, ${alpha * 0.55}) 35%,
-      rgba(${base}, 0) 72%)`;
+  // tiny extra punch for high scores
+  lmWash.style.filter = `saturate(${1.1 + t * 0.25})`;
 }
 
-/* Start state at 5 */
 function setToScore(score){
   lastScore = score;
   setBallPx(tickX(score));
-  lmPanel.classList.remove("bad","neutral","good");
-  lmPanel.classList.add(bandForScore(score));
   lmResult.textContent = `Score: ${score} / 10`;
-  lmMeta.textContent = (score === 5) ? "Neutral start. Tap the button." : metaForScore(score);
-  setWash(score);
+  lmMeta.textContent = metaForScore(score);
+  setColour(score);
+  lmPanel.classList.add("hasWash");
 }
 
-/* Bounce path helper:
-   triangular wave 0..1..0 repeating (looks like hitting ends)
+/* once per day */
+function todayKey(){
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,"0");
+  const day = String(d.getDate()).padStart(2,"0");
+  return `${y}-${m}-${day}`;
+}
+function lockIfAlreadySpun(){
+  const key = todayKey();
+  const saved = localStorage.getItem("LUCK_METER_SPUN_DATE");
+  if (saved === key){
+    luckSpinBtn.disabled = true;
+    luckSpinBtn.textContent = "Come back tomorrow";
+    lmMeta.textContent = "Already read today.";
+    return true;
+  }
+  return false;
+}
+function markSpun(){
+  localStorage.setItem("LUCK_METER_SPUN_DATE", todayKey());
+}
+
+/* Physics bounce (no jump):
+   - ball starts at center
+   - has velocity
+   - bounces off ends
+   - damping slows
+   - weak spring pulls toward target the whole time
+   - finishes exactly on target
 */
-function triWave(u){
-  // u can be any number, take fractional part
-  const f = u - Math.floor(u);
-  return f < 0.5 ? (f * 2) : (2 - f * 2);
-}
-
-/* Ease out */
-function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
-
-function animateBounceTo(score){
+function animatePhysicsTo(score){
   const w = trackWidth();
   const target = tickX(score);
 
-  // random length for tension
-  const duration = 5200 + Math.random() * 1400; // 5.2–6.6s
-  const start = performance.now();
+  let x = tickX(5);     // start at 5
+  let v = (Math.random() < 0.5 ? -1 : 1) * (w * 1.2); // px/sec (initial kick)
+  const k = 7.5;        // spring strength toward target
+  const damp = 2.8;     // damping
+  const bounce = 0.86;  // energy kept on wall hit
 
-  // number of full end-to-end sweeps
-  const sweeps = 7 + Math.floor(Math.random() * 3); // 7–9
+  const duration = 6200 + Math.random() * 800; // longer tension
+  const t0 = performance.now();
+  let last = t0;
 
-  function frame(now){
-    const elapsed = now - start;
-    const t = clamp(elapsed / duration, 0, 1);
+  function step(now){
+    const elapsed = now - t0;
+    const dt = Math.min(0.032, (now - last) / 1000); // seconds
+    last = now;
 
-    // phase 1: bounce end to end with slowing
-    // speed slows naturally by easing the time input
-    const slowT = easeOutCubic(t);
+    // spring toward target + damping
+    const a = (target - x) * k - v * damp;
+    v += a * dt;
+    x += v * dt;
 
-    // position from 0..w using triangular wave
-    const bouncePos = triWave(slowT * sweeps) * w;
-
-    // phase 2: in last 18%, pull toward target and settle
-    let x = bouncePos;
-    if (t > 0.82){
-      const bt = (t - 0.82) / 0.18; // 0..1
-      const pull = easeOutCubic(bt);
-      x = bouncePos + (target - bouncePos) * pull;
-
-      // tiny final micro-bounce
-      const micro = (1 - pull) * 10 * Math.sin(bt * Math.PI * 5);
-      x += micro;
+    // wall bounce
+    if (x < 0){
+      x = 0;
+      v = -v * bounce;
+    } else if (x > w){
+      x = w;
+      v = -v * bounce;
     }
 
-    setBallPx(clamp(x, 0, w));
+    setBallPx(x);
 
-    if (t < 1){
-      requestAnimationFrame(frame);
+    if (elapsed < duration){
+      requestAnimationFrame(step);
     } else {
       setBallPx(target);
       lmSpinning = false;
-      luckSpinBtn.disabled = false;
+      setToScore(score);
+      markSpun();
+      luckSpinBtn.disabled = true;
+      luckSpinBtn.textContent = "Come back tomorrow";
+      lmMeta.textContent = "That’s today’s reading.";
     }
   }
 
-  requestAnimationFrame(frame);
+  requestAnimationFrame(step);
+}
+
+/* init state */
+function setNeutralStart(){
+  setBallPx(tickX(5));
+  lmResult.textContent = "Score: 5 / 10";
+  lmMeta.textContent = "Neutral start. Tap the button.";
+  setColour(5);
 }
 
 luckSpinBtn.addEventListener("click", () => {
   if (lmSpinning) return;
+  if (lockIfAlreadySpun()) return;
+
   lmSpinning = true;
   luckSpinBtn.disabled = true;
 
@@ -653,19 +685,18 @@ luckSpinBtn.addEventListener("click", () => {
   lmMeta.textContent = "Consulting fate…";
 
   const score = rollLuckScore();
-
-  // animate
-  animateBounceTo(score);
-
-  // reveal near the end
-  setTimeout(() => {
-    setToScore(score);
-  }, 5200);
+  animatePhysicsTo(score);
 });
 
-window.addEventListener("load", () => setToScore(5));
+window.addEventListener("load", () => {
+  setNeutralStart();
+  lockIfAlreadySpun();
+});
+
 window.addEventListener("resize", () => {
-  if (!lmSpinning) setToScore(lastScore);
+  if (!lmSpinning){
+    setBallPx(tickX(lastScore));
+  }
 });
 </script>
 
