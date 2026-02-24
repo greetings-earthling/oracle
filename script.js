@@ -219,12 +219,21 @@ function setColourFromT(t01) {
     )`;
 }
 
-function metaForScore(s) {
-  if (s <= 1) return "Chaos energy. Keep it simple.";
-  if (s <= 3) return "Low luck. High awareness.";
-  if (s <= 6) return "Balanced. You steer the day.";
-  if (s <= 8) return "Good luck. Take the easy win.";
-  return "Mega luck. Do the bold thing.";
+function metaForScore(s){
+  const msgs = [
+    "⚠️ 0/10. Absolutely cursed. Keep your receipts.",
+    "🧯 1/10. Bad luck. Move slow. Double-check everything.",
+    "🌀 2/10. Low luck. Say no to sketchy plans.",
+    "😐 3/10. Slightly off. Keep it simple and you’ll be fine.",
+    "😐 4/10. A little friction. Don’t force it today.",
+    "⚖️ 5/10. Neutral. You steer the day.",
+    "🍀 6/10. Slightly lucky. Small risks are rewarded.",
+    "🍀🍀 7/10. Good luck. Say yes to the easy win.",
+    "🍀🍀🍀 8/10. Very lucky. This is a “send it” day.",
+    "🍀🍀🍀🍀 9/10. Ridiculous luck. Go buy the fancy snack.",
+    "🍀🍀🍀🍀🍀 10/10. Mega luck. Be brave. The universe is basically clapping."
+  ];
+  return msgs[clamp(s,0,10)];
 }
 
 function setToScore(score) {
