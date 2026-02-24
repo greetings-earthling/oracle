@@ -358,7 +358,6 @@ function animateBounceTo(targetScore) {
     markSpun();
     luckSpinBtn.disabled = true;
     luckSpinBtn.textContent = "Come back tomorrow";
-    lmMeta.textContent = "That’s today’s reading.";
   }
 
   requestAnimationFrame(step);
