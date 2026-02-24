@@ -2,21 +2,18 @@
    - Uses window.WATCHLIST, window.FORTUNES, window.DINNERLIST (or window.FOODLIST)
    - Add ?test=1 to URL to show Reset + allow re-spin for luck meter
 */
-
 window.addEventListener("DOMContentLoaded", () => {
-  console.log("script.js running");
-
   const TEST_MODE = new URLSearchParams(location.search).get("test") === "1";
 
   const $ = (id) => document.getElementById(id);
   const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
   const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
 
-  function animateSwap(el, nextText, cb) {
+  function animateSwap(el, fn){
     if (!el) return;
     el.classList.add("isOut");
     window.setTimeout(() => {
-      cb();
+      fn();
       el.classList.remove("isOut");
     }, 170);
   }
@@ -32,12 +29,12 @@ window.addEventListener("DOMContentLoaded", () => {
       if (!out) return;
 
       const next = list.length ? pick(list) : "Add fortunes.js (window.FORTUNES).";
-      animateSwap(out, next, () => { out.textContent = next; });
+      animateSwap(out, () => { out.textContent = next; });
     });
   }
 
   // -----------------------------
-  // Mini tiles (buttons, consistent)
+  // Mini tiles (buttons)
   // -----------------------------
   const emojis = ["🍀","✨","😌","🔥","🧠","🌈","🧿","🪄","🫶","😈","😇","🌀"];
   const colors = [
@@ -51,55 +48,39 @@ window.addEventListener("DOMContentLoaded", () => {
   ];
 
   const numBtn = $("num-btn");
-  if (numBtn) {
-    numBtn.addEventListener("click", () => {
-      const el = $("numVal");
-      if (!el) return;
-      animateSwap(el, "", () => {
-        el.textContent = String(Math.floor(Math.random() * 10)); // 0-9
-      });
-    });
-  }
+  if (numBtn) numBtn.addEventListener("click", () => {
+    const el = $("numVal");
+    if (!el) return;
+    animateSwap(el, () => { el.textContent = String(Math.floor(Math.random() * 10)); });
+  });
 
   const letterBtn = $("letter-btn");
-  if (letterBtn) {
-    letterBtn.addEventListener("click", () => {
-      const el = $("letterVal");
-      if (!el) return;
-      animateSwap(el, "", () => {
-        el.textContent = String.fromCharCode(65 + Math.floor(Math.random() * 26));
-      });
-    });
-  }
+  if (letterBtn) letterBtn.addEventListener("click", () => {
+    const el = $("letterVal");
+    if (!el) return;
+    animateSwap(el, () => { el.textContent = String.fromCharCode(65 + Math.floor(Math.random() * 26)); });
+  });
 
   const emojiBtn = $("emoji-btn");
-  if (emojiBtn) {
-    emojiBtn.addEventListener("click", () => {
-      const el = $("emojiVal");
-      if (!el) return;
-      animateSwap(el, "", () => {
-        el.textContent = pick(emojis);
-      });
-    });
-  }
+  if (emojiBtn) emojiBtn.addEventListener("click", () => {
+    const el = $("emojiVal");
+    if (!el) return;
+    animateSwap(el, () => { el.textContent = pick(emojis); });
+  });
 
   const colorBtn = $("color-btn");
-  if (colorBtn) {
-    colorBtn.addEventListener("click", () => {
-      const swatch = $("colorSwatch");
-      const line = $("colorLine");
-      if (!swatch || !line) return;
+  if (colorBtn) colorBtn.addEventListener("click", () => {
+    const swatch = $("colorSwatch");
+    const line = $("colorLine");
+    if (!swatch || !line) return;
 
-      const c = pick(colors);
-      swatch.style.background = c.hex;
-      animateSwap(line, "", () => {
-        line.textContent = `${c.name} ${c.hex}`;
-      });
-    });
-  }
+    const c = pick(colors);
+    swatch.style.background = c.hex;
+    animateSwap(line, () => { line.textContent = `${c.name} ${c.hex}`; });
+  });
 
   // -----------------------------
-  // Watch spinner (random tick order)
+  // Watch spinner
   // -----------------------------
   const watchBtn = $("watch-spin");
   let watchSpinning = false;
@@ -117,7 +98,6 @@ window.addEventListener("DOMContentLoaded", () => {
     const totalSteps = minSteps + Math.floor(Math.random() * (maxSteps - minSteps + 1));
     let step = 0;
     let delay = 26;
-    const delayIncrease = 7;
 
     function tick(){
       const item = pick(list);
@@ -125,7 +105,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
       step++;
       if (step < totalSteps){
-        delay += delayIncrease;
+        delay += 7;
         window.setTimeout(tick, delay);
       } else {
         const finalPick = pick(list);
@@ -159,14 +139,12 @@ window.addEventListener("DOMContentLoaded", () => {
         const nextTitle = item.title || "—";
         const nextMeta = fmtMeta(item);
 
-        if (isTick) {
+        if (isTick){
           titleEl.textContent = nextTitle;
           metaEl.textContent = nextMeta;
-          titleEl.style.transform = "translateY(1px)";
         } else {
-          titleEl.style.transform = "translateY(0)";
-          animateSwap(titleEl, "", () => { titleEl.textContent = nextTitle; });
-          animateSwap(metaEl, "", () => { metaEl.textContent = nextMeta; });
+          animateSwap(titleEl, () => { titleEl.textContent = nextTitle; });
+          animateSwap(metaEl, () => { metaEl.textContent = nextMeta; });
         }
       });
     });
@@ -218,8 +196,8 @@ window.addEventListener("DOMContentLoaded", () => {
           window.setTimeout(tick, delay);
         } else {
           dinnerSpinning = false;
-          dinnerBtn.disabled = false; // rerolls allowed
-          animateSwap(titleEl, "", () => { titleEl.textContent = nextTitle; });
+          dinnerBtn.disabled = false;
+          animateSwap(titleEl, () => { titleEl.textContent = nextTitle; });
         }
       }
 
@@ -228,7 +206,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========================
-  // LUCK METER (unchanged from your current logic)
+  // LUCK METER
   // =========================
   const luckSpinBtn = $("luckSpin");
   const lmResult = $("lmResult");
@@ -267,26 +245,36 @@ window.addEventListener("DOMContentLoaded", () => {
       return map[s] || `${s}/10.`;
     }
 
+    // Only red at <=4, only green at >=6, neutral at 5.
     function setColourFromT(t) {
-      const bias = (t - 0.5) * 2;
-      const redA = clamp(-bias, 0, 1);
-      const greenA = clamp(bias, 0, 1);
-      const neutralA = 1 - Math.max(redA, greenA);
+      const score = Math.round(t * 10);
+
+      const isRed = score <= 4;
+      const isGreen = score >= 6;
+
+      const redA = isRed ? 1 : 0;
+      const greenA = isGreen ? 1 : 0;
+      const neutralA = (!isRed && !isGreen) ? 1 : 0;
 
       lmBar.style.background =
         `linear-gradient(90deg,
-          rgba(185,28,28,${0.12 + redA * 0.70}) 0%,
-          rgba(107,114,128,${0.08 + neutralA * 0.45}) 50%,
-          rgba(22,163,74,${0.12 + greenA * 0.70}) 100%
+          rgba(185,28,28,${0.10 + redA * 0.70}) 0%,
+          rgba(107,114,128,${0.10 + neutralA * 0.55}) 50%,
+          rgba(22,163,74,${0.10 + greenA * 0.70}) 100%
         )`;
 
       const xPct = (t * 100).toFixed(2);
+
+      // No opposite-color bleed.
+      const washRed = isRed ? (0.10 + 0.50) : (neutralA ? 0.08 : 0);
+      const washGreen = isGreen ? (0.10 + 0.50) : (neutralA ? 0.08 : 0);
+
       lmWash.style.background =
         `radial-gradient(circle at ${xPct}% 45%,
-          rgba(185,28,28,${0.12 + redA * 0.50}) 0%,
-          rgba(107,114,128,${0.06 + neutralA * 0.24}) 38%,
-          rgba(22,163,74,${0.12 + greenA * 0.50}) 72%,
-          rgba(0,0,0,0) 82%
+          rgba(185,28,28,${washRed}) 0%,
+          rgba(107,114,128,${neutralA ? 0.10 : 0.06}) 42%,
+          rgba(22,163,74,${washGreen}) 78%,
+          rgba(0,0,0,0) 86%
         )`;
     }
 
@@ -295,7 +283,7 @@ window.addEventListener("DOMContentLoaded", () => {
       const t01 = score / 10;
       setBall01(t01);
       lmResult.textContent = `Score: ${score} / 10`;
-      lmMeta.textContent = messageForScore(score);
+      lmMeta.textContent = score === 5 ? "" : messageForScore(score);
       setColourFromT(t01);
     }
 
@@ -340,7 +328,6 @@ window.addEventListener("DOMContentLoaded", () => {
       const now = () => performance.now();
 
       const startValue = 5;
-
       const firstSegmentMs = 140;
       const growth = 1.2;
       const bounceCount = 9;
@@ -414,7 +401,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     function setNeutralStart() {
       setToScore(5);
-      lmMeta.textContent = "Neutral start. Tap the button.";
+      lmMeta.textContent = "";
       luckSpinBtn.disabled = false;
       luckSpinBtn.textContent = "How lucky am I today?";
     }
@@ -427,7 +414,7 @@ window.addEventListener("DOMContentLoaded", () => {
       luckSpinBtn.disabled = true;
 
       lmResult.textContent = "Score: deciding…";
-      lmMeta.textContent = "Consulting fate…";
+      lmMeta.textContent = "";
 
       animateLuckTo(rollLuckScore());
     });
@@ -437,7 +424,6 @@ window.addEventListener("DOMContentLoaded", () => {
       resetLuckBtn.addEventListener("click", () => {
         resetSpun();
         setNeutralStart();
-        lmMeta.textContent = "Reset. Spin again.";
       });
     }
 
