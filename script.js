@@ -188,23 +188,33 @@ function setBallPx(x) {
 function setColourFromT(t01) {
   const t = clamp(t01, 0, 1);
 
-  const bad = clamp((0.45 - t) / 0.45, 0, 1);
-  const good = clamp((t - 0.55) / 0.45, 0, 1);
-  const neutral = clamp(1 - Math.max(bad, good), 0, 1);
+  // Strength on each side
+  const bad = clamp((0.50 - t) / 0.50, 0, 1);
+  const good = clamp((t - 0.50) / 0.50, 0, 1);
+
+  // Bar: no baked-in red/green
+  const redA = bad * 0.75;
+  const greenA = good * 0.75;
+  const midA = 0.10;
 
   lmBar.style.background =
     `linear-gradient(90deg,
-      rgba(185,28,28,${0.10 + bad*0.65}) 0%,
-      rgba(107,114,128,${0.08 + neutral*0.45}) 50%,
-      rgba(22,163,74,${0.10 + good*0.65}) 100%
+      rgba(185,28,28,${redA}) 0%,
+      rgba(107,114,128,${midA}) 50%,
+      rgba(22,163,74,${greenA}) 100%
     )`;
 
+  // Wash: no baked-in red/green
   const xPct = (t * 100).toFixed(2);
+  const washRed = bad * 0.55;
+  const washGreen = good * 0.55;
+  const washMid = 0.10;
+
   lmWash.style.background =
     `radial-gradient(circle at ${xPct}% 45%,
-      rgba(185,28,28,${0.06 + bad*0.42}) 0%,
-      rgba(107,114,128,${0.05 + neutral*0.26}) 34%,
-      rgba(22,163,74,${0.06 + good*0.42}) 70%,
+      rgba(185,28,28,${washRed}) 0%,
+      rgba(107,114,128,${washMid}) 34%,
+      rgba(22,163,74,${washGreen}) 70%,
       rgba(0,0,0,0) 78%
     )`;
 }
