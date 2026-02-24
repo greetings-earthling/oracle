@@ -1,381 +1,330 @@
-/* =========================================================
-   Luck Meter site script
-   - Data files (optional):
-     window.WATCHLIST  -> from watchlist.js
-     window.FORTUNES   -> from fortunes.js
-     window.FOODLIST   -> from foodlist.js
-   ========================================================= */
-
-/* TEST MODE:
-   add ?test=1 to your URL to disable the daily lock and show Reset button.
+/* Luck Meter site logic
+   - Uses window.WATCHLIST, window.FORTUNES, window.FOODLIST from separate files
+   - Add ?test=1 to URL to show Reset + allow re-spin
 */
+
 const TEST_MODE = new URLSearchParams(location.search).get("test") === "1";
 
-function pick(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
+const $ = (id) => document.getElementById(id);
+const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
 
-function clamp(n, a, b) {
-  return Math.max(a, Math.min(b, n));
-}
+/* ---------- 8-ball + fortunes ---------- */
+const eightAnswers = [
+  "Signs point to yes.",
+  "Yes.",
+  "No.",
+  "Ask again later.",
+  "Outlook not so good.",
+  "Cannot predict now.",
+  "Don’t count on it.",
+  "Without a doubt."
+];
 
-/* =========================
-   Mini tiles (unlimited)
-   ========================= */
-const emojis = ["🍀","✨","😌","🔥","🧠","🌈","🧿","🫠","😍","😵‍💫","🤷","🥴","😈","🐱","☕","🏠","💃","🕺","🐶","🎧"];
+$("eightBall").addEventListener("click", () => {
+  $("eightResult").textContent = pick(eightAnswers);
+});
+
+$("cookie").addEventListener("click", () => {
+  const list = window.FORTUNES || [];
+  $("fortuneResult").textContent = list.length ? pick(list) : "Add fortunes.js (window.FORTUNES).";
+});
+
+/* ---------- Mini tiles ---------- */
+const emojis = ["🍀","✨","😌","🔥","🧠","🌈","🧿","🪄","🫶","😈","😇","🌀"];
 
 const colors = [
-  { name: "Green", hex: "#55be0a" },
+  { name: "Green", hex: "#22c55e" },
   { name: "Purple", hex: "#875da6" },
   { name: "Sky", hex: "#60a5fa" },
   { name: "Gold", hex: "#f59e0b" },
   { name: "Coral", hex: "#fb7185" },
   { name: "Mint", hex: "#34d399" },
-  { name: "Indigo", hex: "#6366f1" },
-  { name: "Rose", hex: "#f43f5e" }
+  { name: "Indigo", hex: "#6366f1" }
 ];
 
-document.getElementById("miniNum").addEventListener("click", () => {
-  document.getElementById("num").textContent = String(Math.floor(Math.random() * 10));
+$("miniNum").addEventListener("click", () => {
+  $("numVal").textContent = String(Math.floor(Math.random() * 10)); // 0-9
 });
 
-document.getElementById("miniLetter").addEventListener("click", () => {
-  document.getElementById("letter").textContent = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+$("miniLetter").addEventListener("click", () => {
+  $("letterVal").textContent = String.fromCharCode(65 + Math.floor(Math.random() * 26));
 });
 
-document.getElementById("miniEmoji").addEventListener("click", () => {
-  document.getElementById("emoji").textContent = pick(emojis);
+$("miniEmoji").addEventListener("click", () => {
+  $("emojiVal").textContent = pick(emojis);
 });
 
-document.getElementById("miniColor").addEventListener("click", () => {
+$("miniColor").addEventListener("click", () => {
   const c = pick(colors);
-  const sw = document.getElementById("colorSwatch");
-  sw.style.background = c.hex;
-  document.getElementById("colorMeta").textContent = `${c.name}  ${c.hex}`;
+  $("colorSwatch").style.background = c.hex;
+  // keep the 3 lines, just swap line 1 to show name/hex
+  $("colorLines").innerHTML = `${c.name} ${c.hex}<br>Wear it if you want.<br>Fight about it later.`;
 });
 
-/* =========================
-   Magic 8-ball + Fortune cookie
-   ========================= */
-const eightAnswers = [
-  "It is certain.",
-  "Yes.",
-  "Signs point to yes.",
-  "Reply hazy, try again.",
-  "Ask again later.",
-  "Better not tell you now.",
-  "Don’t count on it.",
-  "My reply is no.",
-  "Outlook not so good.",
-  "Very doubtful."
-];
+/* ---------- Watch spinner (randomized tick order) ---------- */
+const watchBtn = $("watch-spin");
+let watchSpinning = false;
 
-const fallbackFortunes = [
-  "A warm thought becomes tomorrow’s good news.",
-  "Luck is borrowed, not owned.",
-  "An unexpected win is nearby.",
-  "Today favors small risks.",
-  "Patience pays off."
-];
-
-const FORTUNES = Array.isArray(window.FORTUNES) && window.FORTUNES.length
-  ? window.FORTUNES
-  : fallbackFortunes;
-
-document.getElementById("eightBall").addEventListener("click", () => {
-  document.getElementById("eightResult").textContent = pick(eightAnswers);
-});
-
-document.getElementById("cookie").addEventListener("click", () => {
-  document.getElementById("fortuneResult").textContent = pick(FORTUNES);
-});
-
-/* =========================
-   What should I watch? (spin + rerolls)
-   - Fix: animation now uses random picks (not alphabetical stepping)
-   - Layout stable: fixed-height window in CSS
-   ========================= */
-const watchTitle = document.getElementById("watch-title");
-const watchMeta = document.getElementById("watch-meta");
-const watchNote = document.getElementById("watch-note");
-const watchSpinBtn = document.getElementById("watch-spin");
-
-const WATCHLIST = Array.isArray(window.WATCHLIST) ? window.WATCHLIST : [];
-
-function setWatchItem(item) {
-  if (!item) return;
-  watchTitle.textContent = item.title || "Untitled";
-  watchMeta.textContent = `${item.type || ""}${item.year ? ` • ${item.year}` : ""}`.trim();
-  watchNote.textContent = "Reroll if you hate it.";
+function fmtMeta(item){
+  if (!item) return "";
+  const t = item.type || "";
+  const y = item.year || "";
+  return [t, y].filter(Boolean).join(" • ");
 }
 
-function spinRandomSlot(list, onTick, onDone) {
-  if (!list || !list.length) return;
-
-  const minSteps = 22;
-  const maxSteps = 34;
+function randomTickSpin(list, onPick){
+  // Looks random while spinning (no alphabetical run)
+  const minSteps = 24;
+  const maxSteps = 38;
   const totalSteps = minSteps + Math.floor(Math.random() * (maxSteps - minSteps + 1));
-
   let step = 0;
-  let delay = 40;        // starts fast
-  const delayInc = 10;   // slows down each tick
+  let delay = 28;
+  const delayIncrease = 7;
 
-  function tick() {
+  function tick(){
     const item = pick(list);
-    onTick(item);
+    onPick(item, true);
 
     step++;
-    delay += delayInc;
-
-    if (step < totalSteps) {
+    if (step < totalSteps){
+      delay += delayIncrease;
       setTimeout(tick, delay);
     } else {
-      onDone(item);
+      const finalPick = pick(list);
+      onPick(finalPick, false);
+      watchSpinning = false;
+      watchBtn.disabled = false;
     }
   }
-
   tick();
 }
 
-watchSpinBtn.addEventListener("click", () => {
-  if (!WATCHLIST.length) {
-    watchTitle.textContent = "No watchlist loaded.";
-    watchMeta.textContent = "Check watchlist.js";
-    watchNote.textContent = "";
+watchBtn.addEventListener("click", () => {
+  if (watchSpinning) return;
+
+  const list = window.WATCHLIST || [];
+  if (!list.length){
+    $("watch-title").textContent = "Add watchlist.js (window.WATCHLIST).";
+    $("watch-meta").textContent = "";
     return;
   }
 
-  watchSpinBtn.disabled = true;
-  watchNote.textContent = "Consulting the streaming gods…";
+  watchSpinning = true;
+  watchBtn.disabled = true;
 
-  spinRandomSlot(
-    WATCHLIST,
-    (item) => { setWatchItem(item); },
-    (item) => {
-      setWatchItem(item);
-      watchSpinBtn.disabled = false;
-    }
-  );
+  randomTickSpin(list, (item, isTick) => {
+    $("watch-title").textContent = item.title || "—";
+    $("watch-meta").textContent = fmtMeta(item);
+    // subtle “tick” feel without resizing anything
+    $("watch-title").style.transform = isTick ? "translateY(1px)" : "translateY(0)";
+  });
 });
 
-/* =========================
-   Luck Meter (top)
-   - One spin per day (unless ?test=1)
-   - Long bounce that hits walls repeatedly
-   - No “jump” at the end: final segment is continuous
-   ========================= */
-const luckSpinBtn = document.getElementById("luckSpin");
-const lmResult = document.getElementById("lmResult");
-const lmMeta = document.getElementById("lmMeta");
-const lmTrack = document.getElementById("lmTrack");
-const lmBall = document.getElementById("lmBall");
-const lmWash = document.getElementById("lmWash");
-const lmBar = document.getElementById("lmBar");
-const devRow = document.getElementById("devRow");
-const resetLuckBtn = document.getElementById("resetLuck");
+/* ---------- Luck Meter (bounce + daily lock) ---------- */
+const luckSpinBtn = $("luckSpin");
+const lmResult = $("lmResult");
+const lmMeta = $("lmMeta");
+const lmTrack = $("lmTrack");
+const lmBall = $("lmBall");
+const lmWash = $("lmWash");
+const lmBar = $("lmBar");
+const devRow = $("devRow");
+const resetLuckBtn = $("resetLuck");
 
 let lmSpinning = false;
 let lastScore = 5;
 
-function trackWidth() {
+function trackWidth(){
   return lmTrack.getBoundingClientRect().width;
 }
-
-function setBallPx(x) {
+function tickX(score){
+  return (score / 10) * trackWidth();
+}
+function setBallPx(x){
   lmBall.style.left = `${x}px`;
 }
 
-function setColourFromT(t01) {
-  const t = clamp(t01, 0, 1);
-
-  // Strength on each side
-  const bad = clamp((0.50 - t) / 0.50, 0, 1);
-  const good = clamp((t - 0.50) / 0.50, 0, 1);
-
-  // Bar: no baked-in red/green
-  const redA = bad * 0.75;
-  const greenA = good * 0.75;
-  const midA = 0.10;
-
-  lmBar.style.background =
-    `linear-gradient(90deg,
-      rgba(185,28,28,${redA}) 0%,
-      rgba(107,114,128,${midA}) 50%,
-      rgba(22,163,74,${greenA}) 100%
-    )`;
-
-  // Wash: no baked-in red/green
-  const xPct = (t * 100).toFixed(2);
-  const washRed = bad * 0.7;
-  const washGreen = good * 0.7;
-  const washMid = 0.10;
-
-  lmWash.style.background =
-    `radial-gradient(circle at ${xPct}% 45%,
-      rgba(185,28,28,${washRed}) 0%,
-      rgba(107,114,128,${washMid}) 34%,
-      rgba(22,163,74,${washGreen}) 70%,
-      rgba(0,0,0,0) 78%
-    )`;
-}
-
-function metaForScore(s){
-  const msgs = [
-    "⚠️ 0/10. Absolutely cursed! Keep your receipts today.",
-    "🧯 1/10. Bad luck. Move slow today. Double-check everything.",
-    "🌀 2/10. Low luck. Say no to sketchy plans today.",
-    "😐 3/10. Slightly off. Keep it simple and you’ll be fine today.",
-    "😐 4/10. A little friction. Don’t force it today.",
-    "⚖️ 5/10. Neutral. Make your own luck today.",
-    "🍀 6/10. Slightly lucky today. Small risks are rewarded.",
-    "🍀🍀 7/10. Good luck today! Enjoy the easy wins.",
-    "🍀🍀🍀 8/10. Very lucky day! Go treasure hunting.",
-    "🍀🍀🍀🍀 9/10. Ridiculous luck today! Let your confidence soar.",
-    "🍀🍀🍀🍀🍀 10/10. Mega luck day! The universe is basically cheering for you."
-  ];
-  return msgs[clamp(s,0,10)];
-}
-
-function setToScore(score) {
-  lastScore = score;
-  const w = trackWidth();
-  const x = (score / 10) * w;
-  setBallPx(x);
-  setColourFromT(score / 10);
-  lmResult.textContent = `Score: ${score} / 10`;
-  lmMeta.textContent = metaForScore(score);
-}
-
-/* bell curve, slightly positive */
-function randNormal(mean, sd) {
+function randNormal(mean, sd){
   let u = 0, v = 0;
   while (u === 0) u = Math.random();
   while (v === 0) v = Math.random();
   const z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
   return mean + z * sd;
 }
-
-function rollLuckScore() {
-  const raw = randNormal(5.9, 1.6);
+function rollLuckScore(){
+  // Slightly positive bell curve
+  const raw = randNormal(5.8, 1.7);
   return Math.round(clamp(raw, 0, 10));
 }
 
-/* daily lock */
-function todayKey() {
-  const d = new Date();
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${y}-${m}-${day}`;
+/* Per-number message (you can replace these anytime, emojis included) */
+const luckMessages = {
+  0: "🧨 0/10. Avoid chaos. Drink water.",
+  1: "🪦 1/10. Low luck. High caution.",
+  2: "🌧️ 2/10. Quiet day. Don’t push it.",
+  3: "🧊 3/10. Small wins only.",
+  4: "⚖️ 4/10. Slightly off. Keep it simple.",
+  5: "⚖️ 5/10. Neutral. You steer the day.",
+  6: "🍀 6/10. Slightly lucky. Small risks pay.",
+  7: "✨ 7/10. Good luck. Say yes to ease.",
+  8: "🔥 8/10. Strong luck. Go do the thing.",
+  9: "🚀 9/10. Big luck. Take the clean shot.",
+  10:"👑 10/10. Mega luck. Be bold."
+};
+
+function metaForScore(s){
+  return luckMessages[s] || `${s}/10.`;
 }
 
-function lockIfAlreadySpun() {
-  if (TEST_MODE) return false;
+function setColourFromT(t){
+  // t 0..1. Keep wash consistent: left is red, right is green.
+  const badAmt = clamp((0.5 - t) / 0.5, 0, 1);
+  const goodAmt = clamp((t - 0.5) / 0.5, 0, 1);
 
-  const key = todayKey();
+  lmBar.style.background =
+    `linear-gradient(90deg,
+      rgba(185,28,28,${0.12 + badAmt*0.55}) 0%,
+      rgba(107,114,128,0.10) 50%,
+      rgba(22,163,74,${0.12 + goodAmt*0.55}) 100%
+    )`;
+
+  const xPct = (t * 100).toFixed(2);
+
+  // Force same-side bias (no weird red + green mismatch)
+  const leftTone  = 0.06 + badAmt * 0.35;
+  const rightTone = 0.06 + goodAmt * 0.35;
+
+  lmWash.style.background =
+    `radial-gradient(circle at ${xPct}% 45%,
+      rgba(0,0,0,0.02) 0%,
+      rgba(0,0,0,0) 18%),
+     linear-gradient(90deg,
+      rgba(185,28,28,${leftTone}) 0%,
+      rgba(107,114,128,0.05) 50%,
+      rgba(22,163,74,${rightTone}) 100%
+     )`;
+}
+
+function setToScore(score){
+  lastScore = score;
+  setBallPx(tickX(score));
+  lmResult.textContent = `Score: ${score} / 10`;
+  lmMeta.textContent = metaForScore(score);
+  setColourFromT(score / 10);
+}
+
+/* daily lock */
+function todayKey(){
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
+function lockIfAlreadySpun(){
+  if (TEST_MODE) return false;
   const saved = localStorage.getItem("LUCK_METER_SPUN_DATE");
-  if (saved === key) {
+  if (saved === todayKey()){
     luckSpinBtn.disabled = true;
     luckSpinBtn.textContent = "Come back tomorrow";
-    lmMeta.textContent = "Already read today.";
     return true;
   }
   return false;
 }
-
-function markSpun() {
-  if (TEST_MODE) return;
-  localStorage.setItem("LUCK_METER_SPUN_DATE", todayKey());
+function markSpun(){
+  if (!TEST_MODE) localStorage.setItem("LUCK_METER_SPUN_DATE", todayKey());
 }
-
-function resetSpun() {
+function resetSpun(){
   localStorage.removeItem("LUCK_METER_SPUN_DATE");
 }
 
-/* easing */
-function easeInOut(t) {
-  // smoothstep-ish
-  return t * t * (3 - 2 * t);
+/* triangle wave + settle (no jump) */
+function tri01(p){
+  const x = p % 1;
+  return x < 0.5 ? x * 2 : 2 - x * 2;
+}
+function easeOutCubic(t){
+  return 1 - Math.pow(1 - t, 3);
 }
 
-/* Build a bounce path that ALWAYS stays continuous and ends on target (no jump). */
-function animateBounceTo(targetScore) {
+function animateBounceTo(targetScore){
   const w = trackWidth();
   const targetT = targetScore / 10;
 
-  // segments: from -> to, each with its own duration (slows over time)
-  const segments = [];
-  let from = 0.5; // start at 5 (neutral)
-  let dir = Math.random() < 0.5 ? -1 : 1;
+  const duration = 5600;
+  const bounces = 6;
+  const settleMs = 950;
 
-  const wallBounces = 7;     // number of wall hits
-  let dur = 420;             // start quick
-  const durGrow = 1.18;      // slows down
+  const start = performance.now();
+  const startT = 0.5; // start at 5
+  const startDir = Math.random() < 0.5 ? -1 : 1;
 
-  for (let i = 0; i < wallBounces; i++) {
-    const to = dir < 0 ? 0 : 1;
-    segments.push({ from, to, ms: Math.round(dur) });
-    from = to;
-    dir *= -1;
-    dur *= durGrow;
-  }
+  function frame(now){
+    const elapsed = now - start;
 
-  // final segment to target (slow + dramatic)
-  segments.push({ from, to: targetT, ms: 1200 });
+    if (elapsed < duration){
+      const t = elapsed / duration;
+      const slow = easeOutCubic(t);
 
-  lmSpinning = true;
+      const phase = bounces * slow;
+      let pos = tri01(phase);
+      if (startDir < 0) pos = 1 - pos;
 
-  let segIndex = 0;
-  let segStart = performance.now();
+      const blend = clamp(elapsed / 520, 0, 1);
+      const pos01 = (1 - blend) * startT + blend * pos;
 
-  function step(now) {
-    const seg = segments[segIndex];
-    const elapsed = now - segStart;
-    const t = clamp(elapsed / seg.ms, 0, 1);
-    const e = easeInOut(t);
+      setBallPx(pos01 * w);
+      setColourFromT(pos01);
 
-    const pos01 = seg.from + (seg.to - seg.from) * e;
-
-    setBallPx(pos01 * w);
-    setColourFromT(pos01);
-
-    if (t < 1) {
-      requestAnimationFrame(step);
+      requestAnimationFrame(frame);
       return;
     }
 
-    // next segment
-    segIndex++;
-    if (segIndex < segments.length) {
-      segStart = performance.now();
-      requestAnimationFrame(step);
-      return;
+    const settleStart = performance.now();
+    const ballLeft = lmBall.getBoundingClientRect().left;
+    const trackLeft = lmTrack.getBoundingClientRect().left;
+    const currentX = clamp(ballLeft - trackLeft, 0, w);
+    const currentT = currentX / w;
+
+    function settleStep(n){
+      const e = n - settleStart;
+      const tt = clamp(e / settleMs, 0, 1);
+      const eased = easeOutCubic(tt);
+
+      const pos01 = currentT + (targetT - currentT) * eased;
+      setBallPx(pos01 * w);
+      setColourFromT(pos01);
+
+      if (tt < 1){
+        requestAnimationFrame(settleStep);
+      } else {
+        lmSpinning = false;
+        setToScore(targetScore);
+        markSpun();
+        luckSpinBtn.disabled = true;
+        luckSpinBtn.textContent = "Come back tomorrow";
+      }
     }
 
-    // done
-    lmSpinning = false;
-    setToScore(targetScore);
-    markSpun();
-    luckSpinBtn.disabled = true;
-    luckSpinBtn.textContent = "Come back tomorrow";
+    requestAnimationFrame(settleStep);
   }
 
-  requestAnimationFrame(step);
+  requestAnimationFrame(frame);
 }
 
-/* init */
-function setNeutralStart() {
+function setNeutralStart(){
   setToScore(5);
   lmMeta.textContent = "Neutral start. Tap the button.";
   luckSpinBtn.disabled = false;
   luckSpinBtn.textContent = "How lucky am I today?";
 }
 
+/* init */
 luckSpinBtn.addEventListener("click", () => {
   if (lmSpinning) return;
   if (lockIfAlreadySpun()) return;
 
+  lmSpinning = true;
   luckSpinBtn.disabled = true;
+
   lmResult.textContent = "Score: deciding…";
   lmMeta.textContent = "Consulting fate…";
 
@@ -383,8 +332,7 @@ luckSpinBtn.addEventListener("click", () => {
   animateBounceTo(score);
 });
 
-/* test UI */
-if (TEST_MODE) {
+if (TEST_MODE){
   devRow.style.display = "flex";
   resetLuckBtn.addEventListener("click", () => {
     resetSpun();
@@ -399,5 +347,8 @@ window.addEventListener("load", () => {
 });
 
 window.addEventListener("resize", () => {
-  if (!lmSpinning) setToScore(lastScore);
+  if (!lmSpinning){
+    setBallPx(tickX(lastScore));
+    setColourFromT(lastScore / 10);
+  }
 });
