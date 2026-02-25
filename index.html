@@ -10,16 +10,6 @@
 
 <body>
   <div class="page">
-    <header class="topBar">
-      <div class="brand">
-        <div class="brandMark" aria-hidden="true"></div>
-        <div>
-          <h1 class="brandTitle">Alien Luck Tablet</h1>
-          <p class="brandSub">A discovered artefact. Daily directive, for blending in.</p>
-        </div>
-      </div>
-      <div class="brandMeta">Refresh to reboot.</div>
-    </header>
 
     <main class="tablet" aria-label="Alien tablet dashboard">
       <!-- Row 1 -->
@@ -27,6 +17,7 @@
         <article class="widget" id="w-wisdom">
           <div class="wHead">
             <h2 class="wTitle">Cosmic Wisdom</h2>
+            <p class="wSub" id="sub-wisdom">Tap to receive a directive.</p>
             <button class="wBtn" id="btn-wisdom" type="button" aria-label="Reveal cosmic wisdom"></button>
           </div>
           <div class="wBody">
@@ -37,6 +28,7 @@
         <article class="widget" id="w-aura">
           <div class="wHead">
             <h2 class="wTitle">Luck Aura</h2>
+            <p class="wSub" id="sub-wisdom">Tap to receive a directive.</p>
             <button class="wBtn" id="btn-aura" type="button" aria-label="Reveal luck aura"></button>
           </div>
           <div class="wBody">
@@ -53,6 +45,7 @@
         <article class="widget small" id="w-colour">
           <div class="wHead">
             <h2 class="wTitle">Lucky Colour</h2>
+            <p class="wSub" id="sub-wisdom">Tap to receive a directive.</p>
             <button class="wBtn" id="btn-colour" type="button" aria-label="Reveal lucky colour"></button>
           </div>
           <div class="wBody">
@@ -61,17 +54,7 @@
           </div>
         </article>
 
-        <article class="widget small" id="w-number">
-          <div class="wHead">
-            <h2 class="wTitle">Lucky Number</h2>
-            <button class="wBtn" id="btn-number" type="button" aria-label="Reveal lucky number"></button>
-          </div>
-          <div class="wBody">
-            <div class="wResult big" id="res-number" aria-live="polite"></div>
-          </div>
-        </article>
-
-        <article class="hub" aria-label="Device hub">
+                <article class="hub" aria-label="Device hub">
           <div class="hubGlow" aria-hidden="true"></div>
           <div class="hubMark" aria-hidden="true"></div>
           <div class="hubText">
@@ -80,12 +63,24 @@
           </div>
         </article>
       </section>
+      
+        <article class="widget small" id="w-number">
+          <div class="wHead">
+            <h2 class="wTitle">Lucky Number</h2>
+            <p class="wSub" id="sub-wisdom">Tap to receive a directive.</p>
+            <button class="wBtn" id="btn-number" type="button" aria-label="Reveal lucky number"></button>
+          </div>
+          <div class="wBody">
+            <div class="wResult big" id="res-number" aria-live="polite"></div>
+          </div>
+        </article>
 
       <!-- Row 3 -->
       <section class="grid row3">
         <article class="widget" id="w-meal">
           <div class="wHead">
             <h2 class="wTitle">Earth Meal</h2>
+            <p class="wSub" id="sub-wisdom">Tap to receive a directive.</p>
             <button class="wBtn" id="btn-meal" type="button" aria-label="Reveal earth meal"></button>
           </div>
           <div class="wBody">
@@ -96,6 +91,7 @@
         <article class="widget" id="w-watch">
           <div class="wHead">
             <h2 class="wTitle">Earth Entertainment</h2>
+            <p class="wSub" id="sub-wisdom">Tap to receive a directive.</p>
             <button class="wBtn" id="btn-watch" type="button" aria-label="Reveal earth entertainment"></button>
           </div>
           <div class="wBody">
