@@ -1,9 +1,8 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Luck Meter</title>
+  <title>Alien Luck Tablet</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
@@ -11,185 +10,117 @@
 
 <body>
   <div class="page">
-    <!-- Header -->
-    <header class="topCard">
-      <div>
-        <h1 class="h1">Luck Meter</h1>
-        <p class="sub">Playful. Random. Absolutely not science.</p>
+    <header class="topBar">
+      <div class="brand">
+        <div class="brandMark" aria-hidden="true"></div>
+        <div>
+          <h1 class="brandTitle">Alien Luck Tablet</h1>
+          <p class="brandSub">A discovered artefact. Daily directive, for blending in.</p>
+        </div>
       </div>
-      <a class="sponsor" href="#" aria-label="Sponsored by Greetings, Earthling">
-        Sponsored by <span>Greetings, Earthling</span>
-      </a>
+      <div class="brandMeta">Refresh to reboot.</div>
     </header>
 
-    <main class="stack">
-      <!-- LUCK METER -->
-      <section class="card big" id="luck-card">
-        <div class="cardHead">
-          <div>
-            <h2>Luck Meter</h2>
-            <p class="cardSub">One spin per day.</p>
+    <main class="tablet" aria-label="Alien tablet dashboard">
+      <!-- Row 1 -->
+      <section class="grid row1">
+        <article class="widget" id="w-wisdom">
+          <div class="wHead">
+            <h2 class="wTitle">Cosmic Wisdom</h2>
+            <button class="wBtn" id="btn-wisdom" type="button" aria-label="Reveal cosmic wisdom"></button>
           </div>
-          <button class="btn btnTop" id="luckSpin" type="button">How lucky am I today?</button>
-        </div>
-
-        <div class="lmPanel" id="lmPanel">
-          <div class="lmWash" id="lmWash"></div>
-
-          <div class="lmStatus">
-            <p class="lmResult" id="lmResult">Score: 5 / 10</p>
-            <p class="lmMeta" id="lmMeta"></p>
-          </div>
-
-          <div class="lmTrackWrap">
-            <div class="lmTrack" id="lmTrack">
-              <div class="lmBar" id="lmBar"></div>
-              <div class="lmBall" id="lmBall" aria-hidden="true"></div>
-            </div>
-
-            <div class="lmTicks" aria-hidden="true">
-              <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
-            </div>
-
-            <div class="lmLegend" aria-hidden="true">
-              <span><b>Bad luck</b></span>
-              <span><b>Neutral</b></span>
-              <span><b>Good luck</b></span>
-            </div>
-
-            <div class="devRow" id="devRow">
-              <button class="btn btnGhost btnTop" id="resetLuck" type="button">Reset (test)</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 4 mini tiles -->
-      <section class="grid4" aria-label="Lucky extras">
-        <article class="mini" id="miniNum">
-          <div class="miniHead">
-            <h3>Lucky Number</h3>
-            <button class="btn btnSmall btnTop" id="num-btn" type="button">Reveal</button>
-          </div>
-
-          <div class="miniBox slotAnim" id="numVal">—</div>
-          <p class="miniSub">Use it for vibes.</p>
-        </article>
-
-        <article class="mini" id="miniLetter">
-          <div class="miniHead">
-            <h3>Lucky Letter</h3>
-            <button class="btn btnSmall btnTop" id="letter-btn" type="button">Reveal</button>
-          </div>
-
-          <div class="miniBox slotAnim" id="letterVal">—</div>
-          <p class="miniSub">Notice it today.</p>
-        </article>
-
-        <article class="mini" id="miniColor">
-          <div class="miniHead">
-            <h3>Lucky Colour</h3>
-            <button class="btn btnSmall btnTop" id="color-btn" type="button">Reveal</button>
-          </div>
-
-          <div class="miniBox miniBoxColor">
-            <div class="colorSwatch" id="colorSwatch"></div>
-          </div>
-          <p class="miniSub slotAnim" id="colorLine">Wear it if you want.</p>
-        </article>
-
-        <article class="mini" id="miniEmoji">
-          <div class="miniHead">
-            <h3>Spirit Emoji</h3>
-            <button class="btn btnSmall btnTop" id="emoji-btn" type="button">Reveal</button>
-          </div>
-
-          <div class="miniBox slotAnim" id="emojiVal">—</div>
-          <p class="miniSub">Is it you today?</p>
-        </article>
-      </section>
-
-      <!-- Watch + Eat -->
-      <section class="twoCol" aria-label="Spinners">
-        <!-- What to watch -->
-        <article class="card">
-          <div class="cardHead">
-            <div>
-              <h2>What should I watch?</h2>
-              <p class="cardSub">Rerolls allowed.</p>
-            </div>
-            <button class="btn btnTop" id="watch-spin" type="button">Spin</button>
-          </div>
-
-          <div class="slotWindow slotTall">
-            <div class="slotLabel">Today’s pick</div>
-            <div class="slotTitle slotAnim" id="watch-title">Tap spin.</div>
-            <div class="slotMeta slotAnim" id="watch-meta"></div>
+          <div class="wBody">
+            <div class="wResult mono" id="res-wisdom" aria-live="polite"></div>
           </div>
         </article>
 
-        <!-- What to eat -->
-        <article class="card">
-          <div class="cardHead">
-            <div>
-              <h2>What should I eat?</h2>
-              <p class="cardSub">Rerolls allowed.</p>
-            </div>
-            <button class="btn btnTop" id="dinner-spin" type="button">Spin</button>
+        <article class="widget" id="w-aura">
+          <div class="wHead">
+            <h2 class="wTitle">Luck Aura</h2>
+            <button class="wBtn" id="btn-aura" type="button" aria-label="Reveal luck aura"></button>
           </div>
-
-          <div class="slotWindow slotTall">
-            <div class="slotLabel">Tonight’s move</div>
-            <div class="slotTitle slotAnim" id="dinner-title">Tap spin.</div>
-            <div class="slotMeta slotAnim" id="dinner-note"></div>
+          <div class="wBody">
+            <div class="wResult" id="res-aura" aria-live="polite"></div>
+            <div class="auraBar" aria-hidden="true">
+              <div class="auraFill" id="auraFill"></div>
+            </div>
           </div>
         </article>
       </section>
 
-      <!-- Fortune + Ad (two column) -->
-      <section class="twoCol" aria-label="Fortune and sponsor">
-        <!-- Fortune cookie -->
-        <article class="card">
-          <div class="cardHead">
-            <div>
-              <h2>Fortune Cookie</h2>
-              <p class="cardSub">Dessert comes last.</p>
-            </div>
-            <button class="btn btnTop" id="fortune-btn" type="button">Reveal</button>
+      <!-- Row 2 -->
+      <section class="grid row2">
+        <article class="widget small" id="w-colour">
+          <div class="wHead">
+            <h2 class="wTitle">Lucky Colour</h2>
+            <button class="wBtn" id="btn-colour" type="button" aria-label="Reveal lucky colour"></button>
           </div>
-
-          <div class="fortunePaper slotAnim" id="fortuneResult">
-            Your fortune awaits.
+          <div class="wBody">
+            <div class="wResult" id="res-colour" aria-live="polite"></div>
+            <div class="swatch" id="swatch" aria-hidden="true"></div>
           </div>
         </article>
 
-        <!-- Ad spot -->
-        <article class="card adCard" aria-label="Sponsored">
-          <div class="cardHead">
-            <div>
-              <h2>Sponsored</h2>
-              <p class="cardSub">Greetings, Earthling</p>
-            </div>
-            <a class="btn btnTop adBtn" href="#" aria-label="Visit Greetings, Earthling">Visit</a>
+        <article class="widget small" id="w-number">
+          <div class="wHead">
+            <h2 class="wTitle">Lucky Number</h2>
+            <button class="wBtn" id="btn-number" type="button" aria-label="Reveal lucky number"></button>
           </div>
+          <div class="wBody">
+            <div class="wResult big" id="res-number" aria-live="polite"></div>
+          </div>
+        </article>
 
-          <div class="adBody">
-            <p class="adLine"><strong>Daily newsletter.</strong> Small human observations.</p>
-            <p class="adLine">Poetic alien narrator. Earth treasures. Field reports.</p>
+        <article class="hub" aria-label="Device hub">
+          <div class="hubGlow" aria-hidden="true"></div>
+          <div class="hubMark" aria-hidden="true"></div>
+          <div class="hubText">
+            <div class="hubName">NEILA UNIT</div>
+            <div class="hubId">Directive Console</div>
           </div>
         </article>
       </section>
 
-      <footer>Luck Meter. Not science. Not advice.</footer>
+      <!-- Row 3 -->
+      <section class="grid row3">
+        <article class="widget" id="w-meal">
+          <div class="wHead">
+            <h2 class="wTitle">Earth Meal</h2>
+            <button class="wBtn" id="btn-meal" type="button" aria-label="Reveal earth meal"></button>
+          </div>
+          <div class="wBody">
+            <div class="wResult" id="res-meal" aria-live="polite"></div>
+          </div>
+        </article>
+
+        <article class="widget" id="w-watch">
+          <div class="wHead">
+            <h2 class="wTitle">Earth Entertainment</h2>
+            <button class="wBtn" id="btn-watch" type="button" aria-label="Reveal earth entertainment"></button>
+          </div>
+          <div class="wBody">
+            <div class="wResult" id="res-watch" aria-live="polite"></div>
+            <div class="wMeta" id="meta-watch"></div>
+          </div>
+        </article>
+      </section>
     </main>
   </div>
 
-  <!-- Reference lists -->
+  <!-- Lists -->
   <script defer src="watchlist.js"></script>
-  <script defer src="fortunes.js"></script>
   <script defer src="dinnerlist.js"></script>
+  <script defer src="wisdomlist.js"></script>
 
-  <!-- Logic -->
+  <!-- Core -->
   <script defer src="script.js"></script>
+
+  <!-- Widgets (one file per widget) -->
+  <script defer src="widgets/cosmicWisdom.js"></script>
+  <script defer src="widgets/luckAura.js"></script>
+  <script defer src="widgets/luckyColour.js"></script>
+  <script defer src="widgets/luckyNumber.js"></script>
+  <script defer src="widgets/earthMeal.js"></script>
+  <script defer src="widgets/earthEntertainment.js"></script>
 </body>
 </html>
