@@ -4,361 +4,395 @@
   <meta charset="UTF-8" />
   <title>Luck Meter</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans:wght@400;600;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet" />
+
   <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
-  <div class="page">
-    <main class="stack">
+  <main class="page">
+    <header class="mast">
+      <div class="mastMark" aria-hidden="true"></div>
+      <div class="mastText">
+        <h1 class="siteTitle">Luck Meter</h1>
+        <p class="siteSub">A clean little randomizer for luck, decisions, and daily noise.</p>
+      </div>
+    </header>
 
-      <!-- WISDOM -->
-      <section class="widgetRow" data-widget="wisdom">
-        <div class="widgetCard" data-lock="once">
-          <div class="iconBlock" style="--accent:#7C3AED;" aria-hidden="true">
-            <span class="iconMark">✦</span>
-          </div>
+    <section class="stack" aria-label="Widgets">
 
-          <div class="cardBody">
-            <div class="cardTop">
-              <div class="titleWrap">
-                <h2 class="cardTitle">Cosmic Wisdom</h2>
-                <p class="cardSub">A short directive for your day.</p>
-              </div>
-
-              <button class="actionBtn" type="button" data-action="reveal" aria-label="Reveal cosmic wisdom" style="--accent:#7C3AED;">
-                <span class="btnDot" aria-hidden="true"></span>
-              </button>
+      <!-- Cosmic Wisdom -->
+      <div class="row">
+        <section class="widget" aria-label="Cosmic Wisdom">
+          <div class="wHead">
+            <div class="wIcon" aria-hidden="true">
+              <!-- simple monochrome icon -->
+              <svg viewBox="0 0 24 24" role="img" aria-label="">
+                <path d="M12 2a6 6 0 0 0-6 6c0 2.2 1.2 4.1 3 5.1V16a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2.9c1.8-1 3-2.9 3-5.1a6 6 0 0 0-6-6Zm2 14h-4v-1h4v1Zm0-3h-4v-.6l-.4-.2A4 4 0 1 1 16 8c0 1.6-.9 3-2.2 3.7l-.8.4V13Z"/>
+              </svg>
             </div>
-
-            <div class="revealBox" data-field="reveal">Tap reveal.</div>
-          </div>
-        </div>
-
-        <aside class="sponsorBox">
-          <a class="sponsorLink" href="#" aria-label="Sponsor slot">Sponsored by <b>Your Sponsor</b></a>
-        </aside>
-
-        <p class="afterLine" data-field="after" hidden></p>
-        <div class="divider"></div>
-      </section>
-
-      <!-- AURA -->
-      <section class="widgetRow" data-widget="aura">
-        <div class="widgetCard" data-lock="once">
-          <div class="iconBlock" style="--accent:#0EA5E9;" aria-hidden="true">
-            <span class="iconMark">◎</span>
-          </div>
-
-          <div class="cardBody">
-            <div class="cardTop">
-              <div class="titleWrap">
-                <h2 class="cardTitle">Luck Aura</h2>
-                <p class="cardSub">A quick reading. Low luck means caution.</p>
-              </div>
-
-              <button class="actionBtn" type="button" data-action="reveal" aria-label="Reveal luck aura" style="--accent:#0EA5E9;">
-                <span class="btnDot" aria-hidden="true"></span>
-              </button>
+            <div class="wTitles">
+              <h2 class="wTitle">Cosmic Wisdom</h2>
+              <p class="wSub" id="wisdomSub">Tap to receive.</p>
             </div>
-
-            <div class="revealBox big" data-field="reveal">Tap reveal.</div>
+            <button class="wBtn" id="wisdomBtn" type="button" aria-label="Reveal cosmic wisdom">REVEAL</button>
           </div>
-        </div>
 
-        <aside class="sponsorBox">
-          <a class="sponsorLink" href="#" aria-label="Sponsor slot">Sponsored by <b>Your Sponsor</b></a>
+          <div class="wReveal mono" id="wisdomReveal" aria-live="polite">—</div>
+        </section>
+
+        <aside class="sponsor" aria-label="Sponsor slot">
+          <div class="sBox">
+            <div class="sLabel">SPONSORED BY</div>
+            <a class="sLink" href="#" id="wisdomSponsor">Your sponsor</a>
+          </div>
         </aside>
+      </div>
 
-        <p class="afterLine" data-field="after" hidden></p>
-        <div class="divider"></div>
-      </section>
+      <p class="after" id="wisdomAfter" hidden></p>
 
-      <!-- LUCKY COLOURS (PAIR) -->
-      <section class="widgetRow" data-widget="colors">
-        <div class="widgetCard" data-lock="once">
-          <div class="iconBlock" style="--accent:#F97316;" aria-hidden="true">
-            <span class="iconMark">▦</span>
-          </div>
-
-          <div class="cardBody">
-            <div class="cardTop">
-              <div class="titleWrap">
-                <h2 class="cardTitle">Lucky Colours</h2>
-                <p class="cardSub">Two colours. Use them for choices today.</p>
-              </div>
-
-              <button class="actionBtn" type="button" data-action="reveal" aria-label="Reveal lucky colours" style="--accent:#F97316;">
-                <span class="btnDot" aria-hidden="true"></span>
-              </button>
+      <!-- Luck Aura -->
+      <div class="row">
+        <section class="widget" aria-label="Luck Aura">
+          <div class="wHead">
+            <div class="wIcon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 2C7 2 3 6 3 11c0 4.6 3.3 8.4 7.7 9.1.2 0 .3-.1.3-.3v-2.2c0-.2-.1-.3-.3-.3C8 14.7 6 13 6 11c0-3.3 2.7-6 6-6s6 2.7 6 6c0 2-2 3.7-4.7 4.3-.2 0-.3.1-.3.3v2.2c0 .2.1.3.3.3C17.7 19.4 21 15.6 21 11c0-5-4-9-9-9Z"/>
+              </svg>
             </div>
-
-            <div class="revealBox color" data-field="reveal">Tap reveal.</div>
-          </div>
-        </div>
-
-        <aside class="sponsorBox">
-          <a class="sponsorLink" href="#" aria-label="Sponsor slot">Sponsored by <b>Your Sponsor</b></a>
-        </aside>
-
-        <p class="afterLine" data-field="after" hidden></p>
-        <div class="divider"></div>
-      </section>
-
-      <!-- LUCKY NUMBERS -->
-      <section class="widgetRow" data-widget="numbers">
-        <div class="widgetCard" data-lock="once">
-          <div class="iconBlock" style="--accent:#22C55E;" aria-hidden="true">
-            <span class="iconMark">#</span>
-          </div>
-
-          <div class="cardBody">
-            <div class="cardTop">
-              <div class="titleWrap">
-                <h2 class="cardTitle">Lucky Numbers</h2>
-                <p class="cardSub">One small number, plus six lotto numbers.</p>
-              </div>
-
-              <button class="actionBtn" type="button" data-action="reveal" aria-label="Reveal lucky numbers" style="--accent:#22C55E;">
-                <span class="btnDot" aria-hidden="true"></span>
-              </button>
+            <div class="wTitles">
+              <h2 class="wTitle">Luck Aura</h2>
+              <p class="wSub" id="auraSub">Tap to scan.</p>
             </div>
-
-            <div class="revealBox" data-field="reveal">Tap reveal.</div>
+            <button class="wBtn" id="auraBtn" type="button">REVEAL</button>
           </div>
-        </div>
 
-        <aside class="sponsorBox">
-          <a class="sponsorLink" href="#" aria-label="Sponsor slot">Sponsored by <b>Your Sponsor</b></a>
+          <div class="wReveal mono" id="auraReveal" aria-live="polite">—</div>
+        </section>
+
+        <aside class="sponsor">
+          <div class="sBox">
+            <div class="sLabel">SPONSORED BY</div>
+            <a class="sLink" href="#" id="auraSponsor">Your sponsor</a>
+          </div>
         </aside>
+      </div>
 
-        <p class="afterLine" data-field="after" hidden></p>
-        <div class="divider"></div>
-      </section>
+      <p class="after" id="auraAfter" hidden></p>
 
-      <!-- DINNER (REROLL) -->
-      <section class="widgetRow" data-widget="dinner">
-        <div class="widgetCard" data-lock="reroll">
-          <div class="iconBlock" style="--accent:#EF4444;" aria-hidden="true">
-            <span class="iconMark">☄</span>
-          </div>
-
-          <div class="cardBody">
-            <div class="cardTop">
-              <div class="titleWrap">
-                <h2 class="cardTitle">What should I have for dinner?</h2>
-                <p class="cardSub">Decision-ending. Rerolls allowed.</p>
-              </div>
-
-              <button class="actionBtn" type="button" data-action="reveal" aria-label="Reveal dinner idea" style="--accent:#EF4444;">
-                <span class="btnDot" aria-hidden="true"></span>
-              </button>
+      <!-- Lucky Colours (pair) -->
+      <div class="row">
+        <section class="widget" aria-label="Lucky Colours">
+          <div class="wHead">
+            <div class="wIcon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M3 6a3 3 0 0 1 3-3h9a3 3 0 0 1 0 6H6A3 3 0 0 1 3 6Zm3-1a1 1 0 0 0 0 2h9a1 1 0 1 0 0-2H6Zm-3 13a3 3 0 0 1 3-3h12a3 3 0 0 1 0 6H6a3 3 0 0 1-3-3Zm3-1a1 1 0 0 0 0 2h12a1 1 0 1 0 0-2H6Z"/>
+              </svg>
             </div>
-
-            <div class="revealBox" data-field="reveal">Tap reveal.</div>
-          </div>
-        </div>
-
-        <aside class="sponsorBox">
-          <a class="sponsorLink" href="#" aria-label="Sponsor slot">Sponsored by <b>Your Sponsor</b></a>
-        </aside>
-
-        <p class="afterLine" data-field="after" hidden></p>
-        <div class="divider"></div>
-      </section>
-
-      <!-- WATCH (REROLL) -->
-      <section class="widgetRow" data-widget="watch">
-        <div class="widgetCard" data-lock="reroll">
-          <div class="iconBlock" style="--accent:#111827;" aria-hidden="true">
-            <span class="iconMark">▣</span>
-          </div>
-
-          <div class="cardBody">
-            <div class="cardTop">
-              <div class="titleWrap">
-                <h2 class="cardTitle">What should I watch?</h2>
-                <p class="cardSub">Pick one and commit. Rerolls allowed.</p>
-              </div>
-
-              <button class="actionBtn" type="button" data-action="reveal" aria-label="Reveal watch pick" style="--accent:#111827;">
-                <span class="btnDot" aria-hidden="true"></span>
-              </button>
+            <div class="wTitles">
+              <h2 class="wTitle">Lucky Colours</h2>
+              <p class="wSub" id="colorsSub">Tap to pull two.</p>
             </div>
-
-            <div class="revealBox" data-field="reveal">Tap reveal.</div>
-          </div>
-        </div>
-
-        <aside class="sponsorBox">
-          <a class="sponsorLink" href="#" aria-label="Sponsor slot">Sponsored by <b>Your Sponsor</b></a>
-        </aside>
-
-        <p class="afterLine" data-field="after" hidden></p>
-        <div class="divider"></div>
-      </section>
-
-      <!-- JOKE -->
-      <section class="widgetRow" data-widget="joke">
-        <div class="widgetCard" data-lock="once">
-          <div class="iconBlock" style="--accent:#A855F7;" aria-hidden="true">
-            <span class="iconMark">☺</span>
+            <button class="wBtn" id="colorsBtn" type="button">REVEAL</button>
           </div>
 
-          <div class="cardBody">
-            <div class="cardTop">
-              <div class="titleWrap">
-                <h2 class="cardTitle">Joke of the Day</h2>
-                <p class="cardSub">Low stakes. High potential cringe.</p>
-              </div>
-
-              <button class="actionBtn" type="button" data-action="reveal" aria-label="Reveal joke" style="--accent:#A855F7;">
-                <span class="btnDot" aria-hidden="true"></span>
-              </button>
+          <!-- UI is monochrome, but the output of THIS widget can show colour -->
+          <div class="wReveal colors" id="colorsReveal" aria-live="polite">
+            <div class="swatches" aria-hidden="true">
+              <span class="sw" id="sw1"></span>
+              <span class="sw" id="sw2"></span>
             </div>
-
-            <div class="revealBox" data-field="reveal">Tap reveal.</div>
+            <div class="mono" id="colorsText">—</div>
           </div>
-        </div>
+        </section>
 
-        <aside class="sponsorBox">
-          <a class="sponsorLink" href="#" aria-label="Sponsor slot">Sponsored by <b>Your Sponsor</b></a>
+        <aside class="sponsor">
+          <div class="sBox">
+            <div class="sLabel">SPONSORED BY</div>
+            <a class="sLink" href="#" id="colorsSponsor">Your sponsor</a>
+          </div>
         </aside>
+      </div>
 
-        <p class="afterLine" data-field="after" hidden></p>
-        <div class="divider"></div>
-      </section>
+      <p class="after" id="colorsAfter" hidden></p>
 
-      <!-- FACT -->
-      <section class="widgetRow" data-widget="fact">
-        <div class="widgetCard" data-lock="once">
-          <div class="iconBlock" style="--accent:#14B8A6;" aria-hidden="true">
-            <span class="iconMark">i</span>
-          </div>
-
-          <div class="cardBody">
-            <div class="cardTop">
-              <div class="titleWrap">
-                <h2 class="cardTitle">Fact of the Day</h2>
-                <p class="cardSub">Something true-ish to carry around.</p>
-              </div>
-
-              <button class="actionBtn" type="button" data-action="reveal" aria-label="Reveal fact" style="--accent:#14B8A6;">
-                <span class="btnDot" aria-hidden="true"></span>
-              </button>
+      <!-- Lucky Numbers -->
+      <div class="row">
+        <section class="widget" aria-label="Lucky Numbers">
+          <div class="wHead">
+            <div class="wIcon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M7 4h10v2H7V4Zm-2 5h14v2H5V9Zm2 5h10v2H7v-2Zm-2 5h14v2H5v-2Z"/>
+              </svg>
             </div>
-
-            <div class="revealBox" data-field="reveal">Tap reveal.</div>
-          </div>
-        </div>
-
-        <aside class="sponsorBox">
-          <a class="sponsorLink" href="#" aria-label="Sponsor slot">Sponsored by <b>Your Sponsor</b></a>
-        </aside>
-
-        <p class="afterLine" data-field="after" hidden></p>
-        <div class="divider"></div>
-      </section>
-
-      <!-- PLACE -->
-      <section class="widgetRow" data-widget="place">
-        <div class="widgetCard" data-lock="once">
-          <div class="iconBlock" style="--accent:#F59E0B;" aria-hidden="true">
-            <span class="iconMark">⌂</span>
-          </div>
-
-          <div class="cardBody">
-            <div class="cardTop">
-              <div class="titleWrap">
-                <h2 class="cardTitle">Place of the Day</h2>
-                <p class="cardSub">A random place to daydream about.</p>
-              </div>
-
-              <button class="actionBtn" type="button" data-action="reveal" aria-label="Reveal place" style="--accent:#F59E0B;">
-                <span class="btnDot" aria-hidden="true"></span>
-              </button>
+            <div class="wTitles">
+              <h2 class="wTitle">Lucky Numbers</h2>
+              <p class="wSub" id="numsSub">Tap for a small sign and a lotto set.</p>
             </div>
-
-            <div class="revealBox" data-field="reveal">Tap reveal.</div>
+            <button class="wBtn" id="numsBtn" type="button">REVEAL</button>
           </div>
-        </div>
 
-        <aside class="sponsorBox">
-          <a class="sponsorLink" href="#" aria-label="Sponsor slot">Sponsored by <b>Your Sponsor</b></a>
+          <div class="wReveal mono" id="numsReveal" aria-live="polite">—</div>
+        </section>
+
+        <aside class="sponsor">
+          <div class="sBox">
+            <div class="sLabel">SPONSORED BY</div>
+            <a class="sLink" href="#" id="numsSponsor">Your sponsor</a>
+          </div>
         </aside>
+      </div>
 
-        <p class="afterLine" data-field="after" hidden></p>
-        <div class="divider"></div>
-      </section>
+      <p class="after" id="numsAfter" hidden></p>
 
-      <!-- WORD -->
-      <section class="widgetRow" data-widget="word">
-        <div class="widgetCard" data-lock="once">
-          <div class="iconBlock" style="--accent:#6366F1;" aria-hidden="true">
-            <span class="iconMark">Aa</span>
-          </div>
-
-          <div class="cardBody">
-            <div class="cardTop">
-              <div class="titleWrap">
-                <h2 class="cardTitle">Word of the Day</h2>
-                <p class="cardSub">A word to notice in the wild.</p>
-              </div>
-
-              <button class="actionBtn" type="button" data-action="reveal" aria-label="Reveal word" style="--accent:#6366F1;">
-                <span class="btnDot" aria-hidden="true"></span>
-              </button>
+      <!-- Dinner (rerolls allowed) -->
+      <div class="row">
+        <section class="widget" aria-label="What should I have for dinner">
+          <div class="wHead">
+            <div class="wIcon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M7 3h2v8a2 2 0 1 1-4 0V3h2v6a.5.5 0 0 0 1 0V3Zm6 0h2v8h-2V3Zm4 0h2v8a3 3 0 0 1-3 3h-1v7h-2V3h2Z"/>
+              </svg>
             </div>
-
-            <div class="revealBox" data-field="reveal">Tap reveal.</div>
-          </div>
-        </div>
-
-        <aside class="sponsorBox">
-          <a class="sponsorLink" href="#" aria-label="Sponsor slot">Sponsored by <b>Your Sponsor</b></a>
-        </aside>
-
-        <p class="afterLine" data-field="after" hidden></p>
-        <div class="divider"></div>
-      </section>
-
-      <!-- TAROT -->
-      <section class="widgetRow" data-widget="tarot">
-        <div class="widgetCard" data-lock="once">
-          <div class="iconBlock" style="--accent:#8B5CF6;" aria-hidden="true">
-            <span class="iconMark">⟐</span>
-          </div>
-
-          <div class="cardBody">
-            <div class="cardTop">
-              <div class="titleWrap">
-                <h2 class="cardTitle">Tarot Card</h2>
-                <p class="cardSub">Not a reading. Just a card.</p>
-              </div>
-
-              <button class="actionBtn" type="button" data-action="reveal" aria-label="Reveal tarot card" style="--accent:#8B5CF6;">
-                <span class="btnDot" aria-hidden="true"></span>
-              </button>
+            <div class="wTitles">
+              <h2 class="wTitle">Dinner</h2>
+              <p class="wSub" id="dinnerSub">Tap to decide. Rerolls allowed.</p>
             </div>
-
-            <div class="revealBox" data-field="reveal">Tap reveal.</div>
+            <button class="wBtn" id="dinnerBtn" type="button">SPIN</button>
           </div>
-        </div>
 
-        <aside class="sponsorBox">
-          <a class="sponsorLink" href="#" aria-label="Sponsor slot">Sponsored by <b>Your Sponsor</b></a>
+          <div class="wReveal mono" id="dinnerReveal" aria-live="polite">Tap spin.</div>
+        </section>
+
+        <aside class="sponsor">
+          <div class="sBox">
+            <div class="sLabel">SPONSORED BY</div>
+            <a class="sLink" href="#" id="dinnerSponsor">Your sponsor</a>
+          </div>
         </aside>
+      </div>
 
-        <p class="afterLine" data-field="after" hidden></p>
-        <div class="divider"></div>
-      </section>
+      <p class="after" id="dinnerAfter" hidden></p>
 
-    </main>
-  </div>
+      <!-- Watch (rerolls allowed) -->
+      <div class="row">
+        <section class="widget" aria-label="What should I watch">
+          <div class="wHead">
+            <div class="wIcon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 6h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Zm0 2v8h16V8H4Zm7 2 5 2-5 2v-4Z"/>
+              </svg>
+            </div>
+            <div class="wTitles">
+              <h2 class="wTitle">Watch</h2>
+              <p class="wSub" id="watchSub">Tap to pick. Rerolls allowed.</p>
+            </div>
+            <button class="wBtn" id="watchBtn" type="button">SPIN</button>
+          </div>
 
-  <!-- Reference lists -->
+          <div class="wReveal mono" id="watchReveal" aria-live="polite">Tap spin.</div>
+          <div class="wMeta mono" id="watchMeta" aria-live="polite"></div>
+        </section>
+
+        <aside class="sponsor">
+          <div class="sBox">
+            <div class="sLabel">SPONSORED BY</div>
+            <a class="sLink" href="#" id="watchSponsor">Your sponsor</a>
+          </div>
+        </aside>
+      </div>
+
+      <p class="after" id="watchAfter" hidden></p>
+
+      <!-- Joke of the day -->
+      <div class="row">
+        <section class="widget" aria-label="Joke of the day">
+          <div class="wHead">
+            <div class="wIcon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm-4 7h2a2 2 0 0 1 4 0h2a4 4 0 0 0-8 0Zm1.5 6.2a6 6 0 0 0 5 0l1 1.8a8 8 0 0 1-7 0l1-1.8Z"/>
+              </svg>
+            </div>
+            <div class="wTitles">
+              <h2 class="wTitle">Joke</h2>
+              <p class="wSub" id="jokeSub">Tap for a terrible one.</p>
+            </div>
+            <button class="wBtn" id="jokeBtn" type="button">REVEAL</button>
+          </div>
+
+          <div class="wReveal mono" id="jokeReveal" aria-live="polite">—</div>
+        </section>
+
+        <aside class="sponsor">
+          <div class="sBox">
+            <div class="sLabel">SPONSORED BY</div>
+            <a class="sLink" href="#" id="jokeSponsor">Your sponsor</a>
+          </div>
+        </aside>
+      </div>
+
+      <p class="after" id="jokeAfter" hidden></p>
+
+      <!-- Fact of the day -->
+      <div class="row">
+        <section class="widget" aria-label="Fact of the day">
+          <div class="wHead">
+            <div class="wIcon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M11 7h2v2h-2V7Zm0 4h2v6h-2v-6ZM12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2Z"/>
+              </svg>
+            </div>
+            <div class="wTitles">
+              <h2 class="wTitle">Fact</h2>
+              <p class="wSub" id="factSub">Tap for a small true thing.</p>
+            </div>
+            <button class="wBtn" id="factBtn" type="button">REVEAL</button>
+          </div>
+
+          <div class="wReveal mono" id="factReveal" aria-live="polite">—</div>
+        </section>
+
+        <aside class="sponsor">
+          <div class="sBox">
+            <div class="sLabel">SPONSORED BY</div>
+            <a class="sLink" href="#" id="factSponsor">Your sponsor</a>
+          </div>
+        </aside>
+      </div>
+
+      <p class="after" id="factAfter" hidden></p>
+
+      <!-- Word of the day -->
+      <div class="row">
+        <section class="widget" aria-label="Word of the day">
+          <div class="wHead">
+            <div class="wIcon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 6h16v2H4V6Zm0 5h10v2H4v-2Zm0 5h16v2H4v-2Z"/>
+              </svg>
+            </div>
+            <div class="wTitles">
+              <h2 class="wTitle">Word</h2>
+              <p class="wSub" id="wordSub">Tap for a word to carry.</p>
+            </div>
+            <button class="wBtn" id="wordBtn" type="button">REVEAL</button>
+          </div>
+
+          <div class="wReveal mono" id="wordReveal" aria-live="polite">—</div>
+        </section>
+
+        <aside class="sponsor">
+          <div class="sBox">
+            <div class="sLabel">SPONSORED BY</div>
+            <a class="sLink" href="#" id="wordSponsor">Your sponsor</a>
+          </div>
+        </aside>
+      </div>
+
+      <p class="after" id="wordAfter" hidden></p>
+
+      <!-- Tarot card -->
+      <div class="row">
+        <section class="widget" aria-label="Tarot card of the day">
+          <div class="wHead">
+            <div class="wIcon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm0 2v14h10V5H7Zm2 2h6v2H9V7Zm0 4h6v6H9v-6Z"/>
+              </svg>
+            </div>
+            <div class="wTitles">
+              <h2 class="wTitle">Tarot</h2>
+              <p class="wSub" id="tarotSub">Tap for a card.</p>
+            </div>
+            <button class="wBtn" id="tarotBtn" type="button">REVEAL</button>
+          </div>
+
+          <div class="wReveal mono" id="tarotReveal" aria-live="polite">—</div>
+        </section>
+
+        <aside class="sponsor">
+          <div class="sBox">
+            <div class="sLabel">SPONSORED BY</div>
+            <a class="sLink" href="#" id="tarotSponsor">Your sponsor</a>
+          </div>
+        </aside>
+      </div>
+
+      <p class="after" id="tarotAfter" hidden></p>
+
+      <!-- Place of the day -->
+      <div class="row">
+        <section class="widget" aria-label="Place of the day">
+          <div class="wHead">
+            <div class="wIcon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5Z"/>
+              </svg>
+            </div>
+            <div class="wTitles">
+              <h2 class="wTitle">Place</h2>
+              <p class="wSub" id="placeSub">Tap for a random place.</p>
+            </div>
+            <button class="wBtn" id="placeBtn" type="button">REVEAL</button>
+          </div>
+
+          <div class="wReveal mono" id="placeReveal" aria-live="polite">—</div>
+        </section>
+
+        <aside class="sponsor">
+          <div class="sBox">
+            <div class="sLabel">SPONSORED BY</div>
+            <a class="sLink" href="#" id="placeSponsor">Your sponsor</a>
+          </div>
+        </aside>
+      </div>
+
+      <p class="after" id="placeAfter" hidden></p>
+
+      <!-- Brain teaser -->
+      <div class="row">
+        <section class="widget" aria-label="Brain teaser">
+          <div class="wHead">
+            <div class="wIcon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 2a6 6 0 0 0-6 6c0 1.4.5 2.7 1.3 3.7A4 4 0 0 0 11 18v2h2v-2a4 4 0 0 0 3.7-6.3A6 6 0 0 0 12 2Zm1 14h-2a2 2 0 0 1-1.7-3h.7V9H9a2 2 0 1 1 2.8-1.9h2.1A4 4 0 1 0 9 14h1v1a1 1 0 0 0 1 1Z"/>
+              </svg>
+            </div>
+            <div class="wTitles">
+              <h2 class="wTitle">Brain Teaser</h2>
+              <p class="wSub" id="teaserSub">Tap for a quick one.</p>
+            </div>
+            <button class="wBtn" id="teaserBtn" type="button">REVEAL</button>
+          </div>
+
+          <div class="wReveal mono" id="teaserReveal" aria-live="polite">—</div>
+        </section>
+
+        <aside class="sponsor">
+          <div class="sBox">
+            <div class="sLabel">SPONSORED BY</div>
+            <a class="sLink" href="#" id="teaserSponsor">Your sponsor</a>
+          </div>
+        </aside>
+      </div>
+
+      <p class="after" id="teaserAfter" hidden></p>
+
+    </section>
+
+    <footer class="foot">
+      <p>Luck Meter. Not science. Not advice.</p>
+    </footer>
+  </main>
+
+  <!-- Reference lists (keep these files) -->
   <script defer src="watchlist.js"></script>
   <script defer src="dinnerlist.js"></script>
+  <script defer src="fortunes.js"></script>
 
   <!-- Logic -->
   <script defer src="script.js"></script>
