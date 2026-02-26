@@ -120,7 +120,8 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   bind("reveal-colours","oneshot",(btn)=>{
-    btn.classList.add("colours");
+    btn.classList.add("colours","isDone");
+    btn.disabled = true;
     btn.innerHTML="";
     const a=rollNiceHex();
     let b=rollNiceHex();
