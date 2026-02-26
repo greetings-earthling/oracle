@@ -1,241 +1,222 @@
 :root{
-  --bg:#e6dfeb;
-  --card:#ffffff;
-  --ink:#111827;
-  --muted:rgba(17,24,39,0.62);
+  --paper:#ffffff;
+  --ink:#0b0d12;
+  --muted:rgba(11,13,18,.62);
+  --line:rgba(11,13,18,.14);
+  --line2:rgba(11,13,18,.10);
+  --soft:rgba(11,13,18,.04);
+  --chip:#111319;
 
-  --border:rgba(0,0,0,0.08);
-  --stroke:rgba(0,0,0,0.14);
-
-  --soft:#f9fafb;
-  --shadow:0 10px 22px rgba(17,24,39,0.08);
-
-  --radius:14px;
-  --iconSize:80px;
-  --gap:12px;
+  --radius:4px;
+  --pad:14px;
+  --max:980px;
 }
 
 *{ box-sizing:border-box; }
-
+html,body{ height:100%; }
 body{
   margin:0;
-  font-family:"IBM Plex Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  background:var(--bg);
+  background:var(--paper);
   color:var(--ink);
+  font-family:"IBM Plex Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 
 .page{
-  max-width:980px;
+  max-width:var(--max);
   margin:0 auto;
-  padding:16px 14px 28px;
+  padding:22px 14px 44px;
 }
 
-.stack{
-  display:grid;
-  gap:14px;
-}
-
-/* Row = widget (left) + sponsor (right on desktop) */
-.widgetRow{
-  display:grid;
-  grid-template-columns: 1fr;
-  gap:10px;
-}
-
-@media (min-width: 900px){
-  .widgetRow{
-    grid-template-columns: 2fr 1fr; /* ~67/33 */
-    align-items:stretch;
-  }
-}
-
-/* Card */
-.widgetCard{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
+.mast{
   display:flex;
-  overflow:hidden;
-  min-height: var(--iconSize);
+  gap:14px;
+  align-items:flex-start;
+  padding:0 0 14px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:16px;
+}
+.mastMark{
+  width:16px;
+  height:16px;
+  background:var(--ink);
+  border-radius:999px;
+  margin-top:7px;
+}
+.siteTitle{
+  margin:0;
+  font-family:"Bebas Neue", "IBM Plex Sans", sans-serif;
+  letter-spacing:.02em;
+  font-size:44px;
+  line-height:1;
+}
+.siteSub{
+  margin:6px 0 0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.4;
 }
 
-/* Left icon block */
-.iconBlock{
-  width:var(--iconSize);
-  min-width:var(--iconSize);
-  height:var(--iconSize);
-  background:var(--accent, #111827);
+.stack{ display:flex; flex-direction:column; gap:16px; }
+
+.row{
+  display:grid;
+  grid-template-columns: 2fr 1fr;
+  gap:14px;
+  align-items:stretch;
+}
+
+.widget{
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:var(--paper);
+}
+
+.wHead{
+  display:grid;
+  grid-template-columns: 80px 1fr auto;
+  gap:12px;
+  align-items:center;
+  padding:10px var(--pad);
+  border-bottom:1px solid var(--line2);
+}
+
+.wIcon{
+  width:80px;
+  height:80px;
+  background:var(--ink);
   display:flex;
   align-items:center;
   justify-content:center;
+  border-right:1px solid var(--line2);
+  margin-left:-14px;
+  padding-left:14px;
 }
-
-.iconMark{
-  color:#fff;
-  font-weight:800;
-  font-size:26px;
-  line-height:1;
-  letter-spacing:-0.02em;
-}
-
-/* Right body */
-.cardBody{
-  flex:1;
-  padding:12px 12px;
-  display:grid;
-  grid-template-rows:auto auto;
-  gap:10px;
-}
-
-.cardTop{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:10px;
-}
-
-.titleWrap{ min-width:0; }
-
-.cardTitle{
-  margin:0;
-  font-size:16px;
-  font-weight:800;
-  letter-spacing:-0.01em;
-}
-
-.cardSub{
-  margin:2px 0 0;
-  font-size:13px;
-  line-height:1.35;
-  color:var(--muted);
-}
-
-/* Action button (no text) */
-.actionBtn{
+.wIcon svg{
   width:34px;
   height:34px;
-  border-radius:4px;
-  border:1px solid rgba(0,0,0,0.12);
-  background:var(--accent, #111827);
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex:0 0 auto;
-  transition: transform 120ms ease, filter 120ms ease, opacity 120ms ease;
+  fill:#fff;
 }
 
-.actionBtn:hover{ transform: translateY(-1px); filter:brightness(0.96); }
-
-.actionBtn:disabled{
-  opacity:0.45;
-  cursor:default;
-  transform:none;
-  filter:none;
+.wTitles{ min-width:0; }
+.wTitle{
+  margin:0;
+  font-family:"Bebas Neue", "IBM Plex Sans", sans-serif;
+  font-size:26px;
+  letter-spacing:.03em;
+}
+.wSub{
+  margin:4px 0 0;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.35;
 }
 
-.btnDot{
-  width:10px;
-  height:10px;
-  border-radius:999px;
-  background:#fff;
-  box-shadow: 0 0 0 2px rgba(255,255,255,0.18);
-}
-
-/* Reveal box */
-.revealBox{
-  border:2px solid var(--stroke);
-  background:var(--soft);
-  border-radius:4px;
-  padding:10px 10px;
-  min-height:52px;
-  display:flex;
-  align-items:center;
+.wBtn{
+  border:1px solid var(--ink);
+  background:var(--ink);
+  color:#fff;
   font-weight:800;
-  font-size:16px;
-  letter-spacing:-0.01em;
-  position:relative;
-  overflow:hidden;
-  white-space:nowrap;
-  text-overflow:ellipsis;
-}
-
-.revealBox.big{
-  font-size:18px;
-  min-height:56px;
-}
-
-.revealBox.color{
-  font-weight:800;
-}
-
-/* “Smoke” overlay */
-.revealBox::after{
-  content:"";
-  position:absolute;
-  inset:-12px;
-  pointer-events:none;
-  opacity:0;
-  background:
-    radial-gradient(circle at 30% 40%, rgba(0,0,0,0.12), rgba(0,0,0,0) 55%),
-    radial-gradient(circle at 65% 55%, rgba(0,0,0,0.10), rgba(0,0,0,0) 60%),
-    linear-gradient(90deg, rgba(255,255,255,0.0), rgba(255,255,255,0.65), rgba(255,255,255,0.0));
-  filter: blur(10px);
-  transform: translateX(-18%);
-}
-
-.widgetCard.isRevealing .revealBox::after{
-  opacity:1;
-  animation: smokeSweep 700ms ease forwards;
-}
-
-@keyframes smokeSweep{
-  0%   { transform: translateX(-20%); opacity:0.95; }
-  70%  { transform: translateX(10%); opacity:0.85; }
-  100% { transform: translateX(18%); opacity:0; }
-}
-
-/* Sponsor */
-.sponsorBox{
-  background:transparent;
+  font-size:12px;
+  letter-spacing:.12em;
   border-radius:var(--radius);
   padding:10px 12px;
-  display:flex;
-  align-items:center;
+  cursor:pointer;
+  transition:opacity .12s ease;
+}
+.wBtn:disabled{
+  opacity:.35;
+  cursor:default;
 }
 
-.sponsorLink{
-  display:inline-block;
-  width:100%;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,0.55);
-  border-radius:var(--radius);
-  padding:12px;
-  text-decoration:none;
-  color:var(--ink);
-  font-size:13px;
-  box-shadow: none;
+.wReveal{
+  padding:14px;
+}
+.wReveal.mono{
+  font-family:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size:18px;
+  font-weight:600;
+  letter-spacing:.01em;
+  border-top:0;
+}
+.wReveal{
+  min-height:62px;
+  border-top:0;
 }
 
-.sponsorLink b{ font-weight:800; }
-
-@media (max-width: 899px){
-  .sponsorBox{ padding:0 2px; }
-}
-
-/* After line */
-.afterLine{
-  grid-column: 1 / -1;
-  margin: 2px 2px 0;
-  font-size:13px;
+.wMeta{
+  padding:0 14px 14px;
   color:var(--muted);
+  font-size:13px;
+  font-family:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
-/* Divider */
-.divider{
-  grid-column: 1 / -1;
-  height:1px;
-  background: rgba(0,0,0,0.08);
-  margin-top: 6px;
+.colors{
+  display:grid;
+  gap:10px;
+}
+.swatches{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:10px;
+}
+.sw{
+  height:20px;
+  border-radius:var(--radius);
+  border:1px solid var(--line);
+  background:var(--soft);
+}
+
+.sponsor{
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:var(--paper);
+  display:flex;
+}
+.sBox{
+  width:100%;
+  padding:12px 12px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:8px;
+}
+.sLabel{
+  font-size:11px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--muted);
+  font-weight:800;
+}
+.sLink{
+  color:var(--ink);
+  text-decoration:none;
+  border-bottom:1px solid var(--line);
+  width:max-content;
+}
+.sLink:hover{ border-bottom-color:var(--ink); }
+
+.after{
+  margin:8px 0 0;
+  padding:0 2px 16px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.35;
+  border-bottom:1px solid var(--line);
+}
+
+.foot{
+  margin-top:22px;
+  border-top:1px solid var(--line);
+  padding-top:14px;
+  color:var(--muted);
+  font-size:12px;
+  text-align:center;
+}
+
+/* Mobile */
+@media (max-width: 820px){
+  .siteTitle{ font-size:38px; }
+  .row{ grid-template-columns:1fr; }
+  .sponsor{ order:2; }
+  .widget{ order:1; }
 }
