@@ -145,14 +145,12 @@ window.addEventListener("DOMContentLoaded", () => {
     const n = 1 + Math.floor(Math.random() * 10);
     btn.classList.add("isDone");
     scrambleTo(btn, n);
-    setAfter("after-number", "Notice it today.");
   });
 
   bind("reveal-letter","oneshot",(btn)=>{
     const l = String.fromCharCode(65 + Math.floor(Math.random() * 26));
     btn.classList.add("isDone");
     scrambleTo(btn, l);
-    setAfter("after-letter", "Watch for it.");
   });
 
 bind("reveal-colours","oneshot",(btn)=>{
@@ -173,29 +171,24 @@ bind("reveal-colours","oneshot",(btn)=>{
   btn.style.color = brightness > 160 ? "#0b0d12" : "#ffffff";
 
   setRevealContent(btn, colour);
-
-  setAfter("after-colours", "Use it for a choice.");
 });
 
   bind("reveal-aura","oneshot",(btn)=>{
     const p = rollAura();
     btn.classList.add("isDone");
     scrambleTo(btn, `${p}%`);
-    setAfter("after-aura", auraLine(p));
   });
 
   bind("reveal-wisdom","oneshot",(btn)=>{
     const msg = pick(WISDOM);
     btn.classList.add("isDone");
     scrambleTo(btn, msg);
-    setAfter("after-wisdom", "One sentence. One move.");
   });
 
   bind("reveal-tarot","oneshot",(btn)=>{
     const [card, msg] = pick(TAROT);
     btn.classList.add("isDone");
     scrambleTo(btn, card);
-    setAfter("after-tarot", msg);
   });
 
   bind("reveal-dinner","reroll",(btn)=>{
@@ -203,7 +196,6 @@ bind("reveal-colours","oneshot",(btn)=>{
     const text = list.length ? pick(list) : "Add dinnerlist.js";
     setRevealContent(btn, text);
     btn.classList.add("isDone");
-    setAfter("after-dinner", "");
   });
 
   bind("reveal-watch","reroll",(btn)=>{
@@ -211,18 +203,15 @@ bind("reveal-colours","oneshot",(btn)=>{
     const text = list.length ? (pick(list).title || "—") : "Add watchlist.js";
     setRevealContent(btn, text);
     btn.classList.add("isDone");
-    setAfter("after-watch", "");
   });
 
   bind("reveal-fact","oneshot",(btn)=>{
     btn.classList.add("isDone");
     scrambleTo(btn, pick(FACTS));
-    setAfter("after-fact", "");
   });
 
   bind("reveal-joke","oneshot",(btn)=>{
     btn.classList.add("isDone");
     scrambleTo(btn, pick(JOKES));
-    setAfter("after-joke", "");
   });
 });
