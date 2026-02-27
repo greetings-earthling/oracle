@@ -47,30 +47,15 @@ window.addEventListener("DOMContentLoaded", () => {
     return {video, tint};
   }
 
-function scrambleTo(btn, finalText, ms=1800){
-
+function fadeTo(btn, finalText){
   const target = String(finalText);
   const inner = ensureInner(btn);
 
-  if(isLongText(target)) btn.classList.add("isLong");
+  if (isLongText(target)) btn.classList.add("isLong");
   else btn.classList.remove("isLong");
 
-  const steps = 24;
-  let i = 0;
-
-  inner.style.opacity = "0";
-
-  const timer = setInterval(()=>{
-    i++;
-
-    const lock = Math.floor((i/steps) * target.length);
-    let out = "";
-
-    for(let k=0; k < target.length; k++){
-      out += (k < lock)
-        ? target[k]
-        : GLYPHS[Math.floor(Math.random()*GLYPHS.length)];
-    }
+  inner.textContent = target;
+}
 
     inner.textContent = out;
 
@@ -182,28 +167,28 @@ function bind(id, mode, logic){
 }
   
   bind("reveal-meter","oneshot",(btn)=>{
-    scrambleTo(btn, weightedPick(METER).t);
+    fadeTo(btn, weightedPick(METER).t);
   });
 
   bind("reveal-wisdom","oneshot",(btn)=>{
-    scrambleTo(btn, pick(WISDOM));
+    fadeTo(btn, pick(WISDOM));
   });
 
   bind("reveal-number","oneshot",(btn)=>{
-    scrambleTo(btn, 1 + Math.floor(Math.random()*10));
+    fadeTo(btn, 1 + Math.floor(Math.random()*10));
   });
 
   bind("reveal-joke","oneshot",(btn)=>{
-    scrambleTo(btn, pick(JOKES));
+    fadeTo(btn, pick(JOKES));
   });
 
   bind("reveal-tarot","oneshot",(btn)=>{
     const [card,msg]=pick(TAROT);
-    scrambleTo(btn, `${card} — ${msg}`);
+    fadeTo(btn, `${card} — ${msg}`);
   });
 
   bind("reveal-fact","oneshot",(btn)=>{
-    scrambleTo(btn, pick(FACTS));
+    fadeTo(btn, pick(FACTS));
   });
 
 });
