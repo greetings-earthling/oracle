@@ -78,34 +78,34 @@ window.addEventListener("DOMContentLoaded", () => {
     const {video, tint} = ensureFX(btn);
     ensureInner(btn);
 
-    btn.classList.add("isRevealing");
+   btn.classList.add("isRevealing");
+btn.style.background = "#0b0d12";   // turn black immediately
 
-    tint.style.background = randomSubtleTint();
-    tint.style.opacity = ".45";
+tint.style.background = randomSubtleTint();
+tint.style.opacity = ".45";
 
-    video.pause();
-    video.currentTime = 0;
-    video.play().catch(()=>{});
+video.pause();
+video.currentTime = 0;
+video.play().catch(()=>{});
 
-    // 1.5s smoke only
-    setTimeout(()=>{
-      revealLogic();
-    }, SMOKE_ONLY_MS);
+// Start scramble slightly before smoke fade
+setTimeout(()=>{
+  revealLogic();
+}, 1200);
 
-    // fade smoke + tint
-    setTimeout(()=>{
-      video.style.transition = `opacity ${SMOKE_FADE_MS}ms ease`;
-      tint.style.transition  = `opacity ${SMOKE_FADE_MS}ms ease`;
-      video.style.opacity = "0";
-      tint.style.opacity = "0";
-    }, SMOKE_ONLY_MS);
+// Fade smoke + tint
+setTimeout(()=>{
+  video.style.transition = `opacity ${SMOKE_FADE_MS}ms ease`;
+  tint.style.transition  = `opacity ${SMOKE_FADE_MS}ms ease`;
+  video.style.opacity = "0";
+  tint.style.opacity  = "0";
+}, 1500);
 
-    // lock final state
-    setTimeout(()=>{
-      btn.classList.remove("isRevealing");
-      btn.classList.add("isDone");
-    }, TOTAL_REVEAL_MS);
-  }
+// Final lock
+setTimeout(()=>{
+  btn.classList.remove("isRevealing");
+  btn.classList.add("isDone");
+}, TOTAL_REVEAL_MS);
 
   function bind(id, mode, logic){
     const btn = document.getElementById(id);
