@@ -231,6 +231,23 @@ body{
   backdrop-filter: blur(2px);
 }
 
+.mastInner{
+  display:flex;
+  align-items:flex-start;
+  gap:18px;
+}
+
+.mastIcon{
+  width:72px;       /* adjust if needed */
+  height:auto;
+  flex-shrink:0;
+}
+
+.mastText{
+  display:flex;
+  flex-direction:column;
+}
+
 /* Footer */
 .foot{
   margin-top:24px;
