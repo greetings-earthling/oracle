@@ -162,30 +162,27 @@ window.addEventListener("DOMContentLoaded", () => {
     setAfter("after-letter", "Watch for it.");
   });
 
-  bind("reveal-colours","oneshot",(btn)=>{
-    btn.classList.add("colours","isDone");
-    btn.disabled = true;
-    btn.innerHTML = "";
+bind("reveal-colours","oneshot",(btn)=>{
+  const colour = rollNiceHex();
 
-    const a = rollNiceHex();
-    let b = rollNiceHex();
-    while (b === a) b = rollNiceHex();
+  btn.classList.add("colourFill","isDone");
+  btn.disabled = true;
 
-    const box1 = document.createElement("div");
-    box1.className = "colourBox";
-    box1.style.background = a;
-    box1.textContent = a;
+  // fill background
+  btn.style.background = colour;
 
-    const box2 = document.createElement("div");
-    box2.className = "colourBox";
-    box2.style.background = b;
-    box2.textContent = b;
+  // auto contrast
+  const r = parseInt(colour.substr(1,2),16);
+  const g = parseInt(colour.substr(3,2),16);
+  const b = parseInt(colour.substr(5,2),16);
 
-    btn.appendChild(box1);
-    btn.appendChild(box2);
+  const brightness = (r*299 + g*587 + b*114) / 1000;
+  btn.style.color = brightness > 160 ? "#0b0d12" : "#ffffff";
 
-    setAfter("after-colours", "Use them for a choice.");
-  });
+  setRevealContent(btn, colour);
+
+  setAfter("after-colours", "Use it for a choice.");
+});
 
   bind("reveal-aura","oneshot",(btn)=>{
     const p = rollAura();
