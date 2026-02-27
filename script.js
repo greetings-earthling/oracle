@@ -47,31 +47,38 @@ window.addEventListener("DOMContentLoaded", () => {
     return {video, tint};
   }
 
-  function scrambleTo(btn, finalText, ms=1800){
-    const target = String(finalText);
-    const inner = ensureInner(btn);
+function scrambleTo(btn, finalText, ms=1800){
 
-    if(isLongText(target)) btn.classList.add("isLong");
-    else btn.classList.remove("isLong");
+  const target = String(finalText);
+  const inner = ensureInner(btn);
 
-    const steps = 20;
-    let i=0;
+  if(isLongText(target)) btn.classList.add("isLong");
+  else btn.classList.remove("isLong");
 
-    const timer = setInterval(()=>{
-      i++;
-      const lock = Math.floor((i/steps)*target.length);
-      let out="";
-      for(let k=0;k<target.length;k++){
-        out += (k<lock) ? target[k] : GLYPHS[Math.floor(Math.random()*GLYPHS.length)];
-      }
-      inner.textContent = out;
+  const steps = 24;
+  let i = 0;
 
-      if(i>=steps){
-        clearInterval(timer);
-        inner.textContent = target;
-      }
-    }, ms/steps);
-  }
+  const timer = setInterval(()=>{
+    i++;
+
+    const lock = Math.floor((i/steps) * target.length);
+    let out = "";
+
+    for(let k=0; k < target.length; k++){
+      out += (k < lock)
+        ? target[k]
+        : GLYPHS[Math.floor(Math.random()*GLYPHS.length)];
+    }
+
+    inner.textContent = out;
+
+    if(i >= steps){
+      clearInterval(timer);
+      inner.textContent = target;   // FINAL LOCK
+    }
+
+  }, ms/steps);
+}
 
  function startSequence(btn, revealLogic){
 
@@ -110,7 +117,6 @@ window.addEventListener("DOMContentLoaded", () => {
   // Lock state
   setTimeout(()=>{
     btn.classList.remove("isRevealing");
-    btn.classList.add("isDone");
   }, 3500);
 }
 
