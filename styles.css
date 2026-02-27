@@ -58,6 +58,7 @@ body{
   grid-template-columns: 1fr 1fr; /* 50/50 */
   min-height:130px;
   overflow:hidden;
+  background:#fff;
 }
 
 /* LEFT TEXT SIDE */
@@ -82,6 +83,18 @@ body{
   color:var(--muted);
 }
 
+/* Post line: reserve space so cards never jump */
+.afterLine{
+  margin-top:10px;
+  min-height:1.2em;      /* reserves one line always */
+  opacity:0;             /* hidden by default */
+  transition:opacity .18s ease;
+}
+
+.afterLine.isOn{
+  opacity:1;
+}
+
 .copy.post{
   font-family:"IBM Plex Mono", monospace;
   font-weight:600;
@@ -92,7 +105,6 @@ body{
 /* =========================
    REVEAL AREA
 ========================= */
-
 .reveal{
   border:0;
   border-left:1px solid var(--line);
@@ -111,7 +123,7 @@ body{
   letter-spacing:.10em;
   text-transform:uppercase;
 
-  color:rgba(11,13,18,.85);
+  color:rgba(11,13,18,.88);
   text-align:center;
 
   transition:background .15s ease, color .15s ease;
@@ -121,54 +133,41 @@ body{
   background:rgba(0,0,0,.04);
 }
 
-/* -------------------------
-   After Reveal (inverted)
-------------------------- */
+.revealInner{
+  max-width:44ch;
+}
 
+/* After Reveal (inverted) */
 .reveal.isDone{
-  cursor:default;
   background:#0b0d12;
   color:#ffffff;
-
   text-transform:none;
   letter-spacing:.02em;
   font-weight:700;
-
   padding:16px;
   line-height:1.3;
-
-  justify-content:center;
-  text-align:center;
 }
 
-/* Large display for short outputs (number / letter) */
+/* Short outputs (number / letter / percent) */
 .reveal.isDone:not(.isLong){
   font-size:34px;
   letter-spacing:.04em;
 }
 
-/* Controlled paragraph sizing for long outputs */
+/* Long outputs (wisdom, tarot title, joke, fact, dinner, watch) */
 .reveal.isDone.isLong{
   font-size:14px;
   font-weight:600;
   letter-spacing:0;
   line-height:1.45;
-
-  justify-content:flex-start;
   text-align:left;
 }
 
-/* Prevent billboard-width paragraphs */
-.reveal.isDone .revealInner{
-  max-width:44ch;
-}
-
-/* Lucky Colours special layout (full split) */
+/* Lucky Colours split */
 .reveal.colours{
   padding:0;
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:0;
 }
 
 .colourBox{
@@ -179,22 +178,12 @@ body{
   font-weight:700;
   font-size:12px;
   letter-spacing:.08em;
-  text-transform:uppercase;
   padding:8px;
-
-  /* default text colour gets overridden via inline style if needed */
   color:#0b0d12;
 }
 
 .colourBox + .colourBox{
   border-left:1px solid var(--line);
-}
-
-/* When the reveal is done, make colour labels readable on bright colours */
-.reveal.colours.isDone .colourBox{
-  text-transform:none;
-  letter-spacing:.02em;
-  font-size:13px;
 }
 
 /* Footer */
