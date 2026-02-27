@@ -111,29 +111,29 @@ body{
   padding:12px;
 }
 
+/* Text always visible */
 .revealInner{
   position:relative;
   z-index:3;
   opacity:1;
-  transition:none;
 }
 
-/* black final state */
-.reveal.isDone{
+/* During reveal (black state) */
+.reveal.isRevealing{
   background:#0b0d12;
-  color:#fff;
+  color:#ffffff;
   text-transform:none;
   letter-spacing:.02em;
   font-weight:700;
 }
 
-/* Short outputs */
-.reveal.isDone:not(.isLong){
+/* Large for short outputs */
+.reveal.isRevealing:not(.isLong){
   font-size:34px;
 }
 
-/* Long outputs */
-.reveal.isDone.isLong{
+/* Normal for long outputs */
+.reveal.isRevealing.isLong{
   font-size:16px;
 }
 
