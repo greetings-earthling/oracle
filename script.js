@@ -1,16 +1,15 @@
 // script.js
 window.addEventListener("DOMContentLoaded", () => {
 
-  // smoke video
   const FX_SRC = "./ads/Smoke.mp4";
 
   // timing
-  const SMOKE_ONLY_MS     = 1500;  // 0–1.5s smoke only
-  const SMOKE_FADE_START  = 1500;  // start fade at 1.5s
-  const SMOKE_FADE_MS     = 1000;  // 1.5–2.5 fade out
-  const TEXT_START_MS     = 2000;  // start text at 2.0s (while smoke fading)
-  const TEXT_FADE_MS      = 1500;  // 2.0–3.5 fade in
-  const TOTAL_MS          = 3500;  // end
+  const SMOKE_ONLY_MS     = 1500;
+  const SMOKE_FADE_START  = 1500;
+  const SMOKE_FADE_MS     = 1000;
+  const TEXT_START_MS     = 2000;
+  const TEXT_FADE_MS      = 1500;
+  const TOTAL_MS          = 3500;
 
   const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
@@ -50,13 +49,12 @@ window.addEventListener("DOMContentLoaded", () => {
     return { video, tint };
   }
 
-  // colour “blob” gradients (complex, not stripes)
+  // tint blobs
   const rint = (a,b)=> a + Math.floor(Math.random()*(b-a+1));
   const hsla = (h,a)=> `hsla(${h}, 85%, 58%, ${a})`;
 
   function buildTintGradient(hues){
     const [h1,h2,h3] = hues;
-
     const blobs = [
       { h:h1, x:rint(18,82), y:rint(18,82), a:0.55, s:rint(40,78) },
       { h:h2, x:rint(18,82), y:rint(18,82), a:0.50, s:rint(38,74) },
@@ -71,13 +69,11 @@ window.addEventListener("DOMContentLoaded", () => {
     ).join(", ");
   }
 
-  // per-widget palettes (hues)
-  // Colour widget = no tint (greyscale smoke)
   const PALETTES = {
-    "reveal-meter":  [135, 155, 285], // green, deep green, purple
+    "reveal-meter":  [135, 155, 285],
     "reveal-wisdom": [250, 275, 205],
     "reveal-number": [35,  15,  300],
-    "reveal-colour": null,
+    "reveal-colour": null,              // greyscale smoke
     "reveal-joke":   [320, 285, 205],
     "reveal-tarot":  [190, 165, 275],
     "reveal-dinner": [24,  10,  300],
@@ -85,8 +81,7 @@ window.addEventListener("DOMContentLoaded", () => {
     "reveal-fact":   [265, 285, 160],
   };
 
-  // ----- data -----
-
+  // data
   const WISDOM = [
     "Proceed. But do not rush.",
     "Choose the calm option.",
@@ -121,7 +116,6 @@ window.addEventListener("DOMContentLoaded", () => {
     ["The Star","Stay steady. Keep going."]
   ];
 
-  // Luck meter: text only, weighted (center heavy)
   const METER = [
     { t: "Luck levels are low today. Proceed with caution.", w: 7 },
     { t: "Low luck reading. Keep it simple. No big swings.", w: 9 },
@@ -145,7 +139,6 @@ window.addEventListener("DOMContentLoaded", () => {
     return items[items.length - 1];
   }
 
-  // colour (HSL -> HEX)
   function hslToHex(h, s, l){
     s /= 100; l /= 100;
     const c = (1 - Math.abs(2*l - 1)) * s;
@@ -184,12 +177,8 @@ window.addEventListener("DOMContentLoaded", () => {
     return lum < 0.55;
   }
 
-  // ----- reveal sequence (smoke -> fade -> text fades in) -----
-
   function startSequence(btn, finalText, mode){
     if (btn.classList.contains("isBusy")) return;
-
-    // oneshot lock
     if (mode === "oneshot" && btn.classList.contains("isDone")) return;
 
     btn.classList.add("isBusy", "isRevealing");
@@ -198,19 +187,20 @@ window.addEventListener("DOMContentLoaded", () => {
     const inner = ensureInner(btn);
     const { video, tint } = ensureFX(btn);
 
-    // TAP TO REVEAL disappears immediately
+    // reset to TAP state (but hide immediately on click)
     inner.style.transition = "none";
     inner.style.opacity = "0";
     inner.textContent = "";
 
-    // long/short sizing
-    if (isLongText(finalText)) btn.classList.add("isLong");
+    const text = String(finalText);
+    const long = isLongText(text);
+    if (long) btn.classList.add("isLong");
 
-    // base goes black immediately (so smoke reveals black)
+    // black immediately under smoke
     btn.style.background = "#0b0d12";
     btn.style.color = "#ffffff";
 
-    // tint palette per widget
+    // tint
     const hues = PALETTES[btn.id] ?? [260, 290, 180];
     if (hues){
       tint.style.display = "block";
@@ -222,7 +212,7 @@ window.addEventListener("DOMContentLoaded", () => {
       tint.style.backgroundImage = "none";
     }
 
-    // start video
+    // smoke
     video.style.display = "block";
     video.style.transition = "none";
     tint.style.transition  = "none";
@@ -234,13 +224,6 @@ window.addEventListener("DOMContentLoaded", () => {
     }catch(e){}
 
     video.play().catch(()=>{});
-
-    // start text fade-in while smoke is fading
-    setTimeout(() => {
-      inner.textContent = String(finalText);
-      inner.style.transition = `opacity ${TEXT_FADE_MS}ms ease`;
-      inner.style.opacity = "1";
-    }, TEXT_START_MS);
 
     // fade smoke + tint away
     setTimeout(() => {
@@ -256,18 +239,55 @@ window.addEventListener("DOMContentLoaded", () => {
 
     }, SMOKE_FADE_START);
 
-    // finalize
+    // TEXT START: apply FINAL FORM first, then fade it in
     setTimeout(() => {
-      btn.classList.remove("isBusy", "isRevealing");
+      // make it final styled BEFORE visible
       btn.classList.add("isDone");
+      btn.classList.remove("isRevealing");
+
+      // colour special: fade in the label, and transition bg to the colour
+      if (btn.dataset.kind === "colour" && btn.dataset.hex){
+        const hex = btn.dataset.hex;
+
+        btn.classList.add("isColour", "isLong");
+        btn.style.backgroundColor = hex;
+
+        const label = document.createElement("span");
+        label.className = "swatchLabel";
+        label.textContent = hex;
+
+        const dark = isDark(hex);
+        label.style.color = dark ? "#ffffff" : "#0b0d12";
+        label.style.borderColor = dark ? "rgba(255,255,255,.35)" : "rgba(0,0,0,.18)";
+        label.style.background = dark ? "rgba(0,0,0,.18)" : "rgba(255,255,255,.45)";
+
+        btn.innerHTML = "";
+        btn.appendChild(label);
+        // fade label in with same timing
+        label.style.opacity = "0";
+        label.style.transition = `opacity ${TEXT_FADE_MS}ms ease`;
+        requestAnimationFrame(() => { label.style.opacity = "1"; });
+
+      } else {
+        // normal text
+        inner.textContent = text;
+        inner.style.transition = `opacity ${TEXT_FADE_MS}ms ease`;
+        inner.style.opacity = "1";
+      }
+    }, TEXT_START_MS);
+
+    // end: just unlock and disable if needed (no style changes here)
+    setTimeout(() => {
+      btn.classList.remove("isBusy");
 
       if (mode === "oneshot") btn.disabled = true;
       else btn.disabled = false;
 
+      // clear colour metadata (so rerolls don't reuse old)
+      btn.dataset.kind = "";
+      btn.dataset.hex = "";
     }, TOTAL_MS);
   }
-
-  // ----- binds -----
 
   function bind(id, mode, getText){
     const btn = document.getElementById(id);
@@ -283,58 +303,31 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // meter
   bind("reveal-meter", "oneshot", () => weightedPick(METER).t);
 
-  // colour
   bind("reveal-colour", "oneshot", (btn) => {
     const hex = rollNiceHex();
-
-    // special: after the sequence ends, we want the swatch state.
-    // We still run smoke + text fade, but the "finalText" is the hex label.
-    // Then we turn it into a swatch right after TOTAL_MS.
-    setTimeout(() => {
-      btn.classList.add("isColour");
-      btn.style.background = hex;
-
-      const label = document.createElement("span");
-      label.className = "swatchLabel";
-      label.textContent = hex;
-
-      const dark = isDark(hex);
-      label.style.color = dark ? "#ffffff" : "#0b0d12";
-      label.style.borderColor = dark ? "rgba(255,255,255,.35)" : "rgba(0,0,0,.18)";
-      label.style.background = dark ? "rgba(0,0,0,.18)" : "rgba(255,255,255,.45)";
-
-      btn.innerHTML = "";
-      btn.appendChild(label);
-    }, TOTAL_MS + 10);
-
-    return hex;
+    btn.dataset.kind = "colour";
+    btn.dataset.hex = hex;
+    return hex; // used for label
   });
 
-  // wisdom
   bind("reveal-wisdom", "oneshot", () => pick(WISDOM));
 
-  // number
   bind("reveal-number", "oneshot", () => String(1 + Math.floor(Math.random()*10)));
 
-  // joke
   bind("reveal-joke", "oneshot", () => pick(JOKES));
 
-  // tarot
   bind("reveal-tarot", "oneshot", () => {
     const [card, msg] = pick(TAROT);
     return `${card} — ${msg}`;
   });
 
-  // dinner (reroll)
   bind("reveal-dinner", "reroll", () => {
     const list = window.DINNERLIST || [];
     return list.length ? pick(list) : "Add dinnerlist.js";
   });
 
-  // watch (reroll)
   bind("reveal-watch", "reroll", () => {
     const list = window.WATCHLIST || [];
     if (!list.length) return "Add watchlist.js";
@@ -342,6 +335,5 @@ window.addEventListener("DOMContentLoaded", () => {
     return (typeof item === "string") ? item : (item.title || "—");
   });
 
-  // fact
   bind("reveal-fact", "oneshot", () => pick(FACTS));
 });
