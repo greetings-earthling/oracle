@@ -1,5 +1,12 @@
 // script.js
 window.addEventListener("DOMContentLoaded", () => {
+
+  document.querySelectorAll(".reveal").forEach(btn => {
+    if (!btn.querySelector(".revealInner")) {
+      const t = btn.textContent.trim();
+      btn.innerHTML = `<span class="revealInner">${t}</span>`;
+    }
+  });
   /* -----------------------------
      Helpers
   ----------------------------- */
