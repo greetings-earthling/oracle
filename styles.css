@@ -64,7 +64,7 @@ body{
 
   display:grid;
   grid-template-columns: var(--textCol) 1fr; /* fixed left col */
-  min-height:84px; /* tighter */
+  min-height:92px; /* tighter */
 }
 
 /* full width cards */
@@ -74,7 +74,7 @@ body{
 
 /* LEFT SIDE */
 .cardText{
-  padding:10px 12px;          /* tighter, even top/bottom feel */
+  padding:12px;
   display:flex;
   flex-direction:column;
   gap:6px;
@@ -92,7 +92,7 @@ body{
 
 .copy{
   font-size:13px;
-  line-height:1.3;
+  line-height:1.35;
   color:var(--muted);
 }
 
@@ -105,7 +105,7 @@ body{
 }
 
 /* =========================
-   REVEAL AREA
+   REVEAL AREA (base)
 ========================= */
 
 .reveal{
@@ -125,10 +125,13 @@ body{
   letter-spacing:.10em;
   text-transform:uppercase;
 
-  color:rgba(11,13,18,.85);
+  color:rgba(11,13,18,.88);   /* more visible */
   text-align:center;
 
   transition:background .15s ease, color .15s ease;
+
+  position:relative;
+  overflow:hidden;
 }
 
 .reveal:hover{
@@ -145,14 +148,14 @@ body{
   letter-spacing:.02em;
   font-weight:700;
 
-  padding:14px;               /* slightly less than before */
-  line-height:1.35;
+  padding:16px;
+  line-height:1.3;
 
   justify-content:center;
   text-align:center;
 }
 
-/* Short outputs (single digit / short label) */
+/* Short outputs (single digit) */
 .reveal.isDone:not(.isLong){
   font-size:34px;
   letter-spacing:.04em;
@@ -165,15 +168,14 @@ body{
   letter-spacing:0;
   line-height:1.45;
 
-  /* keep it centered like your screenshot, not left aligned */
   justify-content:center;
   text-align:center;
 }
 
-/* Wider readable line length so “down.” is less likely to wrap */
 .reveal.isDone .revealInner{
-  max-width:64ch;
+  max-width:58ch;
   margin:0 auto;
+  display:block;
 }
 
 /* Lucky Colour special: fill whole reveal */
@@ -199,88 +201,28 @@ body{
   backdrop-filter: blur(2px);
 }
 
-/* === Cosmic reveal FX (ONLY on click) === */
-/* Keep the base reveal clean and readable */
-.reveal{
-  position: relative;
-  overflow: hidden;
-  background: #fff;
-  color: rgba(11,13,18,.90);
-}
+/* -------------------------
+   Video FX overlay
+------------------------- */
 
-/* Make "TAP TO REVEAL" readable over anything */
-.reveal .revealInner{
-  position: relative;
-  z-index: 3;
-}
-
-/* The crystal-ball layer (hidden until click) */
-.reveal::before{
-  content:"";
+.reveal .fxVideo{
   position:absolute;
-  inset:-20%;
-  opacity:0;
-  transform: scale(1.02);
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;      /* fill entire reveal area */
   z-index:1;
-
-  /* a more organic “ball” blend */
-  background:
-    radial-gradient(circle at 30% 35%, rgba(255,120,220,.70), transparent 50%),
-    radial-gradient(circle at 70% 60%, rgba(120,140,255,.65), transparent 55%),
-    radial-gradient(circle at 55% 25%, rgba(180,120,255,.55), transparent 55%),
-    radial-gradient(circle at 40% 75%, rgba(255,90,160,.45), transparent 60%);
-
-  filter: blur(10px) saturate(1.2);
   pointer-events:none;
-}
-
-/* A smoky veil on top (hidden until click) */
-.reveal::after{
-  content:"";
-  position:absolute;
-  inset:-30%;
   opacity:0;
+}
+
+.reveal.isRevealing .fxVideo{
+  opacity:1;
+}
+
+.reveal .revealInner{
+  position:relative;
   z-index:2;
-  pointer-events:none;
-
-  background:
-    radial-gradient(circle at 20% 40%, rgba(255,255,255,.28), transparent 55%),
-    radial-gradient(circle at 70% 55%, rgba(255,255,255,.20), transparent 60%),
-    radial-gradient(circle at 55% 25%, rgba(255,255,255,.18), transparent 60%);
-
-  filter: blur(14px);
-}
-
-/* Only run animation when JS adds .isRevealing */
-.reveal.isRevealing::before{
-  opacity:1;
-  animation: orbSwirl 560ms ease-out forwards;
-}
-.reveal.isRevealing::after{
-  opacity:1;
-  animation: orbSmoke 560ms ease-out forwards;
-}
-
-/* Fade the prompt text during the effect */
-.reveal.isRevealing .revealInner{
-  animation: promptFade 360ms ease-out forwards;
-}
-
-@keyframes orbSwirl{
-  0%   { transform: scale(1.02) rotate(0deg);  filter: blur(12px) saturate(1.25); }
-  55%  { transform: scale(1.06) rotate(18deg); filter: blur(10px) saturate(1.35); }
-  100% { transform: scale(1.02) rotate(30deg); filter: blur(14px) saturate(1.10); opacity:0; }
-}
-
-@keyframes orbSmoke{
-  0%   { transform: translate3d(0,0,0) scale(1.03); opacity:0; }
-  35%  { opacity:1; }
-  100% { transform: translate3d(10px,-6px,0) scale(1.08); opacity:0; }
-}
-
-@keyframes promptFade{
-  0% { opacity:1; }
-  100% { opacity:0; }
 }
 
 /* Footer */
