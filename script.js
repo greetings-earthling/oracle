@@ -157,6 +157,19 @@ window.addEventListener("DOMContentLoaded", () => {
 
   /* ---------------- BINDS ---------------- */
 
+function bind(id, mode, logic){
+  const btn = document.getElementById(id);
+  if(!btn) return;
+
+  ensureInner(btn);
+  ensureFX(btn);
+
+  btn.addEventListener("click", ()=>{
+    if(mode==="oneshot" && btn.classList.contains("isDone")) return;
+    startSequence(btn, ()=> logic(btn));
+  });
+}
+  
   bind("reveal-meter","oneshot",(btn)=>{
     scrambleTo(btn, weightedPick(METER).t);
   });
