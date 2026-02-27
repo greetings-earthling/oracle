@@ -114,10 +114,6 @@ function scrambleTo(btn, finalText, ms=1800){
     tint.style.opacity  = "0";
   }, 1500);
 
-  // Lock state
-  setTimeout(()=>{
-    btn.classList.remove("isRevealing");
-  }, 3500);
 }
 
   /* ---------------- DATA ---------------- */
