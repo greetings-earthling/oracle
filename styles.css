@@ -89,7 +89,10 @@ body{
   font-size:14px;
 }
 
-/* REVEAL AREA */
+/* =========================
+   REVEAL AREA
+========================= */
+
 .reveal{
   border:0;
   border-left:1px solid var(--line);
@@ -100,51 +103,64 @@ body{
   align-items:center;
   justify-content:center;
 
+  padding:12px;
+
   font-family:"IBM Plex Mono", monospace;
   font-weight:600;
-
   font-size:12px;
   letter-spacing:.10em;
   text-transform:uppercase;
 
-  color: rgba(11,13,18,.85);   /* was too light */
-  padding:12px;
+  color:rgba(11,13,18,.85);
   text-align:center;
+
+  transition:background .15s ease, color .15s ease;
 }
 
 .reveal:hover{
   background:rgba(0,0,0,.04);
 }
 
-/* After reveal: invert */
+/* -------------------------
+   After Reveal (inverted)
+------------------------- */
+
 .reveal.isDone{
   cursor:default;
   background:#0b0d12;
   color:#ffffff;
+
   text-transform:none;
   letter-spacing:.02em;
   font-weight:700;
 
-  /* Apply this class in JS for long outputs (joke/fact/wisdom/watch/dinner sometimes) */
+  padding:16px;
+  line-height:1.3;
+
+  justify-content:center;
+  text-align:center;
+}
+
+/* Large display for short outputs (number / letter) */
+.reveal.isDone:not(.isLong){
+  font-size:34px;
+  letter-spacing:.04em;
+}
+
+/* Controlled paragraph sizing for long outputs */
 .reveal.isDone.isLong{
   font-size:14px;
   font-weight:600;
   letter-spacing:0;
   line-height:1.45;
+
+  justify-content:flex-start;
+  text-align:left;
 }
 
-/* Optional: nice max width so paragraphs don't look like a billboard */
+/* Prevent billboard-width paragraphs */
 .reveal.isDone .revealInner{
   max-width:44ch;
-}
-  
-  /* default (short outputs like a number/letter) */
-  font-size:22px;
-  line-height:1.25;
-
-  /* keep long stuff readable */
-  padding:16px;
-  text-align:left;
 }
 
 /* Lucky Colours special layout (full split) */
