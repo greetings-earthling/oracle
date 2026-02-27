@@ -1,3 +1,4 @@
+// script.js
 window.addEventListener("DOMContentLoaded", () => {
   const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
   const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
@@ -10,16 +11,14 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   function ensureInner(btn){
-    let inner = btn.querySelector(".revealInner");
-    if(!inner){
+    if (!btn.querySelector(".revealInner")) {
       btn.innerHTML = `<span class="revealInner"></span>`;
-      inner = btn.querySelector(".revealInner");
     }
-    return inner;
+    return btn.querySelector(".revealInner");
   }
 
   function setRevealContent(btn, text){
-    const t = String(text ?? "");
+    const t = String(text);
     const inner = ensureInner(btn);
     inner.textContent = t;
 
@@ -27,22 +26,22 @@ window.addEventListener("DOMContentLoaded", () => {
     else btn.classList.remove("isLong");
   }
 
-  function scrambleTo(btn, finalText, ms=420){
+  function scrambleTo(btn, finalText, ms = 420){
     const target = String(finalText);
     const len = clamp(target.length, 4, 40);
     const steps = 14;
+    let i = 0;
 
     const inner = ensureInner(btn);
 
     if (isLongText(target)) btn.classList.add("isLong");
     else btn.classList.remove("isLong");
 
-    let i = 0;
     const timer = setInterval(() => {
       i++;
       const lock = Math.floor((i / steps) * len);
-
       let out = "";
+
       for (let k = 0; k < len; k++) {
         out += (k < lock) ? (target[k] || "") : GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
       }
@@ -63,16 +62,16 @@ window.addEventListener("DOMContentLoaded", () => {
 
   function bind(id, mode, run){
     const btn = document.getElementById(id);
-    if(!btn) return;
+    if (!btn) return;
+
+    // initial inner wrapper (makes layout stable)
+    ensureInner(btn);
+    btn.querySelector(".revealInner").textContent = btn.textContent.trim() || "TAP TO REVEAL";
 
     btn.addEventListener("click", () => {
-      // oneshot: ignore if already disabled
       if (mode === "oneshot" && btn.disabled) return;
-
       run(btn);
-
       if (mode === "oneshot") markDone(btn);
-      if (mode === "reroll") btn.classList.add("isDone"); // style it, but keep enabled
     });
   }
 
@@ -86,10 +85,10 @@ window.addEventListener("DOMContentLoaded", () => {
   ];
 
   const TAROT = [
-    ["The Fool","Start. Learn by moving."],
-    ["The Sun","Say yes to what is simple."],
-    ["The Magician","Use what you have."],
-    ["Wheel of Fortune","Timing matters."]
+    ["The Fool", "Start. Learn by moving."],
+    ["The Sun", "Say yes to what is simple."],
+    ["The Magician", "Use what you have."],
+    ["Wheel of Fortune", "Timing matters."]
   ];
 
   const FACTS = [
@@ -103,30 +102,37 @@ window.addEventListener("DOMContentLoaded", () => {
     "I’m on a whiskey diet. I’ve lost three days."
   ];
 
-  function rollAura(){
-    const mean = 70, sd = 14;
-    let u = 0, v = 0;
-    while (u === 0) u = Math.random();
-    while (v === 0) v = Math.random();
-    const z = Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-    return Math.round(clamp(mean + z * sd, 0, 100));
-  }
+  // Weighted Luck Meter messages (edit these later)
+  const AURA = [
+    { w: 2, text: "Low Fortune Today. Luck is quiet. Move carefully and keep decisions small." },
+    { w: 3, text: "Uneven Currents. Things may not flow smoothly. Double-check before committing." },
+    { w: 4, text: "Thin Air. Energy is light. Keep expectations realistic." },
+    { w: 6, text: "Slight Interference. Minor friction. Stay patient." },
+    { w: 10, text: "Neutral Field. Balanced. It’s a make-your-own-luck kind of day." },
+    { w: 10, text: "Subtle Tailwind. A small lift is present. Take the simple win." },
+    { w: 7, text: "Favorable Momentum. Timing is leaning in your direction." },
+    { w: 5, text: "Strong Fortune. Good odds today. Move forward." },
+    { w: 2, text: "High Alignment. Momentum is real. Trust the opening." },
+    { w: 1, text: "Rare Alignment. Unusually lucky. This is a green-light day." }
+  ];
 
-  function auraLine(p){
-    if (p <= 45) return "Low luck. Proceed with caution.";
-    if (p <= 65) return "Neutral luck. You steer.";
-    return "High luck. Take the easy wins.";
+  function pickWeighted(list){
+    const total = list.reduce((sum, it) => sum + (it.w || 0), 0);
+    let r = Math.random() * total;
+    for (const it of list){
+      r -= (it.w || 0);
+      if (r <= 0) return it;
+    }
+    return list[list.length - 1];
   }
 
   function rollNiceHex(){
     const h = Math.floor(Math.random() * 360);
     const s = 70, l = 55;
-
-    const sat = s / 100;
-    const lig = l / 100;
-    const c = (1 - Math.abs(2 * lig - 1)) * sat;
+    const a = s / 100, l2 = l / 100;
+    const c = (1 - Math.abs(2 * l2 - 1)) * a;
     const x = c * (1 - Math.abs((h / 60) % 2 - 1));
-    const m = lig - c / 2;
+    const m = l2 - c / 2;
 
     let r = 0, g = 0, b = 0;
     if (h < 60) { r = c; g = x; }
@@ -141,77 +147,76 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   /* WIDGETS */
-  bind("reveal-number","oneshot",(btn)=>{
-    const n = 1 + Math.floor(Math.random() * 10);
-    btn.classList.add("isDone");
-    scrambleTo(btn, n);
+  bind("reveal-aura", "oneshot", (btn) => {
+    const item = pickWeighted(AURA);
+    scrambleTo(btn, item.text, 520);
+    btn.classList.add("isLong");
   });
 
-  bind("reveal-letter","oneshot",(btn)=>{
-    const l = String.fromCharCode(65 + Math.floor(Math.random() * 26));
-    btn.classList.add("isDone");
-    scrambleTo(btn, l);
+  bind("reveal-colours", "oneshot", (btn) => {
+    btn.classList.add("colours", "isDone");
+    btn.disabled = true;
+    btn.innerHTML = "";
+
+    const a = rollNiceHex();
+    let b = rollNiceHex();
+    while (b === a) b = rollNiceHex();
+
+    const box1 = document.createElement("div");
+    box1.className = "colourBox";
+    box1.style.background = a;
+    box1.textContent = a;
+
+    const box2 = document.createElement("div");
+    box2.className = "colourBox";
+    box2.style.background = b;
+    box2.textContent = b;
+
+    btn.appendChild(box1);
+    btn.appendChild(box2);
   });
 
-bind("reveal-colours","oneshot",(btn)=>{
-  const colour = rollNiceHex();
-
-  btn.classList.add("colourFill","isDone");
-  btn.disabled = true;
-
-  // fill background
-  btn.style.background = colour;
-
-  // auto contrast
-  const r = parseInt(colour.substr(1,2),16);
-  const g = parseInt(colour.substr(3,2),16);
-  const b = parseInt(colour.substr(5,2),16);
-
-  const brightness = (r*299 + g*587 + b*114) / 1000;
-  btn.style.color = brightness > 160 ? "#0b0d12" : "#ffffff";
-
-  setRevealContent(btn, colour);
-});
-
-  bind("reveal-aura","oneshot",(btn)=>{
-    const p = rollAura();
-    btn.classList.add("isDone");
-    scrambleTo(btn, `${p}%`);
-  });
-
-  bind("reveal-wisdom","oneshot",(btn)=>{
+  bind("reveal-wisdom", "oneshot", (btn) => {
     const msg = pick(WISDOM);
-    btn.classList.add("isDone");
-    scrambleTo(btn, msg);
+    scrambleTo(btn, msg, 520);
+    btn.classList.add("isLong");
   });
 
-  bind("reveal-tarot","oneshot",(btn)=>{
+  bind("reveal-number", "oneshot", (btn) => {
+    const n = 1 + Math.floor(Math.random() * 10);
+    scrambleTo(btn, n, 360);
+  });
+
+  bind("reveal-joke", "oneshot", (btn) => {
+    scrambleTo(btn, pick(JOKES), 560);
+    btn.classList.add("isLong");
+  });
+
+  bind("reveal-tarot", "oneshot", (btn) => {
     const [card, msg] = pick(TAROT);
-    btn.classList.add("isDone");
-    scrambleTo(btn, card);
+    // show both in the reveal panel, but keep it simple
+    scrambleTo(btn, `${card}. ${msg}`, 560);
+    btn.classList.add("isLong");
   });
 
-  bind("reveal-dinner","reroll",(btn)=>{
+  bind("reveal-dinner", "reroll", (btn) => {
     const list = window.DINNERLIST || [];
     const text = list.length ? pick(list) : "Add dinnerlist.js";
     setRevealContent(btn, text);
-    btn.classList.add("isDone");
+    btn.classList.add("isDone", "isLong");
+    btn.disabled = false;
   });
 
-  bind("reveal-watch","reroll",(btn)=>{
+  bind("reveal-watch", "reroll", (btn) => {
     const list = window.WATCHLIST || [];
     const text = list.length ? (pick(list).title || "—") : "Add watchlist.js";
     setRevealContent(btn, text);
-    btn.classList.add("isDone");
+    btn.classList.add("isDone", "isLong");
+    btn.disabled = false;
   });
 
-  bind("reveal-fact","oneshot",(btn)=>{
-    btn.classList.add("isDone");
-    scrambleTo(btn, pick(FACTS));
-  });
-
-  bind("reveal-joke","oneshot",(btn)=>{
-    btn.classList.add("isDone");
-    scrambleTo(btn, pick(JOKES));
+  bind("reveal-fact", "oneshot", (btn) => {
+    scrambleTo(btn, pick(FACTS), 520);
+    btn.classList.add("isLong");
   });
 });
