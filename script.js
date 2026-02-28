@@ -90,13 +90,6 @@ window.addEventListener("DOMContentLoaded", () => {
     "Quiet beats loud today.",
   ];
 
-  const JOKES = [
-    "Parallel lines have so much in common. It’s a shame they’ll never meet.",
-    "I tried to read a book on anti-gravity. Couldn’t put it down.",
-    "I told my computer I needed a break. It said: no problem, I’ll go to sleep.",
-    "I’m reading a book about teleportation. It’s bound to take me places."
-  ];
-
   const FACTS = [
     "Honey never spoils.",
     "Octopuses have three hearts.",
@@ -316,7 +309,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
   bind("reveal-number", "oneshot", () => String(1 + Math.floor(Math.random()*10)));
 
-  bind("reveal-joke", "oneshot", () => pick(JOKES));
+  bind("reveal-joke", "oneshot", () => {
+  const list = window.JOKES || [];
+  return list.length ? pick(list) : "Add jokes.js";
+});
 
   bind("reveal-tarot", "oneshot", () => {
     const [card, msg] = pick(TAROT);
