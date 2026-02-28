@@ -368,11 +368,31 @@ bind("reveal-dinner", "reroll", () => {
   return (typeof item === "string") ? item : (item.title || item.name || "Dinner idea");
 });
 
- // Watch Vibe (Format, Era, Mood, Genre, starts with 'X')
-const WATCH_FORMAT = ["Movie", "Series", "Documentary", "Animated"];
-const WATCH_ERA    = ["Classic", "80s", "90s", "2000s", "Recent", "New"];
-const WATCH_MOOD   = ["Cozy", "Light", "Feel-good", "Smart", "Weird", "Intense", "Dark"];
-const WATCH_GENRE  = ["Comedy", "Drama", "Thriller", "Action", "Crime", "Sci-fi", "Adventure", "Romance"];
+// Watch (Movie/Show + starts with letter + vibe)
+const WATCH_TYPE = ["Movie", "Show"];
+
+const WATCH_VIBE = [
+  "Fun",
+  "Exciting",
+  "Serious",
+  "Intense",
+  "Cozy",
+  "Light",
+  "Feel-good",
+  "Smart",
+  "Weird",
+  "Dark",
+  "Chill",
+  "Fast-paced",
+  "Emotional",
+  "Suspenseful",
+  "Inspiring",
+  "Mind-bending",
+  "Heartwarming",
+  "Messy",
+  "Gritty",
+  "Comfort"
+];
 
 function randomLetter(){
   const A = "A".charCodeAt(0);
@@ -380,12 +400,10 @@ function randomLetter(){
 }
 
 function buildWatchPrompt(){
-  const format = pick(WATCH_FORMAT);
-  const era    = pick(WATCH_ERA);
-  const mood   = pick(WATCH_MOOD);
-  const genre  = pick(WATCH_GENRE);
+  const type = pick(WATCH_TYPE);
+  const vibe = pick(WATCH_VIBE);
   const letter = randomLetter();
-  return `${format}, ${era}, ${mood}, ${genre}, starts with '${letter}'`;
+  return `${type}, starts with '${letter}', ${vibe}`;
 }
 
 bind("reveal-watch", "reroll", () => buildWatchPrompt());
