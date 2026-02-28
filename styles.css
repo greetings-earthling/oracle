@@ -279,6 +279,8 @@ body{
 .mastIcon{
   height:70px;
   width:auto;
+  position: relative;
+  top: -2px;
   transform: scale(1.15);
   transform-origin: left center;
 }
