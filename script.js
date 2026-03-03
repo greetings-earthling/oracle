@@ -29,27 +29,37 @@ window.addEventListener("DOMContentLoaded", () => {
     return inner;
   }
 
-  function ensureFX(btn){
-    let video = btn.querySelector(".fxVideo");
-    if (!video){
-      video = document.createElement("video");
-      video.className = "fxVideo";
-      video.src = FX_SRC;
-      video.muted = true;
-      video.playsInline = true;
-      video.preload = "auto";
-      btn.insertBefore(video, btn.firstChild);
-    }
+function ensureFX(btn){
+  let video = btn.querySelector(".fxVideo");
+  if (!video){
+    video = document.createElement("video");
+    video.className = "fxVideo";
+    video.src = FX_SRC;
 
-    let tint = btn.querySelector(".fxTint");
-    if (!tint){
-      tint = document.createElement("div");
-      tint.className = "fxTint";
-      btn.insertBefore(tint, video.nextSibling);
-    }
+    // iOS Safari rules
+    video.muted = true;
+    video.playsInline = true;
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
 
-    return { video, tint };
+    // helpful on mobile
+    video.preload = "auto";
+    video.autoplay = false;
+    video.loop = false;
+    video.controls = false;
+
+    btn.insertBefore(video, btn.firstChild);
   }
+
+  let tint = btn.querySelector(".fxTint");
+  if (!tint){
+    tint = document.createElement("div");
+    tint.className = "fxTint";
+    btn.insertBefore(tint, video.nextSibling);
+  }
+
+  return { video, tint };
+}
 
   // tint blobs
   const rint = (a,b)=> a + Math.floor(Math.random()*(b-a+1));
@@ -216,12 +226,16 @@ window.addEventListener("DOMContentLoaded", () => {
     tint.style.transition  = "none";
     video.style.opacity = "1";
 
-    try{
-      video.pause();
-      video.currentTime = 0;
-    }catch(e){}
+// iOS Safari: do not force currentTime right before play
+try { video.pause(); } catch(e){}
 
-    video.play().catch(()=>{});
+// reload is more reliable than seeking on iOS
+try { video.load(); } catch(e){}
+
+// play on the next frame (keeps it inside the click chain better)
+requestAnimationFrame(() => {
+  video.play().catch(()=>{});
+});
 
     // fade smoke + tint away
     setTimeout(() => {
