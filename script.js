@@ -382,77 +382,19 @@ bind("reveal-dinner", "reroll", () => {
   return (typeof item === "string") ? item : (item.title || item.name || "Dinner idea");
 });
 
-// Watch (Movie/Show + starts with letter + vibe)
-const WATCH_TYPE = ["Movie", "Show"];
+bind("reveal-watch", "reroll", () => {
+  const list = window.WATCHLIST || [];
+  if (!list.length) return "Add watchlist.js";
 
-const LETTER_POOL = [
-  // common-ish
-  "B","B","B","B",
-  "D","D","D","D",
-  "G","G","G","G",
-  "L","L","L","L",
-  "M","M","M","M",
-  "P","P","P","P",
-  "R","R","R","R","R",
-  "S","S","S","S","S",
-  "T","T","T","T","T",
-  "W","W","W","W",
+  const item = pick(list);
 
-  // sometimes
-  "C","C","C",
-  "F","F","F",
-  "H","H","H",
-  "J","J","J",
-  "K","K","K",
-  "N","N","N",
-  "O","O","O",
-  "Y","Y","Y",
+  // Format nicely
+  if (item.type && item.year) {
+    return `${item.title} (${item.year}) — ${item.type}`;
+  }
 
-  // rare
-  "E","E",
-  "I","I",
-  "V","V",
-  "U","U",
-
-  // very rare
-  "Q","X","Z"
-];
-
-const WATCH_VIBE = [
-  "Fun",
-  "Exciting",
-  "Serious",
-  "Intense",
-  "Cozy",
-  "Light",
-  "Feel-good",
-  "Smart",
-  "Weird",
-  "Dark",
-  "Chill",
-  "Fast-paced",
-  "Emotional",
-  "Suspenseful",
-  "Inspiring",
-  "Mind-bending",
-  "Heartwarming",
-  "Messy",
-  "Gritty",
-  "Comfort"
-];
-
-function randomWatchLetter(){
-  return pick(LETTER_POOL);
-}
-
-function buildWatchPrompt(){
-  const type = pick(WATCH_TYPE);
-  const vibe = pick(WATCH_VIBE);
-  const letter = randomWatchLetter();
-  return `${type}, starts with '${letter}', ${vibe}`;
-}
-
-bind("reveal-watch", "reroll", () => buildWatchPrompt());
+  return item.title || "Watch something good.";
+});
 
 bind("reveal-fact", "oneshot", () => pick(FACTS));
 });
