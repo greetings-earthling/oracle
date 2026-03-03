@@ -112,7 +112,7 @@ window.DINNERLIST = [
   "Dirty rice and sausage",
   "Donair",
   "Drunken garlic roast",
-  "Dumplings"
+  "Dumplings",
 
     // E
   "Eggplant parmesan",
@@ -177,7 +177,7 @@ window.DINNERLIST = [
   "Lemon chicken",
   "Lemon garlic salmon",
   "Lobster roll",
-  "Low and slow oven baked ribs"
+  "Low and slow oven baked ribs",
 
   // M
   "Mac and cheese",
@@ -223,7 +223,7 @@ window.DINNERLIST = [
   "Pork tenderloin",
   "Pot roast",
   "Pressure cooker short ribs",
-  "Pulled pork sandwich"
+  "Pulled pork sandwich",
 
   // Q
   "Quesadilla",
