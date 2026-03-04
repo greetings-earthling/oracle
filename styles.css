@@ -7,92 +7,85 @@
 
   --radius:6px;
   --max:980px;
-
-  /* fixed text column width so all titles/subtext line up */
-  --textCol: 240px;
+  --textCol:240px;
 }
 
 *{ box-sizing:border-box; }
 
 body{
   margin:0;
-  background:var(--paper);
   color:var(--ink);
   font-family:"IBM Plex Sans", system-ui, sans-serif;
-}
 
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  background-image:url("./ads/wallpaper2.jpg");
-  background-repeat:repeat;
-  background-size:100%;
-  opacity:1;
-  pointer-events:none;
-  z-index:-2;   /* base layer */
-}
-
-body::after{
-  content:"";
-  position:fixed;
-  inset:0;
-  background-image:url("./ads/wallpaper.png");
-  background-repeat:repeat;
-  background-size:300px;
-  opacity:.35;  /* subtle texture */
-  pointer-events:none;
-  z-index:-1;   /* texture on top */
-}
-
-.page{
-  max-width:var(--max);
-  margin:0 auto;
-  padding:12px 14px 18px;
+  /* Base JPG + tiled PNG texture on top */
+  background-image:
+    url("./ads/wallpaper.png"),
+    url("./ads/wallpaper2.jpg");
+  background-repeat:repeat, no-repeat;
+  background-size:300px, cover;
+  background-position:0 0, center;
 }
 
 .pageWrap{
-  background:#fff;
-  max-width:1000px;
+  max-width:var(--max);
   margin:0 auto;
   min-height:100vh;
-  position:relative;
-}
 
-.pageWrap::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background-image:url("./ads/wallpaper.png");
-  background-repeat:repeat;
-  background-size:300px;
-  opacity:.12;            /* tweak */
-  pointer-events:none;
-  z-index:1;
-}
+  /* White column, but lets texture faintly show through */
+  background:rgba(255,255,255,.96);
 
-.pageWrap > *{
-  position:relative;
-  z-index:2;
+  padding:12px 14px 18px;
 }
 
 .mast{
-  border-bottom:2px solid #000000;
-  padding:8px 0 18px;
-  margin:0 0 28px;
+  /* FIX: line width now matches widgets because it lives inside pageWrap */
+  border-bottom:2px solid #000;
+  padding:10px 0 18px;
+  margin:0 0 18px;
 }
 
 .mastInner{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding-top:4px;
+  gap:16px;
 }
 
 .mastLeft{
   display:flex;
   align-items:center;
   gap:12px;
+}
+
+.mastIcon{
+  height:78px;
+  width:auto;
+  flex-shrink:0;
+  position:relative;
+  top:-2px;
+}
+
+.mastText{
+  display:flex;
+  flex-direction:column;
+}
+
+.siteTitle{
+  margin:0;
+  font-family:"Bebas Neue", sans-serif;
+  font-size:48px;
+  line-height:1;
+
+  /* tighter + a touch bolder-looking */
+  letter-spacing:-0.01em;
+  -webkit-text-stroke:0.35px currentColor;
+}
+
+.siteSub{
+  margin:2px 0 0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.2;
 }
 
 .mastRight{
@@ -107,27 +100,12 @@ body::after{
   font-size:.55rem;
   letter-spacing:.12em;
   text-transform:lowercase;
-  opacity:.5;
+  opacity:.55;
 }
 
 .geLogo{
   height:50px;
   display:block;
-}
-
-.siteTitle{
-  margin:0;
-  font-family:"Bebas Neue", sans-serif;
-  letter-spacing:.005em;  
-  font-size:48px;
-  line-height:1;
-  font-weight:700;    
-}
-
-.siteSub{
-  margin:6px 0 0;
-  color:var(--muted);
-  font-size:14px;
 }
 
 /* GRID */
@@ -146,16 +124,12 @@ body::after{
   background:#fff;
 
   display:grid;
-  grid-template-columns: var(--textCol) 1fr; /* fixed left col */
-  min-height:92px; /* tighter */
+  grid-template-columns:var(--textCol) 1fr;
+  min-height:92px;
 }
 
-/* full width cards */
-.card.isWide{
-  grid-column: 1 / -1;
-}
+.card.isWide{ grid-column:1 / -1; }
 
-/* LEFT SIDE */
 .cardText{
   padding:12px;
   display:flex;
@@ -179,7 +153,6 @@ body::after{
   color:var(--muted);
 }
 
-/* clamp pre-copy so cards stay tight */
 .preClamp{
   display:-webkit-box;
   -webkit-line-clamp:2;
@@ -187,10 +160,7 @@ body::after{
   overflow:hidden;
 }
 
-/* =========================
-   REVEAL AREA
-========================= */
-
+/* REVEAL */
 .reveal{
   border:0;
   background:#fff;
@@ -205,7 +175,7 @@ body::after{
   font-size:12px;
   letter-spacing:.10em;
   text-transform:uppercase;
-  transition: background-color 900ms ease;
+  transition:background-color 900ms ease;
   color:rgba(11,13,18,.92);
   text-align:center;
 
@@ -214,11 +184,8 @@ body::after{
   padding:12px;
 }
 
-.reveal:hover{
-  background:rgba(0,0,0,.04);
-}
+.reveal:hover{ background:rgba(0,0,0,.04); }
 
-/* the text */
 .revealInner{
   position:relative;
   z-index:3;
@@ -226,7 +193,6 @@ body::after{
   transition:opacity 400ms ease;
 }
 
-/* black final state */
 .reveal.isDone{
   background:#0b0d12;
   color:#fff;
@@ -235,13 +201,11 @@ body::after{
   font-weight:700;
 }
 
-/* Short outputs */
 .reveal.isDone:not(.isLong){
   font-size:34px;
   letter-spacing:.04em;
 }
 
-/* Long outputs */
 .reveal.isDone.isLong{
   font-size:16px;
   font-weight:600;
@@ -250,13 +214,12 @@ body::after{
   text-transform:none;
 }
 
-/* keep long text from being billboard wide */
 .reveal.isDone .revealInner{
   max-width:58ch;
   margin:0 auto;
 }
 
-/* FX layers */
+/* FX */
 .fxVideo{
   position:absolute;
   inset:0;
@@ -278,24 +241,21 @@ body::after{
   opacity:0;
 
   mix-blend-mode:color;
-  filter: blur(18px) saturate(1.6) contrast(1.05);
-  transform: scale(1.15);
+  filter:blur(18px) saturate(1.6) contrast(1.05);
+  transform:scale(1.15);
 }
 
 .reveal.isRevealing .fxTint{
-  animation: tintDrift 2.4s ease-in-out infinite alternate;
+  animation:tintDrift 2.4s ease-in-out infinite alternate;
 }
 
 @keyframes tintDrift{
-  0%   { transform: scale(1.15) translate(-2%, -1%); }
-  100% { transform: scale(1.15) translate(2%, 1%); }
+  0%{ transform:scale(1.15) translate(-2%, -1%); }
+  100%{ transform:scale(1.15) translate(2%, 1%); }
 }
 
-/* Lucky Colour special: fill whole reveal */
-.reveal.isColour{
-  padding:0;
-}
-
+/* Colour */
+.reveal.isColour{ padding:0; }
 .reveal.isColour.isDone{
   text-align:left;
   justify-content:flex-end;
@@ -311,18 +271,7 @@ body::after{
   padding:6px 8px;
   border:1px solid rgba(255,255,255,.35);
   border-radius:4px;
-  backdrop-filter: blur(2px);
-}
-
-.mastIcon{
-  width:72px;       /* adjust if needed */
-  height:auto;
-  flex-shrink:0;
-}
-
-.mastText{
-  display:flex;
-  flex-direction:column;
+  backdrop-filter:blur(2px);
 }
 
 /* Footer */
@@ -335,38 +284,11 @@ body::after{
   font-size:.75rem;
   color:#666;
   border-top:1px solid var(--line);
-  height:auto;            /* remove the tall empty box */
 }
 
 /* Mobile */
 @media (max-width:820px){
-  :root{ --textCol: 190px; }
+  :root{ --textCol:190px; }
   .grid{ grid-template-columns:1fr; }
   .card.isWide{ grid-column:auto; }
-}
-
-/* --- HEADER ALIGN + SIZE TWEAKS (override) --- */
-
-/* Make header content align with card edges */
-.mast{
-  margin-left:-14px;
-  margin-right:-14px;
-  padding-left:14px;
-  padding-right:14px;
-}
-
-/* Make the icon match the title height */
-.mastIcon{
-  height:75px;
-  width:auto;
-  position: relative;
-  top: -3px;
-  transform: scale(1.15);
-  transform-origin: left center;
-}
-
-/* Tighten title/subtitle spacing */
-.siteSub{
-  margin-top:2px;  /* was 6px */
-  line-height:1.2;
 }
