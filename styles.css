@@ -17,13 +17,21 @@ body{
   color:var(--ink);
   font-family:"IBM Plex Sans", system-ui, sans-serif;
 
-  /* Base JPG + tiled PNG texture on top */
   background-image:
-    url("./ads/wallpaper.png"),
-    url("./ads/wallpaper2.jpg");
-  background-repeat:repeat, no-repeat;
-  background-size:300px, cover;
-  background-position:0 0, center;
+    url("./ads/wallpaper.png"),   /* texture */
+    url("./ads/wallpaper2.jpg");  /* space */
+
+  background-repeat:
+    repeat,
+    no-repeat;
+
+  background-size:
+    300px,
+    cover;
+
+  background-position:
+    0 0,
+    center;
 }
 
 .page{
@@ -37,14 +45,11 @@ body{
 }
 
 .pageWrap{
-  max-width:var(--max);
+  max-width:1000px;
   margin:0 auto;
   min-height:100vh;
 
-  /* White column, but lets texture faintly show through */
-  background:rgba(255,255,255,.96);
-
-  padding:12px 14px 18px;
+  background:rgba(255,255,255,0.97);
 }
 
 .mast{
