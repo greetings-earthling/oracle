@@ -27,7 +27,7 @@ body::before{
 
   background:url("./ads/wallpaper.png") 0 0 / 300px repeat;
 
-  opacity:.18;
+  opacity:.3;
   pointer-events:none;
 
   z-index:-1;
