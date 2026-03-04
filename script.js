@@ -1,17 +1,15 @@
 // script.js
 window.addEventListener("DOMContentLoaded", () => {
-
   const FX_SRC = "./ads/Smoke.mp4";
 
   // timing
-  const SMOKE_ONLY_MS     = 1500;
   const SMOKE_FADE_START  = 1500;
   const SMOKE_FADE_MS     = 1000;
   const TEXT_START_MS     = 2000;
   const TEXT_FADE_MS      = 1500;
   const TOTAL_MS          = 3500;
-  const STEP_GAP_MS       = 520;  
-  const STEP_FADE_MS      = 220;  
+  const STEP_GAP_MS       = 520;
+  const STEP_FADE_MS      = 220;
 
   const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
@@ -29,37 +27,35 @@ window.addEventListener("DOMContentLoaded", () => {
     return inner;
   }
 
-function ensureFX(btn){
-  let video = btn.querySelector(".fxVideo");
-  if (!video){
-    video = document.createElement("video");
-    video.className = "fxVideo";
-    video.src = FX_SRC;
+  function ensureFX(btn){
+    let video = btn.querySelector(".fxVideo");
+    if (!video){
+      video = document.createElement("video");
+      video.className = "fxVideo";
+      video.src = FX_SRC;
 
-    // iOS Safari rules
-    video.muted = true;
-    video.playsInline = true;
-    video.setAttribute("playsinline", "");
-    video.setAttribute("webkit-playsinline", "");
+      video.muted = true;
+      video.playsInline = true;
+      video.setAttribute("playsinline", "");
+      video.setAttribute("webkit-playsinline", "");
 
-    // helpful on mobile
-    video.preload = "auto";
-    video.autoplay = false;
-    video.loop = false;
-    video.controls = false;
+      video.preload = "auto";
+      video.autoplay = false;
+      video.loop = false;
+      video.controls = false;
 
-    btn.insertBefore(video, btn.firstChild);
+      btn.insertBefore(video, btn.firstChild);
+    }
+
+    let tint = btn.querySelector(".fxTint");
+    if (!tint){
+      tint = document.createElement("div");
+      tint.className = "fxTint";
+      btn.insertBefore(tint, video.nextSibling);
+    }
+
+    return { video, tint };
   }
-
-  let tint = btn.querySelector(".fxTint");
-  if (!tint){
-    tint = document.createElement("div");
-    tint.className = "fxTint";
-    btn.insertBefore(tint, video.nextSibling);
-  }
-
-  return { video, tint };
-}
 
   // tint blobs
   const rint = (a,b)=> a + Math.floor(Math.random()*(b-a+1));
@@ -85,7 +81,7 @@ function ensureFX(btn){
     "reveal-meter":  [135, 155, 285],
     "reveal-wisdom": [250, 275, 205],
     "reveal-number": [35,  15,  300],
-    "reveal-colour": null,              // greyscale smoke
+    "reveal-colour": null,
     "reveal-joke":   [320, 285, 205],
     "reveal-dinner": [24,  10,  300],
     "reveal-watch":  [210, 235, 190],
@@ -93,48 +89,40 @@ function ensureFX(btn){
   };
 
   // data
-const WISDOM = [
-  "Earthlings are. Today: Breathe in. Be present. Let go.",
-  "Earthlings wonder. Today: Stay curious. Get lost. Learn forever.",
-  "Earthlings care. Today: Be gentle. Stay brave. Lead with love.",
-  "Earthlings dare. Today: Be bold. Be true. Be whole.",
-  "Earthlings create. Today: Make beauty. Share truth. Leave traces.",
-  "Earthlings grow. Today: Let go. Adapt. Begin again.",
-  "Earthlings belong. Today: Welcome others. Make space. Stay open.",
-  "Earthlings tend. Today: Share. Be the person you once needed.",
-  "Earthlings laugh. Today: Spread joy. Don’t take things so seriously.",
-  "Earthlings marvel. Today: Let wonder guide you. Be grateful."
-];
-
-  const FACTS = [
-    "Honey never spoils.",
-    "Octopuses have three hearts.",
-    "Bananas are berries.",
-    "A day on Venus is longer than a year on Venus.",
-    "Some turtles can breathe through their butts."
+  const WISDOM = [
+    "Earthlings are. Today: Breathe in. Be present. Let go.",
+    "Earthlings wonder. Today: Stay curious. Get lost. Learn forever.",
+    "Earthlings care. Today: Be gentle. Stay brave. Lead with love.",
+    "Earthlings dare. Today: Be bold. Be true. Be whole.",
+    "Earthlings create. Today: Make beauty. Share truth. Leave traces.",
+    "Earthlings grow. Today: Let go. Adapt. Begin again.",
+    "Earthlings belong. Today: Welcome others. Make space. Stay open.",
+    "Earthlings tend. Today: Share. Be the person you once needed.",
+    "Earthlings laugh. Today: Spread joy. Don’t take things so seriously.",
+    "Earthlings marvel. Today: Let wonder guide you. Be grateful."
   ];
 
-const METER = [
-  { t: "Luck is low today. Move slowly and choose carefully.", w: 7 },
-  { t: "Luck is quiet. Patience will serve you well.", w: 9 },
-  { t: "Luck is soft today. Small steps are wiser than big ones.", w: 12 },
-  { t: "Luck is uncertain. Stay steady and trust simple choices.", w: 14 },
-  { t: "Luck is balanced today. Your choices shape the outcome.", w: 20 },
-  { t: "Luck is steady. Consistent effort will carry you forward.", w: 20 },
-  { t: "Luck is leaning your way today. Try the good idea.", w: 16 },
-  { t: "Luck is strong. Progress comes easier today.", w: 12 },
-  { t: "Luck is very strong today. Trust your instincts.", w: 7 },
-  { t: "Luck is powerful today. A bold step may be rewarded.", w: 3 },
-  { t: "Luck is overflowing today. Doors may open where none stood before.", w: 1 },
-  { t: "The universe is strangely aligned today. A rare stroke of luck may appear.", w: 1 },
-  { t: "Cosmic glitch detected. Luck levels are behaving unpredictably.", w: 2 },
-  { t: "The universe shrugged today. Anything could happen.", w: 2 },
-  { t: "Luck is gathering around you. Pay attention to small opportunities.", w: 5 },
-{ t: "Luck moves quietly today. The right choice may be subtle.", w: 6 },
-{ t: "Luck favors the curious today. Follow an interesting path.", w: 5 },
-{ t: "Luck is turning in your direction. A good moment may arrive.", w: 4 },
-{ t: "A gentle current of luck is present today. Go with the flow.", w: 5 }
-];
+  const METER = [
+    { t: "Luck is low today. Move slowly and choose carefully.", w: 7 },
+    { t: "Luck is quiet. Patience will serve you well.", w: 9 },
+    { t: "Luck is soft today. Small steps are wiser than big ones.", w: 12 },
+    { t: "Luck is uncertain. Stay steady and trust simple choices.", w: 14 },
+    { t: "Luck is balanced today. Your choices shape the outcome.", w: 20 },
+    { t: "Luck is steady. Consistent effort will carry you forward.", w: 20 },
+    { t: "Luck is leaning your way today. Try the good idea.", w: 16 },
+    { t: "Luck is strong. Progress comes easier today.", w: 12 },
+    { t: "Luck is very strong today. Trust your instincts.", w: 7 },
+    { t: "Luck is powerful today. A bold step may be rewarded.", w: 3 },
+    { t: "Luck is overflowing today. Doors may open where none stood before.", w: 1 },
+    { t: "The universe is strangely aligned today. A rare stroke of luck may appear.", w: 1 },
+    { t: "Cosmic glitch detected. Luck levels are behaving unpredictably.", w: 2 },
+    { t: "The universe shrugged today. Anything could happen.", w: 2 },
+    { t: "Luck is gathering around you. Pay attention to small opportunities.", w: 5 },
+    { t: "Luck moves quietly today. The right choice may be subtle.", w: 6 },
+    { t: "Luck favors the curious today. Follow an interesting path.", w: 5 },
+    { t: "Luck is turning in your direction. A good moment may arrive.", w: 4 },
+    { t: "A gentle current of luck is present today. Go with the flow.", w: 5 }
+  ];
 
   function weightedPick(items){
     const total = items.reduce((sum, x) => sum + x.w, 0);
@@ -194,7 +182,6 @@ const METER = [
     const inner = ensureInner(btn);
     const { video, tint } = ensureFX(btn);
 
-    // reset to TAP state (but hide immediately on click)
     inner.style.transition = "none";
     inner.style.opacity = "0";
     inner.textContent = "";
@@ -203,14 +190,11 @@ const METER = [
     const steps = isSteps ? finalText.steps.map(s => String(s)) : null;
 
     const text = isSteps ? steps.join(" - ") : String(finalText);
-    const long = isLongText(text);
-    if (long) btn.classList.add("isLong");
+    if (isLongText(text)) btn.classList.add("isLong");
 
-    // black immediately under smoke
     btn.style.background = "#0b0d12";
     btn.style.color = "#ffffff";
 
-    // tint
     const hues = PALETTES[btn.id] ?? [260, 290, 180];
     if (hues){
       tint.style.display = "block";
@@ -222,24 +206,15 @@ const METER = [
       tint.style.backgroundImage = "none";
     }
 
-    // smoke
     video.style.display = "block";
     video.style.transition = "none";
     tint.style.transition  = "none";
     video.style.opacity = "1";
 
-// iOS Safari: do not force currentTime right before play
-try { video.pause(); } catch(e){}
+    try { video.pause(); } catch(e){}
+    try { video.load(); } catch(e){}
+    requestAnimationFrame(() => { video.play().catch(()=>{}); });
 
-// reload is more reliable than seeking on iOS
-try { video.load(); } catch(e){}
-
-// play on the next frame (keeps it inside the click chain better)
-requestAnimationFrame(() => {
-  video.play().catch(()=>{});
-});
-
-    // fade smoke + tint away
     setTimeout(() => {
       video.style.transition = `opacity ${SMOKE_FADE_MS}ms ease`;
       tint.style.transition  = `opacity ${SMOKE_FADE_MS}ms ease`;
@@ -250,37 +225,26 @@ requestAnimationFrame(() => {
         video.style.display = "none";
         tint.style.display = "none";
       }, SMOKE_FADE_MS + 30);
-
     }, SMOKE_FADE_START);
 
-  function stepSwap(inner, nextText){
-    // fade out quick
-    inner.style.transition = `opacity ${STEP_FADE_MS}ms ease`;
-    inner.style.opacity = "0";
+    function stepSwap(inner, nextText){
+      inner.style.transition = `opacity ${STEP_FADE_MS}ms ease`;
+      inner.style.opacity = "0";
+      setTimeout(() => {
+        inner.textContent = nextText;
+        requestAnimationFrame(() => {
+          inner.style.transition = `opacity ${STEP_FADE_MS}ms ease`;
+          inner.style.opacity = "1";
+        });
+      }, STEP_FADE_MS);
+    }
 
     setTimeout(() => {
-      inner.textContent = nextText;
-      // fade in
-      requestAnimationFrame(() => {
-        inner.style.transition = `opacity ${STEP_FADE_MS}ms ease`;
-        inner.style.opacity = "1";
-      });
-    }, STEP_FADE_MS);
-  }
-    
-    // TEXT START: apply FINAL FORM first, then fade it in
-    setTimeout(() => {
-      // make it final styled BEFORE visible
       btn.classList.add("isDone");
       btn.classList.remove("isRevealing");
-    const isSteps = finalText && typeof finalText === "object" && Array.isArray(finalText.steps);
-    const steps = isSteps ? finalText.steps.map(s => String(s)) : null;
 
-    const text = isSteps ? steps.join(" - ") : String(finalText);
-      // colour special: fade in the label, and transition bg to the colour
       if (btn.dataset.kind === "colour" && btn.dataset.hex){
         const hex = btn.dataset.hex;
-
         btn.classList.add("isColour", "isLong");
         btn.style.backgroundColor = hex;
 
@@ -295,27 +259,22 @@ requestAnimationFrame(() => {
 
         btn.innerHTML = "";
         btn.appendChild(label);
-        // fade label in with same timing
+
         label.style.opacity = "0";
         label.style.transition = `opacity ${TEXT_FADE_MS}ms ease`;
         requestAnimationFrame(() => { label.style.opacity = "1"; });
-
-           } else {
-        // normal text OR step-by-step
+      } else {
         inner.style.transition = `opacity ${TEXT_FADE_MS}ms ease`;
         inner.style.opacity = "0";
         inner.textContent = "";
 
-        // fade in first in final styling
         requestAnimationFrame(() => {
           inner.style.transition = `opacity ${TEXT_FADE_MS}ms ease`;
           inner.style.opacity = "1";
         });
 
         if (steps){
-          // reveal one at a time in the same box
           inner.textContent = steps[0];
-
           for (let i = 1; i < steps.length; i++){
             setTimeout(() => {
               stepSwap(inner, steps.slice(0, i + 1).join(" - "));
@@ -327,14 +286,9 @@ requestAnimationFrame(() => {
       }
     }, TEXT_START_MS);
 
-    // end: just unlock and disable if needed (no style changes here)
     setTimeout(() => {
       btn.classList.remove("isBusy");
-
-      if (mode === "oneshot") btn.disabled = true;
-      else btn.disabled = false;
-
-      // clear colour metadata (so rerolls don't reuse old)
+      btn.disabled = (mode === "oneshot");
       btn.dataset.kind = "";
       btn.dataset.hex = "";
     }, TOTAL_MS);
@@ -354,47 +308,37 @@ requestAnimationFrame(() => {
     });
   }
 
-bind("reveal-meter", "oneshot", () => weightedPick(METER).t);
+  bind("reveal-meter", "oneshot", () => weightedPick(METER).t);
 
-bind("reveal-colour", "oneshot", (btn) => {
+  bind("reveal-colour", "oneshot", (btn) => {
     const hex = rollNiceHex();
     btn.dataset.kind = "colour";
     btn.dataset.hex = hex;
-    return hex; // used for label
+    return hex;
   });
 
-bind("reveal-wisdom", "oneshot", () => pick(WISDOM));
+  bind("reveal-wisdom", "oneshot", () => pick(WISDOM));
+  bind("reveal-number", "oneshot", () => String(1 + Math.floor(Math.random()*9)));
 
-bind("reveal-number", "oneshot", () => String(1 + Math.floor(Math.random()*9)));
+  bind("reveal-joke", "oneshot", () => {
+    const list = window.JOKES || [];
+    return list.length ? pick(list) : "Add jokes.js";
+  });
 
-bind("reveal-joke", "oneshot", () => {
-  const list = window.JOKES || [];
-  return list.length ? pick(list) : "Add jokes.js";
-});
+  bind("reveal-dinner", "reroll", () => {
+    const list = window.DINNERLIST || [];
+    return list.length ? pick(list) : "Add dinnerlist.js";
+  });
 
-bind("reveal-dinner", "reroll", () => {
-  const list = window.DINNERLIST || [];
-  if (!list.length) return "Add dinnerlist.js";
-  const item = pick(list);
-  return (typeof item === "string") ? item : (item.title || item.name || "Dinner idea");
-});
+  bind("reveal-watch", "reroll", () => {
+    const list = window.WATCHLIST || [];
+    if (!list.length) return "Add watchlist.js";
+    const item = pick(list);
+    return (item && item.type && item.year) ? `${item.title} (${item.year}) — ${item.type}` : (item.title || "Watch something good.");
+  });
 
-bind("reveal-watch", "reroll", () => {
-  const list = window.WATCHLIST || [];
-  if (!list.length) return "Add watchlist.js";
-
-  const item = pick(list);
-
-  // Format nicely
-  if (item.type && item.year) {
-    return `${item.title} (${item.year}) — ${item.type}`;
-  }
-
-  return item.title || "Watch something good.";
-});
-
-bind("reveal-fact", "oneshot", () => {
-  const list = window.FUNFACTS || [];
-  return list.length ? pick(list) : "Add funfacts.js";
-});
+  bind("reveal-fact", "oneshot", () => {
+    const list = window.FUNFACTS || [];
+    return list.length ? pick(list) : "Add funfacts.js";
+  });
 });
