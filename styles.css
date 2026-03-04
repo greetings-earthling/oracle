@@ -59,6 +59,23 @@ body::after{
   position:relative;
 }
 
+.pageWrap::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:url("./ads/wallpaper.png");
+  background-repeat:repeat;
+  background-size:300px;
+  opacity:.12;            /* tweak */
+  pointer-events:none;
+  z-index:1;
+}
+
+.pageWrap > *{
+  position:relative;
+  z-index:2;
+}
+
 .mast{
   border-bottom:2px solid #000000;
   padding:8px 0 18px;
