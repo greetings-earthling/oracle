@@ -112,6 +112,7 @@ window.DINNERLIST = [
 "Popcorn shrimp",
 "Pot roast",
 "Poutine",
+"Prime rib",
 "Pulled pork",
 "Quesadilla",
 "Quiche",
