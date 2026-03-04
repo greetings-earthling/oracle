@@ -49,19 +49,22 @@ body::after{
   margin:0 auto;
   min-height:100vh;
 
-  background:rgba(255,255,255,.96);
+  background:rgba(255,255,255,.98);
 
   position:relative;
 }
 
-/* Optional: add a *very* subtle texture inside the white area (kept faint) */
 .pageWrap::before{
   content:"";
   position:absolute;
   inset:0;
+
   background: url("./ads/wallpaper.png") 0 0 / 300px repeat;
-  opacity:.06;
-  filter: contrast(180%) brightness(135%);
+
+  opacity:.3;                     /* was too low */
+  filter: contrast(220%) brightness(135%);
+  mix-blend-mode: multiply;
+
   pointer-events:none;
   z-index:0;
 }
