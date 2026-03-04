@@ -34,7 +34,7 @@ body::before{
   content:"";
   position:fixed;
   inset:0;
-  background: rgba(106,71,157,.22); /* tweak 0.15–0.30 */
+  background: rgba(106,71,157,.3); /* tweak 0.15–0.30 */
   pointer-events:none;
   z-index:-1;
 }
@@ -46,8 +46,16 @@ body::before{
   min-height:100vh;
   position:relative;
 
-  /* flat subtle tint */
-  background: rgba(106,71,157,.10);
+  background:#ffffff;
+}
+
+.pageWrap::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+
+  background:rgba(106,71,157,.08); /* adjust 0.05–0.12 */
 }
 
 /* MAIN CONTENT */
