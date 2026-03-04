@@ -365,7 +365,7 @@ bind("reveal-colour", "oneshot", (btn) => {
 
 bind("reveal-wisdom", "oneshot", () => pick(WISDOM));
 
-bind("reveal-number", "oneshot", () => String(1 + Math.floor(Math.random()*10)));
+bind("reveal-number", "oneshot", () => String(1 + Math.floor(Math.random()*9)));
 
 bind("reveal-joke", "oneshot", () => {
   const list = window.JOKES || [];
