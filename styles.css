@@ -61,9 +61,8 @@ body::after{
 
 .mast{
   border-bottom:2px solid #d9d9d9;
-  padding:16px 0 18px;
-  margin:0 auto 28px;
-  max-width:var(--max); /* match .page */
+  padding:8px 0 18px;
+  margin:0 0 28px 0;
 }
 
 .mastInner{
