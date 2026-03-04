@@ -41,30 +41,10 @@ body::before{
 
 .pageWrap{
   background:#fff;
-  max-width:1100px;
+  max-width:960px;
   margin:0 auto;
   min-height:100vh;
   position:relative;
-}
-
-.pageWrap::before,
-.pageWrap::after{
-  content:"";
-  position:absolute;
-  top:0;
-  bottom:0;
-  width:20px;
-  pointer-events:none;
-}
-
-.pageWrap::before{
-  left:-20px;
-  background:linear-gradient(to left, rgba(255,255,255,.9), rgba(255,255,255,0));
-}
-
-.pageWrap::after{
-  right:-20px;
-  background:linear-gradient(to right, rgba(255,255,255,.9), rgba(255,255,255,0));
 }
 
 .mast{
