@@ -28,7 +28,7 @@ body::before{
   background-image:url("./ads/wallpaper.png");
   background-repeat:repeat;
   background-size:300px;
-  opacity:.11;
+  opacity:.3;
   pointer-events:none;
   z-index:-1;
 }
