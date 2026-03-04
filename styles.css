@@ -17,19 +17,20 @@ body{
   font-family:"IBM Plex Sans", system-ui, sans-serif;
   color:var(--ink);
 
-  /* SPACE (sides) */
-  background: url("./ads/wallpaper2.jpg") center / cover no-repeat fixed;
+  background:url("./ads/wallpaper2.jpg") center / cover no-repeat fixed;
 }
 
-/* TEXTURE (over EVERYTHING, including the white center) */
 body::before{
   content:"";
   position:fixed;
   inset:0;
-  background: url("./ads/wallpaper.png") 0 0 / 300px repeat;
-  opacity:.18;            /* adjust */
+
+  background:url("./ads/wallpaper.png") 0 0 / 300px repeat;
+
+  opacity:.18;
   pointer-events:none;
-  z-index:10;
+
+  z-index:-1;
 }
 
 .page{
@@ -43,8 +44,14 @@ body::before{
 }
 
 .pageWrap{
-  background:#fff;
+  max-width:1000px;
+  margin:0 auto;
   min-height:100vh;
+
+  background:#ffffff;
+
+  position:relative;
+  z-index:1;
 }
 
 .mast{
