@@ -94,16 +94,16 @@ function ensureFX(btn){
 
   // data
 const WISDOM = [
-  "Earthlings are: Breathe in. Be present. Let go.",
-  "Earthlings wonder: Stay curious. Get lost. Learn forever.",
-  "Earthlings care: Be gentle. Stay brave. Lead with love.",
-  "Earthlings dare: Be bold. Be true. Be whole.",
-  "Earthlings create: Make beauty. Share truth. Leave traces.",
-  "Earthlings grow: Let go. Adapt. Begin again.",
-  "Earthlings belong: Welcome others. Make space. Stay open.",
-  "Earthlings tend: Share. Be the person you once needed.",
-  "Earthlings laugh: Spread joy. Don’t take things so seriously.",
-  "Earthlings marvel: Let wonder guide you. Be grateful."
+  "Earthlings are. Today: Breathe in. Be present. Let go.",
+  "Earthlings wonder. Today: Stay curious. Get lost. Learn forever.",
+  "Earthlings care. Today: Be gentle. Stay brave. Lead with love.",
+  "Earthlings dare. Today: Be bold. Be true. Be whole.",
+  "Earthlings create. Today: Make beauty. Share truth. Leave traces.",
+  "Earthlings grow. Today: Let go. Adapt. Begin again.",
+  "Earthlings belong. Today: Welcome others. Make space. Stay open.",
+  "Earthlings tend. Today: Share. Be the person you once needed.",
+  "Earthlings laugh. Today: Spread joy. Don’t take things so seriously.",
+  "Earthlings marvel. Today: Let wonder guide you. Be grateful."
 ];
 
   const FACTS = [
