@@ -26,6 +26,16 @@ body{
   background-position:0 0, center;
 }
 
+.page{
+  max-width:var(--max);
+  margin:0 auto;
+  padding:12px 14px 18px;
+
+  border-bottom:2px solid #000;
+  padding-bottom:18px;
+  margin-bottom:18px;
+}
+
 .pageWrap{
   max-width:var(--max);
   margin:0 auto;
@@ -38,8 +48,6 @@ body{
 }
 
 .mast{
-  /* FIX: line width now matches widgets because it lives inside pageWrap */
-  border-bottom:2px solid #000;
   padding:10px 0 18px;
   margin:0 0 18px;
 }
