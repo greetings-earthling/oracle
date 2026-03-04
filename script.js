@@ -396,5 +396,7 @@ bind("reveal-watch", "reroll", () => {
   return item.title || "Watch something good.";
 });
 
-bind("reveal-fact", "oneshot", () => pick(FACTS));
+bind("reveal-fact", "oneshot", () => {
+  const list = window.FUNFACTS || [];
+  return list.length ? pick(list) : "Add funfacts.js";
 });
