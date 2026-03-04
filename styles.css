@@ -33,6 +33,18 @@ body::before{
   z-index:-1;
 }
 
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image:url("./ads/wallpaper2.jpg");
+  background-repeat:repeat;
+  background-size:100%;
+  opacity:.08;
+  pointer-events:none;
+  z-index:-1;
+}
+
 .page{
   max-width:var(--max);
   margin:0 auto;
@@ -41,7 +53,7 @@ body::before{
 
 .pageWrap{
   background:#fff;
-  max-width:960px;
+  max-width:1000px;
   margin:0 auto;
   min-height:100vh;
   position:relative;
