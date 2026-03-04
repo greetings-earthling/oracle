@@ -28,9 +28,9 @@ body::before{
   background-image:url("./ads/wallpaper2.jpg");
   background-repeat:repeat;
   background-size:100%;
-  opacity:.8;
+  opacity:1;
   pointer-events:none;
-  z-index:-1;
+  z-index:-2;   /* base layer */
 }
 
 body::after{
@@ -40,9 +40,9 @@ body::after{
   background-image:url("./ads/wallpaper.png");
   background-repeat:repeat;
   background-size:300px;
-  opacity:.3;
+  opacity:.25;  /* subtle texture */
   pointer-events:none;
-  z-index:-1;
+  z-index:-1;   /* texture on top */
 }
 
 .page{
