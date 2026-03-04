@@ -38,7 +38,7 @@ window.FUNFACTS = [
 "Giraffes only need about 30 minutes of sleep per day.",
 "Your nose can remember 50,000 different scents.",
 "Sharks do not have bones.",
-"A teaspoon of honey represents the life’s work of about 12 bees.",
+"A teaspoon of honey represents the life's work of about 12 bees.",
 "Earth is not perfectly round. It bulges at the equator.",
 "Some cats are allergic to humans.",
 "The Moon is slowly drifting away from Earth.",
