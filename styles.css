@@ -60,10 +60,9 @@ body::after{
 }
 
 .mast{
-  border-bottom:2px solid #d9d9d9;
-  padding:8px 14px 18px;
-  margin:0 auto 28px;
-  max-width:var(--max);
+  border-bottom:2px solid #000000;
+  padding:8px 0 18px;
+  margin:0 0 28px;
 }
 
 .mastInner{
