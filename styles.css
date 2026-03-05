@@ -177,6 +177,19 @@ body::before{
   text-transform:uppercase;
   font-weight:800;
   line-height:1.1;
+  position:relative;
+  display:inline-block;
+}
+
+.kicker::after{
+  content:"";
+  display:block;
+  width:28px;
+  height:2px;
+  margin-top:6px;
+  background:#6a479d;
+  opacity:.6;
+  border-radius:2px;
 }
 
 .copy{
