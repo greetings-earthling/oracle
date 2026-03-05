@@ -205,7 +205,7 @@ body::before{
   font-family:"IBM Plex Mono", monospace;
   font-weight:600;
   font-size:12px;
-  letter-spacing:.10em;
+  letter-spacing:.08em;
   text-transform:uppercase;
   transition:background-color 900ms ease;
   color:rgba(11,13,18,.92);
