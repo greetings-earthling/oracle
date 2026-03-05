@@ -177,8 +177,19 @@ a:visited{ color:var(--brand); }
   flex-direction:column;
   gap:6px;
   justify-content:center;
-  border-right:1px solid var(--line);
-  background:#fff; /* keep widgets white */
+
+  background:#0b0d12;
+  color:#fff;
+  box-shadow:inset -1px 0 0 rgba(106,71,157,.5);
+  border-right:3px solid var(--brand);
+}
+
+.cardText .copy{
+  color:rgba(255,255,255,.65);
+}
+
+.cardText a{
+  color:#bda8ff;
 }
 
 .kicker{
@@ -223,10 +234,6 @@ a:visited{ color:var(--brand); }
 
 .card:nth-of-type(8) .cardText{ background:#eef8f1; }  /* fact */
 
-.cardText{
-  border-left:4px solid var(--brand);
-}
-
 /* REVEAL */
 .reveal{
   border:0;
@@ -266,6 +273,7 @@ a:visited{ color:var(--brand); }
   text-transform:none;
   letter-spacing:.02em;
   font-weight:700;
+  border-left:3px solid var(--brand);
 }
 
 .reveal.isDone:not(.isLong){
