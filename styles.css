@@ -261,8 +261,14 @@ a:visited{ color:var(--brand); }
   margin:0 auto;
 }
 
-/* optional desktop/mobile label switching */
-.tapMobile{ display:none; }
+/* Tap labels */
+.tapDesktop{ display:inline !important; }
+.tapMobile{ display:none !important; }
+
+@media (max-width:820px){
+  .tapDesktop{ display:none !important; }
+  .tapMobile{ display:inline !important; }
+}
 
 /* FX */
 .fxVideo{
@@ -331,41 +337,62 @@ a:visited{ color:var(--brand); }
   color:#666;
 }
 
+/* Default */
+.kickerThe{ display:inline; }
+
 /* MOBILE */
 @media (max-width:820px){
+
   :root{ --textCol:190px; }
-  .kickerThe{
-    display:none;
-  }
+
+  .kickerThe{ display:none; }
 
   .grid{ grid-template-columns:1fr; }
   .card.isWide{ grid-column:auto; }
 
-  /* reduce reveal text so it stays single-line more often */
+  /* tighten reveal buttons */
   .reveal{
     font-size:12px;
     letter-spacing:.06em;
     padding:10px;
   }
 
-  .tapDesktop{ display:none; }
-  .tapMobile{ display:inline; }
-
+  /* header layout */
   .mastInner{
     flex-direction:column;
     align-items:flex-start;
-    gap:12px;
+    gap:10px;
   }
 
+  .mastLeft{
+    align-items:flex-start;
+    gap:10px;
+  }
+
+  /* powered by row */
   .mastRight{
-    align-self:flex-end;
+    align-self:flex-start;
+    flex-direction:row;
+    align-items:center;
+    gap:8px;
+    text-align:left;
   }
 
-  .siteTitle{
-    font-size:40px;
+  .powered{
+    margin:0;
+    line-height:1;
   }
+
+  .geLogo{
+    height:36px;
+  }
+
+  /* title sizing */
+  .siteTitle{ font-size:42px; }
 
   .mastIcon{
     height:64px;
+    top:0;
   }
+
 }
