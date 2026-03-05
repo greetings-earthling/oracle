@@ -251,6 +251,22 @@ body::before{
   margin:0 auto;
 }
 
+.tapMobile{
+  display:none;
+}
+
+@media (max-width:820px){
+
+  .tapDesktop{
+    display:none;
+  }
+
+  .tapMobile{
+    display:inline;
+  }
+
+}
+
 /* FX */
 .fxVideo{
   position:absolute;
