@@ -109,7 +109,7 @@ body::before{
 
 .siteSub{
   margin:2px 0 0;
-  color:var(--muted);
+  color:#5a3c8f;
   font-size:14px;
   line-height:1.2;
 }
