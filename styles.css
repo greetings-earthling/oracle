@@ -50,27 +50,6 @@ body::before{
   padding:10px var(--padX) 24px;
 }
 
-/* TOP STRIP */
-.topStrip{
-  width:100%;
-  background:#9debe9;
-  text-align:center;
-  padding:10px 16px;
-  margin:0 0 24px 0;
-}
-
-.topStrip a{
-  color:#162050;
-  text-decoration:none;
-  font-size:13px;
-  font-weight:600;
-  line-height:1.4;
-}
-
-.topStrip a:hover{
-  text-decoration:underline;
-}
-
 @keyframes tickerScroll{
   from{ transform:translateX(0); }
   to{ transform:translateX(-50%); }
