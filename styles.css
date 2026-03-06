@@ -320,10 +320,13 @@ a:visited{ color:var(--brand); }
 
 /* FOOTER */
 .footnote{
-  max-width:760px;
-  margin:20px auto 0;
+  width:100%;
+  margin-top:36px;
+  padding-top:18px;
+  border-top:1px solid rgba(22,32,80,.18);
+
   font-size:11px;
-  line-height:1.55;
+  line-height:1.6;
   color:rgba(22,32,80,.55);
   text-align:center;
 }
@@ -343,6 +346,7 @@ a:visited{ color:var(--brand); }
 
 /* MOBILE */
 @media (max-width:820px){
+
   :root{ --textCol:190px; }
 
   .kickerThe{ display:none; }
@@ -356,29 +360,31 @@ a:visited{ color:var(--brand); }
     padding:10px;
   }
 
-   .mastInner{
-    flex-direction:row;
-    align-items:center;
-    justify-content:center;
-    gap:12px;
-  }
-
-  .mastLeft{
-    width:100%;
-    justify-content:center;
-    align-items:center;
-    gap:12px;
-  }
-
- .mastRight{
+  /* hide powered by block */
+  .mastRight{
     display:none;
   }
 
-  .siteTitle{
-    font-size:44px;
+  /* center header */
+  .mastInner{
+    justify-content:center;
   }
 
-  .mastIcon{
-    height:76px;
+  .mastLeft{
+   width:100%;
+    justify-content:center;
+    align-items:center;
+    gap:6px;
   }
+
+  .siteTitle{
+    font-size:52px;
+  }
+  .siteSub{
+    font-size:17px;  /* keep proportional */
+  }
+  .mastIcon{
+    height:92px;
+  }
+
 }
