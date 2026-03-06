@@ -12,8 +12,7 @@
   --wrapMax:1000px;
   --padX:14px;
 
-  /* brand tint */
-  --brand:#6a479d;
+  --brand:#865ea6;
 }
 
 *{ box-sizing:border-box; }
@@ -45,17 +44,8 @@ body::before{
   margin:0 auto;
   min-height:100vh;
   position:relative;
-  background:var(--paper);
-}
 
-/* subtle purple wash behind ALL content inside pageWrap */
-.pageWrap::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:rgba(106,71,157,.08); /* adjust 0.05–0.12 */
-  pointer-events:none;
-  z-index:0;
+  background:#e6dfeb;
 }
 
 /* keep actual content above the wash */
@@ -173,14 +163,14 @@ a:visited{ color:var(--brand); }
 .card.isWide{ grid-column:1 / -1; }
 
 .cardText{
-  padding:12px;
+  padding:14px 12px;
   display:flex;
   flex-direction:column;
   gap:6px;
   justify-content:center;
 
-  background:rgba(106,71,157,.08); /* soft purple tint */
-  color:var(--ink);
+  background:#e6dfeb;
+  border-right:2px solid #865ea6;
 }
 
 .cardText .copy{
@@ -252,12 +242,12 @@ a:visited{ color:var(--brand); }
 }
 
 .reveal.isDone{
-  background:#5a3c8f;
+  background:#865ea6;
   color:#fff;
   text-transform:none;
   letter-spacing:.02em;
   font-weight:700;
-  border-left:2px solid solid var(--brand);
+  border-left:2px solid rgba(134,94,166,.9);
 }
 
 .reveal.isDone:not(.isLong){
