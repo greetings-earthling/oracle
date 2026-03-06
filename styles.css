@@ -315,20 +315,26 @@ a:visited{ color:var(--brand); }
 
 /* FOOTER */
 .footerBrand{
-  margin-top:22px;
-  padding:14px 0;
+  margin-top:18px;
+  padding:8px 0 12px 0;
   text-align:center;
-  color:var(--brand-dark);
-  border-bottom:1px solid var(--line);
+  font-size:12px;
+  color:rgba(22,32,80,.65);
 }
 
 .footerBrand a{
-  color:var(--brand);
+  color:rgba(22,32,80,.8);
+  text-decoration:none;
+}
+
+.footerBrand a:hover{
+  text-decoration:underline;
 }
 
 .foot{
-  padding:20px 0 0;
-  color:var(--brand-dark);
+  padding:14px 0 8px;
+  font-size:13px;
+  color:rgba(22,32,80,.55);
 }
 
 .oracleAbout h2{
@@ -337,9 +343,13 @@ a:visited{ color:var(--brand); }
 }
 
 .oracleAbout p{
-  margin:0 0 14px;
+  margin:0 0 10px;
   line-height:1.5;
-  color:var(--brand-dark);
+  color:rgba(22,32,80,.55);
+}
+
+.oracleAbout a{
+  color:rgba(134,94,166,.85);
 }
 
 .kickerThe{
