@@ -117,17 +117,17 @@ body::before{
 .mastRight{
   display:flex;
   flex-direction:column;
-  align-items:flex-end;   /* aligns to right edge of logo */
-  text-align:right;
-  gap:2px;                /* tighter spacing */
+  align-items:center;
+  text-align:center;
+  gap:1px;
 }
 
 .powered{
   font-size:.55rem;
-  letter-spacing:.08em;   /* slightly tighter */
+  letter-spacing:.04em;
   text-transform:lowercase;
   opacity:.6;
-  line-height:1;          /* removes extra vertical space */
+  line-height:1;
   margin:0;
 }
 
@@ -150,11 +150,10 @@ a:visited{ color:var(--brand); }
 
 /* CARD */
 .card{
-  border:1px solid rgba(134,94,166,.25);
+  border:1px solid rgba(11,13,18,.28);
   border-radius:var(--radius);
   overflow:hidden;
   background:#fff;
-
   display:grid;
   grid-template-columns:var(--textCol) 1fr;
   min-height:92px;
@@ -168,9 +167,8 @@ a:visited{ color:var(--brand); }
   flex-direction:column;
   gap:6px;
   justify-content:center;
-
+  color:#865ea6;
   background:#e6dfeb;
-  border-right:2px solid #865ea6;
 }
 
 .cardText .copy{
@@ -178,7 +176,7 @@ a:visited{ color:var(--brand); }
 }
 
 .cardText a{
-  color:var(--brand);
+  color:#865ea6;
 }
 
 .kicker{
@@ -187,13 +185,13 @@ a:visited{ color:var(--brand); }
   text-transform:uppercase;
   font-weight:800;
   line-height:1.1;
-  color:var(--ink);
+  color:#865ea6;
 }
 
 .copy{
   font-size:13px;
   line-height:1.35;
-  color:var(--muted);
+  color:rgba(134,94,166,.82);
 }
 
 .preClamp{
@@ -247,7 +245,6 @@ a:visited{ color:var(--brand); }
   text-transform:none;
   letter-spacing:.02em;
   font-weight:700;
-  border-left:2px solid rgba(134,94,166,.9);
 }
 
 .reveal.isDone:not(.isLong){
