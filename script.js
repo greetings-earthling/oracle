@@ -328,10 +328,11 @@ window.addEventListener("DOMContentLoaded", () => {
     return list.length ? pick(list) : "Add jokes.js";
   });
 
-  bind("reveal-dinner", "reroll", () => {
-    const list = window.DINNERLIST || [];
-    return list.length ? pick(list) : "Add dinnerlist.js";
-  });
+bind("reveal-dinner", "reroll", (btn) => {
+  const list = window.DINNERLIST || [];
+  btn.classList.add("isLong");
+  return list.length ? pick(list) : "Add dinnerlist.js";
+});
 
   bind("reveal-watch", "reroll", () => {
     const list = window.WATCHLIST || [];
