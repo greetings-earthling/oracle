@@ -178,17 +178,20 @@ a:visited{ color:var(--brand); }
   gap:6px;
   justify-content:center;
 
-  background:#0b0d12;
+  background:linear-gradient(
+    135deg,
+    var(--brand),
+    #5a3c8f
+  );
   color:#ffffff;
-  border-right:3px solid var(--brand);
 }
 
 .cardText .copy{
-  color:rgba(255,255,255,.72);
+  color:rgba(255,255,255,.85);
 }
 
 .cardText a{
-  color:#c7b2ff;
+  color:#e7dcff;
 }
 
 .cardText .kicker{
@@ -260,7 +263,7 @@ a:visited{ color:var(--brand); }
   text-transform:none;
   letter-spacing:.02em;
   font-weight:700;
-  border-left:3px solid var(--brand);
+  border-left:3px solid rgba(255,255,255,.35);
 }
 
 .reveal.isDone:not(.isLong){
