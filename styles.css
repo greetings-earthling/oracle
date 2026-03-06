@@ -73,7 +73,6 @@ body::before{
 
 /* HEADER */
 .mast{
-  border-bottom:2px solid #000;
   padding:8px 0 16px;
   margin:0 0 18px;
 
@@ -112,10 +111,10 @@ body::before{
 .siteTitle{
   margin:0;
   font-family:"Bebas Neue", sans-serif;
-  font-size:49px;                 /* beefed up by 1 */
+  font-size:49px;
   line-height:1;
   letter-spacing:-0.02em;
-  -webkit-text-stroke:0.45px currentColor;
+  color:#5a3c8f;
 }
 
 .siteSub{
@@ -128,20 +127,22 @@ body::before{
 .mastRight{
   display:flex;
   flex-direction:column;
-  align-items:center;
-  text-align:center;
-  gap:4px;
+  align-items:flex-end;   /* aligns to right edge of logo */
+  text-align:right;
+  gap:2px;                /* tighter spacing */
 }
 
 .powered{
   font-size:.55rem;
-  letter-spacing:.12em;
+  letter-spacing:.08em;   /* slightly tighter */
   text-transform:lowercase;
-  opacity:.55;
+  opacity:.6;
+  line-height:1;          /* removes extra vertical space */
+  margin:0;
 }
 
 .geLogo{
-  height:50px;
+  height:46px;
   display:block;
 }
 
@@ -180,8 +181,6 @@ a:visited{ color:var(--brand); }
 
   background:rgba(106,71,157,.08); /* soft purple tint */
   color:var(--ink);
-
-  border-right:2px solid var(--brand);
 }
 
 .cardText .copy{
@@ -253,12 +252,12 @@ a:visited{ color:var(--brand); }
 }
 
 .reveal.isDone{
-  background:#0b0d12;
+  background:#5a3c8f;
   color:#fff;
   text-transform:none;
   letter-spacing:.02em;
   font-weight:700;
-  border-left:3px solid rgba(255,255,255,.35);
+  border-left:2px solid solid var(--brand);
 }
 
 .reveal.isDone:not(.isLong){
