@@ -342,6 +342,15 @@ a:visited{ color:var(--brand); }
   color:rgba(22,32,80,.55);
 }
 
+.oracleAbout{
+  margin-top:22px;
+  padding-top:18px;
+  border-top:1px solid rgba(22,32,80,.18);
+  max-width:720px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
 .oracleAbout h2{
   margin:0 0 12px;
   color:var(--brand-dark);
