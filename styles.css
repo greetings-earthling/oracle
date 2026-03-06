@@ -179,17 +179,20 @@ a:visited{ color:var(--brand); }
   justify-content:center;
 
   background:#0b0d12;
-  color:#fff;
-  box-shadow:inset -1px 0 0 rgba(106,71,157,.5);
+  color:#ffffff;
   border-right:3px solid var(--brand);
 }
 
 .cardText .copy{
-  color:rgba(255,255,255,.65);
+  color:rgba(255,255,255,.72);
 }
 
 .cardText a{
-  color:#bda8ff;
+  color:#c7b2ff;
+}
+
+.cardText .kicker{
+  color:#ffffff;
 }
 
 .kicker{
@@ -217,22 +220,6 @@ a:visited{ color:var(--brand); }
 
 #reveal-meter   { }
 #reveal-meter   + * {}
-
-.card:nth-of-type(1) .cardText{ background:#f3eefc; }  /* luck */
-
-.card:nth-of-type(2) .cardText{ background:#f6f2ff; }  /* earthling */
-
-.card:nth-of-type(3) .cardText{ background:#eef5ff; }  /* number */
-
-.card:nth-of-type(4) .cardText{ background:#fff0f6; }  /* colour */
-
-.card:nth-of-type(5) .cardText{ background:#fff9e8; }  /* joke */
-
-.card:nth-of-type(6) .cardText{ background:#fff3ea; }  /* dinner */
-
-.card:nth-of-type(7) .cardText{ background:#eef9f7; }  /* watch */
-
-.card:nth-of-type(8) .cardText{ background:#eef8f1; }  /* fact */
 
 /* REVEAL */
 .reveal{
