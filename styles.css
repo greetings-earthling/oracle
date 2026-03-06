@@ -159,7 +159,7 @@ a:visited{ color:var(--brand); }
   flex-direction:column;
   gap:6px;
   justify-content:center;
-  background:rgba(126, 140, 191,.8);
+  background:#cbbdd6;
   color:var(--deep);
 }
 
