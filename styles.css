@@ -372,11 +372,12 @@ a:visited{ color:var(--brand); }
     align-items:center;
   }
 
-  .mastLeft{
+   .mastLeft{
     width:100%;
     justify-content:center;
     align-items:center;
     gap:2px;
+    transform:translateX(-6px);
   }
 
   .mastText{
