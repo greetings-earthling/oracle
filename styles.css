@@ -140,7 +140,7 @@ a:visited{ color:var(--brand); }
 
 /* CARD */
 .card{
-  border:1px solid rgba(22,32,80,.22);
+  border:1px solid #865ea6;
   border-radius:var(--radius);
   overflow:hidden;
   background:#fff;
