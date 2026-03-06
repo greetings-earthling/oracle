@@ -80,7 +80,10 @@ body::before{
   display:flex;
   flex-direction:column;
   justify-content:flex-start;
-  padding-top:4px;
+  padding-top:2px;
+  position:relative;
+  top:2px;
+  left:-1px;
 }
 
 .siteTitle{
@@ -105,6 +108,8 @@ body::before{
   align-items:center;
   text-align:center;
   gap:0;
+  position:relative;
+  top:2px;
 }
 
 .powered{
@@ -154,7 +159,7 @@ a:visited{ color:var(--brand); }
   flex-direction:column;
   gap:6px;
   justify-content:center;
-  background:#0b0d12;
+  background:var(--brand);
   color:#ffffff;
 }
 
@@ -175,7 +180,7 @@ a:visited{ color:var(--brand); }
 }
 
 .cardText a{
-  color:var(--brand);
+  color:#ffffff;
 }
 
 .preClamp{
