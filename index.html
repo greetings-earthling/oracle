@@ -5,14 +5,29 @@
   <meta charset="UTF-8" />
   <title>The Daily Oracle</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+  <meta name="description" content="The Daily Oracle reveals your daily luck, guidance, lucky number, lucky colour, and fun daily insights. Let fate guide your day.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <meta property="og:title" content="The Daily Oracle">
+  <meta property="og:description" content="Discover your daily luck, guidance, what to watch or eat, and more.">
+  <meta property="og:image" content="https://yourdomain.com/oracle-preview.jpg">
+  <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans:wght@400;600;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="styles.css" />
 </head>
 
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "WebApplication",
+ "name": "The Daily Oracle",
+ "description": "A daily oracle that reveals luck, guidance, what to watch or eat, and more.",
+ "applicationCategory": "LifestyleApplication",
+ "operatingSystem": "All"
+}
+</script>
+  
 <body>
   <div class="pageWrap">
     <main class="page">
@@ -172,7 +187,31 @@
 
 </section>
 
-    <footer class="foot">Sponsored by&nbsp;<a href="https://greetingsearthling.ca" target="_blank" rel="noopener">Greetings, Earthling</a></footer>
+    <footer class="foot">
+      <section class="oracleAbout">
+<h2>What is The Daily Oracle?</h2>
+
+<p>
+The Daily Oracle is a simple tool that reveals your daily luck, guidance,
+lucky number, lucky colour, and more. Each day the oracle offers a small
+set of insights to help you make decisions, find inspiration, or just
+have a little fun with fate.
+</p>
+
+<p>
+Use the oracle to discover your daily luck, get a focus for the day from
+the Earthling Code, reveal a lucky number, choose a colour to guide your
+choices, or even let fate decide what to watch or eat.
+</p>
+
+<p>
+Inspired by the philosophy behind
+<a href="https://greetingsearthling.ca">Greetings, Earthling</a>,
+the oracle encourages curiosity, reflection, and a playful approach
+to everyday decisions.
+</p>
+</section>
+    </footer>
   </main>
 
   <script defer src="./watchlist.js"></script>
