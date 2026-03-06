@@ -53,11 +53,20 @@ body::before{
 /* TOP STRIP */
 .topStrip{
   width:100%;
-  box-shadow:0 1px 0 rgba(0,0,0,.06);
-  background:#162050;
-  text-align:center;
-  padding:10px 16px;
-  margin:0;
+  background:#9debe9;
+  overflow:hidden;
+  padding:10px 0;
+  margin-bottom:20px;
+  border-radius:6px;
+}
+
+.topStripTrack{
+  display:flex;
+  width:max-content;
+  align-items:center;
+  gap:80px;
+  white-space:nowrap;
+  animation:tickerScroll 26s linear infinite;
 }
 
 .topStrip a{
@@ -67,8 +76,9 @@ body::before{
   font-weight:600;
 }
 
-.mast{
-  padding-top:26px;
+@keyframes tickerScroll{
+  from{ transform:translateX(0); }
+  to{ transform:translateX(-50%); }
 }
 
 /* HEADER */
