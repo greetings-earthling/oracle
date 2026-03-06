@@ -53,22 +53,21 @@ body::before{
 /* TOP STRIP */
 .topStrip{
   width:100%;
-  background:#51c6f5;
+  background:#77E6ED;
   text-align:center;
   padding:10px 16px;
+  margin:0;
 }
 
 .topStrip a{
   color:#162050;
   text-decoration:none;
-  font-size:12px;
-  line-height:1.4;
+  font-size:13px;
   font-weight:600;
-  display:block;
 }
 
-.topStrip a:hover{
-  text-decoration:underline;
+.mast{
+  padding-top:26px;
 }
 
 /* HEADER */
