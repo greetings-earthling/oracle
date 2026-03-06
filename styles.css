@@ -89,12 +89,12 @@ body::before{
   font-size:58px;
   line-height:1;
   letter-spacing:-0.02em;
-  color:var(--brand);
+  color:#0b0d12;
 }
 
 .siteSub{
   margin:2px 0 0;
-  color:var(--brand-dark);
+  color:#0b0d12;
   font-size:14px;
   line-height:1.2;
 }
@@ -114,7 +114,7 @@ body::before{
   opacity:.75;
   line-height:1;
   margin:0 0 2px 0;
-  color:var(--brand-dark);
+  color:var(--brand);
 }
 
 .geLogo{
@@ -163,13 +163,13 @@ a:visited{ color:var(--brand); }
   text-transform:uppercase;
   font-weight:800;
   line-height:1.1;
-  color:var(--brand);
+  color:#0b0d12;
 }
 
 .copy{
   font-size:13px;
   line-height:1.35;
-  color:var(--brand-dark);
+  color:var(--brand);
 }
 
 .cardText a{
