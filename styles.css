@@ -376,28 +376,31 @@ a:visited{ color:var(--brand); }
     width:100%;
     justify-content:center;
     align-items:center;
-    gap:2px;
-    transform:translateX(-6px);
+    gap:0px;
+    transform:translateX(-14px);
+  }
+
+ .mastIcon{
+    height:92px;
+    top:0;
+    margin-right:-6px;
   }
 
   .mastText{
     padding-top:0;
     left:0;
+    margin-left:-4px;
   }
 
   .siteTitle{
-    font-size:64px;
+    font-size:52px;
     line-height:1;
   }
 
   .siteSub{
     font-size:17px;
     line-height:1.15;
-  }
-
-  .mastIcon{
-    height:110px;
-    top:0;
+    margin-top:2px;
   }
 
   .footnote{
